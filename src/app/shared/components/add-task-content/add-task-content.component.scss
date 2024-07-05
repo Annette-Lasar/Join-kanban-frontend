@@ -1,0 +1,89 @@
+@import "../../../../scss_files/variables.scss";
+
+.inner_add_task_main_wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* .add-task-overlay .add-task-grid {
+  height: calc(100vh - 96px);
+  overflow-y: auto;
+} */
+
+.add-task-grid {
+  height: calc(100vh - $header-height - $mobile-navbar-height - 80px - 48px);
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "title"
+    "description"
+    "priority"
+    "due-date"
+    "category"
+    "assigned-to"
+    "subtasks";
+  overflow-y: auto;
+  border: green 1px solid;
+}
+
+.add-task-item {
+  margin-block: 1em;
+  padding: 0.5em 0;
+  border: blue 1px solid;
+}
+
+.title {
+  grid-area: title;
+}
+
+.description {
+  grid-area: description;
+}
+
+.prio {
+  grid-area: priority;
+}
+
+.due-date {
+  grid-area: due-date;
+}
+
+.category {
+  grid-area: category;
+}
+
+.assigned-to {
+  grid-area: assigned-to;
+}
+
+.subtasks {
+  grid-area: subtasks;
+}
+
+.separator-line {
+  display: none;
+}
+
+@media (min-width: 50em) {
+  .add-task-grid {
+    grid-template-columns: 1fr 2px 1fr;
+    grid-auto-rows: 80px;
+    grid-template-areas:
+      "title separator due-date"
+      "description separator priority"
+      "description separator category"
+      "assigned-to separator subtasks";
+    column-gap: 12px;
+  }
+
+  .separator-line {
+    display: block;
+  }
+}
+
+@media (min-width: 80em) {
+  .add-task-grid {
+    grid-auto-rows: 150px;
+  }
+}

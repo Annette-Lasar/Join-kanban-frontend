@@ -1,0 +1,215 @@
+@import "../../scss_files/variables.scss";
+@import "../shared/styles/shared_styles.scss";
+
+.inner-main-wrapper {
+  grid-area: main;
+}
+
+.inner-headline-box {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "headline"
+    "subheadline"
+    "separator";
+}
+
+.summary-headline {
+  margin-block: 0.5em 0.3em;
+  grid-area: headline;
+  font-size: 2rem;
+}
+
+.summary-subheadline {
+  margin: 0 0 1em;
+  grid-area: subheadline;
+  font-size: 0.8rem;
+}
+
+.blue-separator {
+  grid-area: separator;
+  width: 25%;
+  height: 3px;
+  background-color: $lightblue;
+}
+
+main {
+  padding: 0.5em;
+  min-height: calc(100vh - $header-height - $mobile-navbar-height);
+  min-height: calc(100dvh - $header-height - $mobile-navbar-height);
+  background-color: $verylightgray;
+}
+
+h1 {
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  font-weight: 700;
+}
+
+.inner-summary-wrapper {
+  min-width: 300px;
+  max-width: 500px;
+  margin: 0.5em auto 0;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: 36px;
+  grid-template-areas:
+    "todo todo todo done done done"
+    "todo todo todo done done done"
+    "overview overview overview overview overview overview"
+    "overview overview overview overview overview overview"
+    "board board progress progress feedback feedback"
+    "board board progress progress feedback feedback";
+  gap: 8px;
+  border: purple 2px solid;
+}
+
+.info-item {
+  height: 90%;
+  width: 100%;
+  align-self: center;
+  background-color: $white;
+  border-radius: 20px;
+  border: $lightgray 1px solid;
+  box-shadow: 0.25px 0.25px 0.25px 0.25px $mediumgray;
+}
+
+.todo,
+.done,
+.urgent {
+  grid-area: todo;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-areas:
+    "todo-icon todo-number"
+    "todo-icon todo-caption";
+  align-items: center;
+  gap: 8px;
+}
+
+.todo .info-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: $white 1px solid;
+}
+
+.todo .info-icon img {
+  height: 80%;
+  width: 80%;
+}
+
+.done {
+  grid-area: done;
+}
+
+.urgent-overview {
+  grid-area: overview;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.urgent,
+.date-box {
+  width: 47%;
+}
+
+.separator-line {
+  width: 1.5px;
+  align-self: center;
+  height: 70%;
+  grid-area: separator;
+  display: block;
+  background-color: $gray;
+}
+
+.date-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.tasks-in-board {
+  grid-area: board;
+}
+
+.tasks-in-progress {
+  grid-area: progress;
+}
+
+.tasks-awaiting-feedback {
+  grid-area: feedback;
+}
+
+.tasks-in-board,
+.tasks-in-progress,
+.tasks-awaiting-feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.number {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.task-caption {
+  font-size: 0.7rem;
+}
+
+.task-caption.flex-box {
+  text-align: center;
+}
+
+.info-icon {
+  width: 32px;
+  height: 32px;
+  padding: 0.5em;
+  justify-self: flex-end;
+  grid-area: todo-icon;
+  border-radius: 50%;
+  background-color: $darkblue;
+}
+
+.info-icon.red {
+  background-color: $red;
+}
+
+.info-number {
+  margin: 0 0 0 0.2em;
+  grid-area: todo-number;
+  align-self: flex-end;
+}
+
+.info-caption {
+  grid-area: todo-caption;
+  align-self: flex-start;
+}
+
+.date {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.greetings-container {
+  display: none;
+}
+
+join-navbar {
+  grid-area: aside;
+}
+
+/* @media (min-width: 50em) {
+  .outer-summary-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .greetings-container {
+    width: 40%;
+    display: block;
+  }
+} */

@@ -1,0 +1,43 @@
+@import "../../scss_files/variables.scss";
+
+h2 {
+  padding: 1.5em 0 1em;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+h2:last-of-type {
+    text-align: center;
+}
+
+main {
+  background-color: $verylightgray;
+  min-height: calc(100vh - $header-height - $mobile-navbar-height - 24px);
+}
+
+.title-wrapper {
+  height: 80px;
+  padding-inline: 0.5em;
+  //   margin-block: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  a {
+    cursor: pointer;
+  }
+}
+
+.content-wrapper {
+  height: calc(100vh - $header-height - $mobile-navbar-height - 80px);
+  padding: 0.5em;
+  overflow-y: auto;
+}
+
+p {
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+ol {
+  font-size: 0.75rem;
+}

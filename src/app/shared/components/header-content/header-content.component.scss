@@ -1,0 +1,16 @@
+@import "../../../../scss_files/variables.scss";
+
+.header-wrapper {
+  width: 100%;
+  max-width: 580px;
+  padding: 1em 0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0px 4px 4px 0px $mediumgray;
+  
+}
+
+.header-wrapper p {
+  display: none;
+}
