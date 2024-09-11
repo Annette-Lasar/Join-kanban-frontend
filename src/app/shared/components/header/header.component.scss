@@ -1,14 +1,19 @@
 @import "../../../../scss_files/variables.scss";
 
+.section-wrapper {
+  width: 100%;
+  padding: 1em 0.5em;
+  box-shadow: 0px 4px 4px 0px $mediumgray;
+}
+
 .header-wrapper {
   width: 100%;
-  max-width: 580px;
-  padding: 1em 0.5em;
+  max-width: 600px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0px 4px 4px 0px $mediumgray;
-  
+  border: blue 1px solid;
 }
 
 .header-wrapper p {

@@ -1,9 +1,4 @@
-@import "../../scss_files/variables.scss";
-@import "../shared/styles/shared_styles.scss";
-
-.inner-main-wrapper {
-  grid-area: main;
-}
+@import "../../../scss_files/variables.scss";
 
 .inner-headline-box {
   display: grid;
@@ -33,10 +28,11 @@
   background-color: $lightblue;
 }
 
-main {
-  padding: 0.5em;
-  min-height: calc(100vh - $header-height - $mobile-navbar-height);
-  min-height: calc(100dvh - $header-height - $mobile-navbar-height);
+.content {
+  max-width: 600px;
+  margin: 0 auto;
+  min-height: calc(100vh - $header-height - $mobile-navbar-height - 24px);
+  min-height: calc(100dvh - $header-height - $mobile-navbar-height - 24px);
   background-color: $verylightgray;
 }
 
@@ -45,10 +41,15 @@ h1 {
   font-weight: 700;
 }
 
+.outer-summary-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 .inner-summary-wrapper {
   min-width: 300px;
-  max-width: 500px;
-  margin: 0.5em auto 0;
+  max-width: 600px;
+  margin: 24px auto 0;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-auto-rows: 36px;
@@ -202,14 +203,9 @@ join-navbar {
   grid-area: aside;
 }
 
-/* @media (min-width: 50em) {
-  .outer-summary-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+@media (min-width: 50em) {
+  .content {
+    min-height: unset;
+    border: violet 2px solid;
   }
-  .greetings-container {
-    width: 40%;
-    display: block;
-  }
-} */
+}

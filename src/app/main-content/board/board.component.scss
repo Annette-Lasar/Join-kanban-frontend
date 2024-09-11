@@ -1,7 +1,6 @@
-@import "../../scss_files/variables.scss";
-@import "../shared/styles/shared_styles.scss";
+@import "../../../scss_files/variables.scss";
 
-main {
+.content {
   min-height: calc(
     100vh - $header-height - $mobile-navbar-height - 52px - 16px - 100px
   );
@@ -11,7 +10,7 @@ main {
   background-color: $verylightgray;
 }
 
-.inner-main-header {
+.inner-content-header {
   margin-block: 8px;
   padding-inline: 0.5em;
   display: grid;
@@ -121,7 +120,7 @@ h1 {
   /* border: orange 2px solid; */
 }
 
-@media (min-width: 50em) {
+/* @media (min-width: 50em) {
   section {
     max-height: 1000px;
     grid-template-columns: repeat(5, 1fr);
@@ -156,4 +155,4 @@ h1 {
     gap: 8px;
     overflow-y: auto;
   }
-}
+} */

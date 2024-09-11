@@ -1,1 +1,23 @@
 @import "../scss_files/variables.scss";
+
+#page {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.outer-login-wrapper {
+    width: 100%;
+    max-width: 1440px;
+    height: 100%;
+    max-height: 800px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // border: $darkblue 1px solid;
+    // border: orange 1px solid;
+}
+
+

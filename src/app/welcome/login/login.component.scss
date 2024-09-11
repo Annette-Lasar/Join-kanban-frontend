@@ -1,0 +1,152 @@
+@import "../../../scss_files/variables.scss";
+
+.outer-wrapper {
+  width: 90%;
+  max-width: 656px;
+  // border: blue 2px solid;
+  height: 80%;
+  max-height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.login-content-wrapper {
+  width: 100%;
+  height: 70%;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 30px;
+  background-color: $white;
+  box-shadow: 1px 1px 6px 1px $mediumgray;
+  .title-wrapper {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  h1 {
+    width: 90%;
+    text-align: center;
+  }
+  .separator {
+    width: 60px;
+    height: 3px;
+    background-color: $lightblue;
+  }
+}
+
+.data-wrapper {
+  width: 90%;
+  height: 50%;
+  max-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  border: green 1px solid;
+  .input-wrapper {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+  }
+  .incorrect-data {
+    padding-inline: 8px;
+    align-self: flex-start;
+    font-size: 0.6rem;
+    color: $red;
+  }
+  .email-wrapper,
+  .password-wrapper {
+    width: 100%;
+    padding-inline: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: $bordergray 1px solid;
+    border-radius: 8px;
+    &:focus-within {
+      outline: $lightblue 1px solid;
+    }
+    input {
+      height: 32px;
+      flex: 1 1 0;
+      outline: none;
+      border: none;
+    }
+  }
+
+  .password-wrapper {
+    img {
+      cursor: pointer;
+    }
+  }
+}
+
+.remember {
+  width: 100%;
+  margin: 12px 0 0;
+  // align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  border: orchid 1px solid;
+}
+
+.login-button-wrapper {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  border: red 1px solid;
+  button {
+    width: 120px;
+    height: 32px;
+  }
+}
+
+.sign-up-button-wrapper {
+  width: 90%;
+  max-width: 656px;
+  display: flex;
+  justify-content: center;
+  border: red 1px solid;
+}
+
+.inner-sign-up-button-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 0.9rem;
+  border: green 1px solid;
+}
+
+.legal-link-wrapper {
+  width: 90%;
+  max-width: 656px;
+  margin: 0 0 2em;
+  display: flex;
+  justify-content: center;
+  // border: orchid 1px solid;
+}
+
+.inner-legal-link-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 0.8rem;
+  a {
+    text-decoration: none;
+    color: $darkgray;
+  }
+}

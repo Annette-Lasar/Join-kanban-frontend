@@ -1,1 +1,47 @@
 @import "../../scss_files/variables.scss";
+
+.section-wrapper {
+  max-width: 1440px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: $header-height auto $mobile-navbar-height;
+  grid-template-areas:
+    "header"
+    "main"
+    "aside";
+  border: orange 2px solid;
+}
+
+join-header {
+  grid-area: header;
+}
+
+main {
+  min-height: calc(100vh - $header-height - $mobile-navbar-height - 8px);
+  min-height: calc(100dvh - $header-height - $mobile-navbar-height - 8px);
+  padding: 0 0.5em;
+  grid-area: main;
+}
+
+join-navbar {
+  grid-area: aside;
+}
+
+@media (min-width: 50em) {
+  /*  section {
+    width: 100%;
+    max-height: 1000px;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: $header-height auto;
+    grid-template-areas:
+      "aside header header header header"
+      "aside main main main main";
+    border: brown 2px solid;
+  } */
+  /*  grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: $header-height auto;
+    grid-template-areas:
+      "aside header header header header"
+      "aside main main main main"; */
+}

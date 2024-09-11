@@ -10,7 +10,7 @@ h2:last-of-type {
     text-align: center;
 }
 
-main {
+.content {
   background-color: $verylightgray;
   min-height: calc(100vh - $header-height - $mobile-navbar-height - 24px);
 }
@@ -18,7 +18,6 @@ main {
 .title-wrapper {
   height: 80px;
   padding-inline: 0.5em;
-  //   margin-block: 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;

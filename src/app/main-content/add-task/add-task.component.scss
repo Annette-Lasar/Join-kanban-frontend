@@ -1,14 +1,13 @@
-@import "../../scss_files/variables.scss";
-@import "../shared/styles/shared_styles.scss";
+@import "../../../scss_files/variables.scss";
 
-.inner-main-header {
+.inner-content-header {
   height: 80px;
   padding: 0 0.5em;
   display: flex;
   align-items: center;
 }
 
-main {
+.content {
   min-height: calc(100vh - $header-height - $mobile-navbar-height - 80px - 48px);
   padding-inline: 0.5em;
   background-color: $verylightgray;
