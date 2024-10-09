@@ -6,7 +6,8 @@ import { AddTaskComponent } from './main-content/add-task/add-task.component';
 import { ContactsComponent } from './main-content/contacts/contacts.component';
 import { HelpUserComponent } from './help-user/help-user.component';
 import { MainContentComponent } from './main-content/main-content.component';
-
+import { PrivacyComponent } from './privacy/privacy.component';
+import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 
 export const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -20,6 +21,8 @@ export const routes: Routes = [
       { path: 'add-task', component: AddTaskComponent },
       { path: 'contacts', component: ContactsComponent },
       { path: 'help-user', component: HelpUserComponent },
+      { path: 'privacy-policy', component: PrivacyComponent },
+      { path: 'legal-notice', component: LegalNoticeComponent },
     ],
   },
 ];

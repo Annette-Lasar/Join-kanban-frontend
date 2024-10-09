@@ -1,0 +1,10 @@
+<button
+  [ngClass]="['button', buttonClass]"
+  [ngStyle]="{ padding: padding, width: width, height: height }"
+>
+  @if(buttonIcon) {
+  <img [src]="imgSrc" [alt]="alt" />
+  } @else {
+  {{ caption }}
+  }
+</button>

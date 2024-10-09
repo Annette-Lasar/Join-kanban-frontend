@@ -1,34 +1,27 @@
 @import "../../../scss_files/variables.scss";
+@import "../../../scss_files/mixins.scss";
 
 .outer-wrapper {
   width: 90%;
-  max-width: 656px;
-  // border: blue 2px solid;
-  height: 80%;
+  max-width: 500px;
+  height: 85%;
   max-height: 600px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+  @include flex-container(column, center, space-between);
+  border: green 2px solid;
 }
 
 .login-content-wrapper {
   width: 100%;
-  height: 70%;
+  height: 85%;
   max-height: 400px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
+  padding-block: 1.5em;
+  @include flex-container(column, center, space-around);
   border-radius: 30px;
   background-color: $white;
   box-shadow: 1px 1px 6px 1px $mediumgray;
   .title-wrapper {
     width: 90%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
+    @include flex-container($direction: column, $align: center, $gap: 8px);
   }
   h1 {
     width: 90%;
@@ -41,22 +34,23 @@
   }
 }
 
-.data-wrapper {
+form {
   width: 90%;
-  height: 50%;
+  height: 75%;
+  border: orange 2px solid;
+  @include flex-container(column, center, space-between);
+}
+
+.data-wrapper {
+  width: 100%;
+  height: 60%;
   max-height: 180px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  border: green 1px solid;
+  @include flex-container(column, center, space-between);
+  border: blue 1px solid;
   .input-wrapper {
     width: 100%;
     height: 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-
+    @include flex-container($direction: column, $justify: space-between);
   }
   .incorrect-data {
     padding-inline: 8px;
@@ -68,9 +62,7 @@
   .password-wrapper {
     width: 100%;
     padding-inline: 8px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
+    @include flex-container($align: center, $gap: 4px);
     border: $bordergray 1px solid;
     border-radius: 8px;
     &:focus-within {
@@ -94,59 +86,50 @@
 .remember {
   width: 100%;
   margin: 12px 0 0;
-  // align-self: flex-start;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  @include flex-container($align: center, $justify: flex-start, $gap: 8px);
   font-size: 0.9rem;
-  border: orchid 1px solid;
 }
 
 .login-button-wrapper {
   width: 90%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  border: red 1px solid;
+  @include flex-container($direction: column, $align: center, $gap: 8px);
   button {
     width: 120px;
     height: 32px;
   }
 }
 
+a {
+  text-decoration: none;
+}
+
 .sign-up-button-wrapper {
   width: 90%;
   max-width: 656px;
-  display: flex;
-  justify-content: center;
-  border: red 1px solid;
+  @include flex-container($justify: center);
 }
 
 .inner-sign-up-button-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 24px;
+  @include flex-container($align: center, $gap: 24px);
   font-size: 0.9rem;
-  border: green 1px solid;
 }
 
-.legal-link-wrapper {
-  width: 90%;
-  max-width: 656px;
-  margin: 0 0 2em;
-  display: flex;
-  justify-content: center;
-  // border: orchid 1px solid;
-}
 
-.inner-legal-link-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  font-size: 0.8rem;
-  a {
-    text-decoration: none;
-    color: $darkgray;
+
+
+@media (min-width: 48em) {
+  .sign-up-button-wrapper {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    width: fit-content;
+  }
+
+  .data-wrapper {
+    height: 65%;
+  }
+
+  .login-button-wrapper {
+    @include flex-container($align: center, $justify: space-around);
   }
 }

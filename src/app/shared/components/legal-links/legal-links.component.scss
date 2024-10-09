@@ -1,0 +1,44 @@
+@import "../../../../scss_files/variables.scss";
+@import "../../../../scss_files/mixins.scss";
+
+.welcome-legal-links {
+  width: 100%;
+  max-width: 656px;
+  @include flex-container($justify: center);
+}
+
+.welcome-inner-legal-wrapper {
+  @include flex-container($align: center, $gap: 24px);
+  font-size: 0.8rem;
+  a {
+    width: 100px;
+    text-decoration: none;
+    color: $darkgray;
+    text-align: center;
+  }
+  a:hover {
+    color: $lightblue;
+    font-weight: 600;
+  }
+}
+
+@media (min-width: 50em) {
+  .navbar-legal-links {
+    width: 100%;
+    @include flex-container($direction: column, $align: flex-start);
+    .navbar-inner-legal-wrapper {
+      width: 100%;
+      @include flex-container(
+        $direction: column,
+        $align: center,
+        $justify: space-between,
+        $gap: 16px
+      );
+    }
+    a {
+      text-decoration: none;
+      color: white;
+      font-size: 0.9rem;
+    }
+  }
+}

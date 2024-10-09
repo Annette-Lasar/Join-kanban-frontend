@@ -1,6 +1,8 @@
 @import "../../../scss_files/variables.scss";
+@import "../../../scss_files/mixins.scss";
 
 .inner-headline-box {
+  height: 87px;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-areas:
@@ -28,12 +30,19 @@
   background-color: $lightblue;
 }
 
+.inner-content-wrapper {
+  height: 100%;
+  // border: black 2px solid;
+}
+
 .content {
+  height: 100%;
   max-width: 600px;
   margin: 0 auto;
   min-height: calc(100vh - $header-height - $mobile-navbar-height - 24px);
   min-height: calc(100dvh - $header-height - $mobile-navbar-height - 24px);
   background-color: $verylightgray;
+  // border: lawngreen 2px solid;
 }
 
 h1 {
@@ -42,8 +51,10 @@ h1 {
 }
 
 .outer-summary-wrapper {
+  width: 100%;
   max-width: 600px;
   margin: 0 auto;
+  // border: green 2px solid;
 }
 
 .inner-summary-wrapper {
@@ -61,7 +72,7 @@ h1 {
     "board board progress progress feedback feedback"
     "board board progress progress feedback feedback";
   gap: 8px;
-  border: purple 2px solid;
+  // border: purple 2px solid;
 }
 
 .info-item {
@@ -205,7 +216,49 @@ join-navbar {
 
 @media (min-width: 50em) {
   .content {
+    max-width: unset;
     min-height: unset;
+    height: 100%;
+    margin: 0;
+    overflow-y: auto;
     border: violet 2px solid;
+  }
+
+  .outer-summary-wrapper {
+    width: 100%;
+    // height: 100%;
+    max-width: unset;
+    @include flex-container($align: center, $justify: space-between);
+    .inner-summary-wrapper {
+      width: 50%;
+      margin: 12px 0 0;
+    }
+  }
+
+  .inner-headline-box {
+    height: 60px;
+    display: grid;
+    grid-template-columns: 150px 3px 1fr;
+    grid-template-areas: "headline separator subheadline";
+  }
+
+  .blue-separator {
+    height: 60%;
+    width: 4px;
+    align-self: center;
+  }
+
+  .summary-subheadline {
+    margin: 0 0 0 16px;
+    align-self: center;
+    font-size: 1rem;
+  }
+
+  .inner-content-wrapper {
+    height: 100%;
+  }
+
+  join-user-greeting {
+    width: 40%;
   }
 }

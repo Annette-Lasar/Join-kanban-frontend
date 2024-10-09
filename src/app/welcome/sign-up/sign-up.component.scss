@@ -1,0 +1,98 @@
+@import "../../../scss_files/variables.scss";
+@import "../../../scss_files/mixins.scss";
+
+.outer-wrapper {
+  width: 90%;
+  max-width: 500px;
+  height: 85%;
+  max-height: 600px;
+  padding-block: 24px;
+  @include flex-container(column, center, space-between);
+  background-color: $white;
+  border-radius: 30px;
+  box-shadow: 1px 1px 6px 1px $mediumgray;
+  // border: green 2px solid;
+}
+
+.sign-up-header {
+  width: 90%;
+  @include flex-container($direction: column);
+  border: orchid 1px solid;
+}
+
+.title-wrapper {
+  width: 100%;
+  position: relative;
+  @include flex-container($align: center);
+  border: green 1px solid;
+  img {
+    margin-right: auto;
+    cursor: pointer;
+  }
+  h1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+  }
+}
+
+.separator {
+  margin: 8px 0 0;
+  width: 60px;
+  height: 3px;
+  align-self: center;
+  background-color: $lightblue;
+}
+
+form {
+  width: 90%;
+  height: 80%;
+  @include flex-container(column, center, space-between);
+  border: green 2px solid;
+}
+
+.sign-up-content {
+  width: 100%;
+  height: 60%;
+  @include flex-container(column, center, space-between);
+  border: red 2px solid;
+  .input-wrapper {
+    width: 100%;
+    padding-inline: 8px;
+    @include flex-container($align: center, $justify: space-between);
+    border: $bordergray 1px solid;
+    border-radius: 8px;
+    &:focus-within {
+      outline: $lightblue 1px solid;
+    }
+  }
+  .password-wrapper {
+    img {
+      cursor: pointer;
+    }
+  }
+  input {
+    height: 32px;
+    flex: 1 1 0;
+    border: none;
+    outline: none;
+  }
+}
+
+.agreement {
+  width: 100%;
+  @include flex-container($align: center, $justify: center, $gap: 4px);
+  border: blue 1px solid;
+  font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+  a {
+    // font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+    color: $lightblue;
+    text-decoration: none;
+  }
+}
+
+/* join-legal-links {
+  width: 90%;
+  @include flex-container($justify: center);
+} */

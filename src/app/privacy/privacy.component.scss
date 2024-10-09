@@ -1,1 +1,52 @@
 @import "../../scss_files/variables.scss";
+
+h2 {
+  padding: 1.5em 0 1em;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+h3 {
+  padding: 1.5em 0 1em;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+h4 {
+  padding: 1.5em 0 1em;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.content {
+  background-color: $verylightgray;
+  min-height: calc(100vh - $header-height - $mobile-navbar-height - 24px);
+}
+
+.title-wrapper {
+  height: 80px;
+  padding-inline: 0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  a {
+    cursor: pointer;
+  }
+}
+
+.content-wrapper {
+  height: calc(100vh - $header-height - $mobile-navbar-height - 80px);
+  padding: 0.5em;
+  overflow-y: auto;
+}
+
+p {
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+ul {
+    padding: 0 0 0 1em;
+  font-size: 0.75rem;
+  line-height: 1.2;
+}

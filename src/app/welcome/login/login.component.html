@@ -1,73 +1,67 @@
-<!-- <div class="login-content-wrapper">
-  <p>login works!</p>
-  <div>
-    <a routerLink="main-content">
-      <button>Login</button>
-    </a>
-  </div>
-</div>
-<div class="sign-up-button-wrapper">
-  <div class="inner-sign-up-button-wrapper">
-    <span>Not a join user?</span>
-    <button>Sign up</button>
-  </div>
-</div>
-<div class="legal-link-wrapper">
-  <div class="inner-legal-link-wrapper">
-    <a href="#">Privacy Policy</a>
-    <a href="#">Legal Notice</a>
-  </div>
-</div> -->
-
 <div class="outer-wrapper">
   <div class="login-content-wrapper">
     <div class="title-wrapper">
       <h1>Log in</h1>
       <div class="separator"></div>
     </div>
-    <div class="data-wrapper">
-      <div class="input-wrapper">
-        <div class="email-wrapper">
-          <input type="text" name="email" id="email" placeholder="Email" />
-          <img src="../../../assets/icons/mail.svg" alt="" />
+    <form action="">
+      <div class="data-wrapper">
+        <div class="input-wrapper">
+          <div class="email-wrapper">
+            <input type="text" name="email" id="email" placeholder="Email" />
+            <img src="assets/icons/mail.svg" alt="" />
+          </div>
+          <div class="password-wrapper">
+            <input
+              type="text"
+              name="password"
+              id="password"
+              placeholder="Password"
+            />
+            <img src="assets/icons/lock.svg" alt="" />
+          </div>
+          <div class="incorrect-data">
+            Check your email and password. Please try again.
+          </div>
         </div>
-        <div class="password-wrapper">
-          <input
-            type="text"
-            name="password"
-            id="password"
-            placeholder="Password"
-          />
-          <img src="../../../assets/icons/lock.svg" alt="" />
-        </div>
-        <div class="incorrect-data">
-          Check your email and password. Please try again.
+        <div class="remember">
+          <input type="checkbox" name="" id="" />
+          <span>Remember me</span>
         </div>
       </div>
-      <div class="remember">
-        <input type="checkbox" name="" id="" />
-        <span>Remember me</span>
+      <div class="login-button-wrapper">
+        <join-button
+          [caption]="'Log in'"
+          [buttonClass]="'dark-square-button'"
+          [width]="'120px'"
+          [height]="'32px'"
+          [padding]="'0'"
+        ></join-button>
+        <a routerLink="/main-content">
+          <join-button
+            [caption]="'Guest Login'"
+            [buttonClass]="'light-square-button'"
+            [width]="'120px'"
+            [height]="'32px'"
+            [padding]="'0'"
+          ></join-button>
+        </a>
       </div>
-    </div>
-    <div class="login-button-wrapper">
-      <a href="#">
-        <button>Log in</button>
-      </a>
-      <a routerLink="main-content">
-        <button>Guest Log in</button>
-      </a>
-    </div>
+    </form>
   </div>
   <div class="sign-up-button-wrapper">
     <div class="inner-sign-up-button-wrapper">
       <span>Not a join user?</span>
-      <button>Sign up</button>
+      <join-button
+        [caption]="'Sign up'"
+        [buttonClass]="'dark-square-button'"
+        [padding]="'0'"
+        [width]="'100px'"
+        [height]="'32px'"
+        (click)="onSignUpClick()"
+      ></join-button>
     </div>
   </div>
-  <div class="legal-link-wrapper">
-    <div class="inner-legal-link-wrapper">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Legal Notice</a>
-    </div>
-  </div>
+  
 </div>
+

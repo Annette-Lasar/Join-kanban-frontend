@@ -1,6 +1,7 @@
 @import "../../scss_files/variables.scss";
 
 .section-wrapper {
+  width: 100%;
   max-width: 1440px;
   margin: auto;
   display: grid;
@@ -10,7 +11,7 @@
     "header"
     "main"
     "aside";
-  border: orange 2px solid;
+  // border: orange 2px solid;
 }
 
 join-header {
@@ -18,10 +19,11 @@ join-header {
 }
 
 main {
-  min-height: calc(100vh - $header-height - $mobile-navbar-height - 8px);
-  min-height: calc(100dvh - $header-height - $mobile-navbar-height - 8px);
+  min-height: calc(100vh - $header-height - $mobile-navbar-height);
+  min-height: calc(100dvh - $header-height - $mobile-navbar-height);
   padding: 0 0.5em;
   grid-area: main;
+  // border: red 2px solid;
 }
 
 join-navbar {
@@ -29,19 +31,18 @@ join-navbar {
 }
 
 @media (min-width: 50em) {
-  /*  section {
-    width: 100%;
-    max-height: 1000px;
+  .section-wrapper {
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: $header-height auto;
     grid-template-areas:
       "aside header header header header"
       "aside main main main main";
     border: brown 2px solid;
-  } */
-  /*  grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: $header-height auto;
-    grid-template-areas:
-      "aside header header header header"
-      "aside main main main main"; */
+  }
 }
+
+/* grid-template-columns: repeat(5, 1fr);
+grid-template-rows: $header-height auto;
+grid-template-areas:
+  "aside header header header header"
+  "aside main main main main"; */

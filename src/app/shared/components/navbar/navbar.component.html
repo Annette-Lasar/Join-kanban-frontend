@@ -1,3 +1,41 @@
+<!-- <nav>
+  <a href="../html/summary.html" class="join-logo">
+    <img src="assets/icons/join_logo_white.svg" alt="" />
+  </a>
+  <div id="menu_items_wrapper" class="menu-items-wrapper">
+    <div id="summary_link" class="menu-items">
+      <a routerLink="summary" class="current-page">
+        <img src="assets/icons/summary.svg" alt="" />
+        <p>Summary</p>
+      </a>
+    </div>
+    <div id="board_link" class="menu-items">
+      <a routerLink="board">
+        <img src="assets/icons/board.svg" alt="Go to board" />
+        <p>Board</p>
+      </a>
+    </div>
+    <div id="add_task_link" class="menu-items">
+      <a routerLink="add-task">
+        <img src="assets/icons/add_task.svg" alt="Go to add task-section" />
+        <p>Add Task</p>
+      </a>
+    </div>
+    <div id="contacts_link" class="menu-items">
+      <a routerLink="contacts">
+        <img src="assets/icons/contacts.svg" alt="" />
+        <p>Contacts</p>
+      </a>
+    </div>
+  </div>
+  <div class="legal-info-wrapper">
+    <a id="privacy_policy_link" routerLink="/privacy-policy"
+      >Privacy Policy</a
+    >
+    <a id="legal_notice_link" routerLink="../html/legal_notice.html">Legal Notice</a>
+  </div>
+</nav> -->
+
 <nav>
   <a href="../html/summary.html" class="join-logo">
     <img src="assets/icons/join_logo_white.svg" alt="" />
@@ -11,13 +49,13 @@
     </div>
     <div id="board_link" class="menu-items">
       <a routerLink="board">
-        <img src="assets/icons/board.svg" alt="" />
+        <img src="assets/icons/board.svg" alt="Go to board" />
         <p>Board</p>
       </a>
     </div>
     <div id="add_task_link" class="menu-items">
       <a routerLink="add-task">
-        <img src="assets/icons/add_task.svg" alt="" />
+        <img src="assets/icons/add_task.svg" alt="Go to add task-section" />
         <p>Add Task</p>
       </a>
     </div>
@@ -28,10 +66,9 @@
       </a>
     </div>
   </div>
-  <div class="legal-info-wrapper">
-    <a id="privacy_policy_link" href="../html/privacy_policy.html"
-      >Privacy Policy</a
-    >
-    <a id="legal_notice_link" href="../html/legal_notice.html">Legal Notice</a>
-  </div>
+
+  <join-legal-links 
+  [legalLinksClass]="'navbar-legal-links'"
+  [innerLegalLinksClass]="'navbar-inner-legal-wrapper'"
+  />
 </nav>

@@ -19,3 +19,10 @@
 .header-wrapper p {
   display: none;
 }
+
+@media (min-width: 50em) {
+  .header-wrapper {
+    margin-inline: 0;
+    max-width: unset;
+  }
+}

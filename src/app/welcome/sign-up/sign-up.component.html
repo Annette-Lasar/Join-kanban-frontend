@@ -1,1 +1,45 @@
-<p>sign-up works!</p>
+<div class="outer-wrapper">
+  <div class="sign-up-header">
+    <div class="title-wrapper">
+      <img
+        src="../../../assets/icons/arrow_left_line_default.svg"
+        alt=""
+        (click)="onSignUpClick()"
+      />
+      <h1>Sign up</h1>
+    </div>
+    <div class="separator"></div>
+  </div>
+  <form action="">
+    <div class="sign-up-content">
+      <div class="input-wrapper">
+        <input type="text" placeholder="Name" />
+        <img src="assets/icons/person.svg" alt="" />
+      </div>
+      <div class="input-wrapper">
+        <input type="text" placeholder="Email" />
+        <img src="assets/icons/mail.svg" alt="" />
+      </div>
+      <div class="input-wrapper password-wrapper">
+        <input type="text" placeholder="Password" />
+        <img src="assets/icons/lock.svg" alt="" />
+      </div>
+      <div class="input-wrapper password-wrapper">
+        <input type="text" placeholder="Confirm Password" />
+        <img src="assets/icons/lock.svg" alt="" />
+      </div>
+    </div>
+    <div class="agreement">
+      <input type="checkbox" name="agreement" id="" />
+      I accept the <a href="#">Privacy Policy</a>
+    </div>
+    <join-button
+      [caption]="'Sign up'"
+      [buttonClass]="'dark-square-button'"
+      [padding]="'0'"
+      [width]="'100px'"
+      [height]="'32px'"
+    >
+    </join-button>
+  </form>
+</div>

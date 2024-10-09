@@ -10,7 +10,7 @@
 .content {
   min-height: calc(100vh - $header-height - $mobile-navbar-height - 80px - 48px);
   padding-inline: 0.5em;
-  background-color: $verylightgray;
+  background-color: verylightgray;
 }
 
 .add-task-button-wrapper {
@@ -18,4 +18,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border: orchid 1px solid;
+  .button-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.info-required {
+  font-size: clamp(0.75rem, 1vw, 1.1rem);
 }

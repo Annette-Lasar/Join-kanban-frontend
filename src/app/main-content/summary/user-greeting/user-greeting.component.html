@@ -1,3 +1,9 @@
 <div class="greetings-container">
-  Good morning, <span>Sofia Müller!</span>
+  <span class="greeting bold_600">{{ salutation }},</span> <br />
+  @if(isLoggedIn) {
+  <span class="user-name blue bold_700">Sofia Müller!</span>
+  } @else {
+
+  <span class="user-name blue bold_700">Guest!</span>
+  }
 </div>

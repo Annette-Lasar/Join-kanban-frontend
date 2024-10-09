@@ -1,0 +1,39 @@
+@import "../../../../scss_files/variables.scss";
+
+button {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dark-square-button {
+  background-color: $darkblue;
+  color: $white;
+  border: $darkblue 1px solid;
+  border-radius: 4px;
+}
+
+.dark-square-button:hover {
+  background-color: $lightblue;
+  border: $lightblue 1px solid;
+  box-shadow: 2px 2px 2px 1px $gray;
+}
+
+.light-square-button {
+  background-color: $white;
+  color: $anthracite;
+  border: $bordergray 1px solid;
+  border-radius: 4px;
+}
+
+.light-square-button:hover {
+  color: $lightblue;
+  border: $lightblue 1px solid;
+  box-shadow: 2px 2px 2px 1px $gray;
+}
+
+.dark-round-button {
+  background-color: $darkblue;
+  border-radius: 50%;
+}

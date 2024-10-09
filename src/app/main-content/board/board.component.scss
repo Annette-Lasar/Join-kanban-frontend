@@ -2,10 +2,10 @@
 
 .content {
   min-height: calc(
-    100vh - $header-height - $mobile-navbar-height - 52px - 16px - 100px
+    100vh - header-height - mobile-navbar-height - 52px - 16px - 100px
   );
   min-height: calc(
-    100dvh - $header-height - $mobile-navbar-height - 52px - 16px - 100px
+    100dvh - header-height - mobile-navbar-height - 52px - 16px - 100px
   );
   background-color: $verylightgray;
 }
