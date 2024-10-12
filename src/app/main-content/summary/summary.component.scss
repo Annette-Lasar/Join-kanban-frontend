@@ -54,7 +54,6 @@ h1 {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  // border: green 2px solid;
 }
 
 .inner-summary-wrapper {
@@ -226,12 +225,15 @@ join-navbar {
 
   .outer-summary-wrapper {
     width: 100%;
-    // height: 100%;
+    height: calc(100vh - $header-height - 60px - 16px);
     max-width: unset;
     @include flex-container($align: center, $justify: space-between);
+    border: blue 2px solid;
     .inner-summary-wrapper {
-      width: 50%;
-      margin: 12px 0 0;
+      width: 60%;
+      height: 80%;
+      margin: 0;
+      align-content: center;
     }
   }
 
@@ -259,6 +261,7 @@ join-navbar {
   }
 
   join-user-greeting {
-    width: 40%;
+    width: 35%;
+    margin: 0;
   }
 }

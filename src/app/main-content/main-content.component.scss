@@ -23,7 +23,6 @@ main {
   min-height: calc(100dvh - $header-height - $mobile-navbar-height);
   padding: 0 0.5em;
   grid-area: main;
-  // border: red 2px solid;
 }
 
 join-navbar {
@@ -32,6 +31,7 @@ join-navbar {
 
 @media (min-width: 50em) {
   .section-wrapper {
+    height: 100%;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: $header-height auto;
     grid-template-areas:

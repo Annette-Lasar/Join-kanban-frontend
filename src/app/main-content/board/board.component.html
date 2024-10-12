@@ -3,67 +3,163 @@
     <div class="inner-content-header">
       <h1>Board</h1>
       <div class="board-task-button-wrapper">
-        <button class="mobile-link-add-task plus-button-dark">
-          <a href="../html/add_task.html">
-            <img src="../assets/icons/plus_white.svg" alt="add new task" />
-          </a>
-        </button>
-        <button
-          class="desktop-link-add-task plus-button-dark"
-          onclick="openAddTaskOverlay()"
-        >
-          <img src="../../assets/icons/plus_white.svg" alt="add new task" />
-        </button>
+        <div class="inner-task-button-wrapper">
+          <join-button
+            (toggleContainer)="toggleContainerVisibility($event)"
+            class="mobile-link-add-task info-button"
+            [infoMessage]="'Add a task to \'to do\'.'"
+            [buttonIcon]="true"
+            [imgSrc]="'assets/icons/info.svg'"
+            [buttonClass]="'light-square-button'"
+            [width]="'16px'"
+            [height]="'16px'"
+            [padding]="'0'"
+          />
+          <join-button
+            class="mobile-link-add-task"
+            [routerLink]="'#'"
+            [buttonIcon]="true"
+            [imgSrc]="'assets/icons/plus_white.svg'"
+            [buttonClass]="'dark-square-button'"
+            [width]="'24px'"
+            [height]="'24px'"
+            [padding]="'0'"
+          />
+        </div>
+        <join-button
+          class="desktop-add-task"
+          [buttonCaptionFirst]="true"
+          [buttonIcon]="true"
+          [imgSrc]="'assets/icons/plus_white.svg'"
+          [caption]="'Add task'"
+          [buttonClass]="'dark-square-button'"
+          [width]="'100px'"
+          [height]="'32px'"
+          [padding]="'0'"
+        />
       </div>
       <div class="search-wrapper">
-        <input type="text" />
+        <input
+          type="text"
+          (focus)="toggleSearchIcon(true)"
+          (blur)="leaveSearchInputFocus()"
+          #searchInput
+        />
+        <div class="separator"></div>
+        @if (!isFocused) {
+
+        <img src="assets/icons/search_gray.svg" alt="Search" />
+        } @else {
+        <img
+          class="clear-icon"
+          src="assets/icons/close_gray.svg"
+          alt="Clear search"
+          width="18"
+          (mousedown)="clearSearch()"
+        />
+        }
       </div>
       <div class="match-box"><span>5 matches </span>found</div>
     </div>
+    @if(isContainerVisible) {
+    <div appOutsideClick (outsideClick)="hideContainer()">
+      <join-info [infoText]="message" />
+    </div>
+
+    }
     <div class="outer-board-wrapper">
-      <div class="todo">
+      <div class="list todo">
         <div class="board-list-headline-wrapper">
-          <h2>To do</h2>
-          <button>
-            <img
-              src="../../assets/icons/plus.svg"
-              alt="add new task in todo list"
+          <h2 class="bold_700">To do</h2>
+          <div class="inner-task-button-wrapper">
+            <join-button
+              (toggleContainer)="toggleContainerVisibility($event)"
+              class="mobile-link-add-task info-button"
+              [infoMessage]="'Add a task to \'to do\'.'"
+              [buttonIcon]="true"
+              [imgSrc]="'assets/icons/info.svg'"
+              [buttonClass]="'light-square-button'"
+              [width]="'16px'"
+              [height]="'16px'"
+              [padding]="'0'"
             />
-          </button>
-        </div>
-      </div>
-      <div class="in-progress">
-        <div class="board-list-headline-wrapper">
-          <h2>In progress</h2>
-          <button>
-            <img
-              src="../assets/icons/plus.svg"
-              alt="add new task in in progress list"
-            />
-          </button>
-        </div>
-      </div>
-      <div class="await-feedback">
-        <div class="board-list-headline-wrapper">
-          <h2>Await feedback</h2>
-          <button>
-            <img
-              src="../assets/icons/plus.svg"
-              alt="add new task in await feedback list"
-            />
-          </button>
-        </div>
-      </div>
-      <div class="done">
-        <div class="board-list-headline-wrapper">
-          <h2>Done</h2>
-          <div class="d-none">
-            <img
-              src="../assets/icons/plus.svg"
-              alt="add new task in done list"
+            <join-button
+              [routerLink]="'#'"
+              [buttonIcon]="true"
+              [imgSrc]="'assets/icons/plus.svg'"
+              [buttonClass]="'light-square-button-blue-hover-completely'"
+              [width]="'24px'"
+              [height]="'24px'"
+              [padding]="'0'"
+              [tooltip]="'Add a new task in todo list'"
             />
           </div>
         </div>
+        <div class="list-content">No tasks to do</div>
+      </div>
+      <div class="list in-progress">
+        <div class="board-list-headline-wrapper">
+          <h2 class="bold_700">In progress</h2>
+          <div class="inner-task-button-wrapper">
+            <join-button
+              (toggleContainer)="toggleContainerVisibility($event)"
+              class="mobile-link-add-task info-button"
+              [infoMessage]="'Add a task to \'in progress\'.'"
+              [buttonIcon]="true"
+              [imgSrc]="'assets/icons/info.svg'"
+              [buttonClass]="'light-square-button'"
+              [width]="'16px'"
+              [height]="'16px'"
+              [padding]="'0'"
+            />
+            <join-button
+              [routerLink]="'#'"
+              [buttonIcon]="true"
+              [imgSrc]="'assets/icons/plus.svg'"
+              [buttonClass]="'light-square-button-blue-hover-completely'"
+              [width]="'24px'"
+              [height]="'24px'"
+              [padding]="'0'"
+              [tooltip]="'Add a new task in progress list'"
+            />
+          </div>
+        </div>
+        <div class="list-content">No tasks in progress</div>
+      </div>
+      <div class="list await-feedback">
+        <div class="board-list-headline-wrapper">
+          <h2 class="bold_700">Await feedback</h2>
+          <div class="inner-task-button-wrapper">
+            <join-button
+              (toggleContainer)="toggleContainerVisibility($event)"
+              class="mobile-link-add-task info-button"
+              [infoMessage]="'Add a task to \'await feedback\'.'"
+              [buttonIcon]="true"
+              [imgSrc]="'assets/icons/info.svg'"
+              [buttonClass]="'light-square-button'"
+              [width]="'16px'"
+              [height]="'16px'"
+              [padding]="'0'"
+            />
+            <join-button
+              [routerLink]="'#'"
+              [buttonIcon]="true"
+              [imgSrc]="'assets/icons/plus.svg'"
+              [buttonClass]="'light-square-button-blue-hover-completely'"
+              [width]="'24px'"
+              [height]="'24px'"
+              [padding]="'0'"
+              [tooltip]="'Add a new task in await feedback list'"
+            />
+          </div>
+        </div>
+        <div class="list-content">No tasks await feedback</div>
+      </div>
+      <div class="list done">
+        <div class="board-list-headline-wrapper">
+          <h2 class="bold_700">Done</h2>
+        </div>
+        <div class="list-content">No tasks done</div>
       </div>
     </div>
   </div>

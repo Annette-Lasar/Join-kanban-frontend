@@ -7,11 +7,40 @@ button {
   justify-content: center;
 }
 
+.caption-image-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 8px;
+  img {
+    width: 20px;
+    height: 20px;
+  }
+  .check-icon {
+    width: 12px;
+  }
+}
+
 .dark-square-button {
   background-color: $darkblue;
   color: $white;
   border: $darkblue 1px solid;
   border-radius: 4px;
+}
+
+.urgent.active {
+  color: $white;
+  background-color: $red;
+}
+
+.medium.active {
+  color: $white;
+  background-color: $prioorange;
+}
+
+.low.active {
+  color: $white;
+  background-color: $lightgreen;
 }
 
 .dark-square-button:hover {
@@ -20,6 +49,7 @@ button {
   box-shadow: 2px 2px 2px 1px $gray;
 }
 
+.light-square-button-blue-hover,
 .light-square-button {
   background-color: $white;
   color: $anthracite;
@@ -27,13 +57,34 @@ button {
   border-radius: 4px;
 }
 
-.light-square-button:hover {
+.light-square-button-blue-hover-completely {
+  border: $anthracite 1.5px solid;
+  border-radius: 4px;
+  &:hover {
+    color: $lightblue;
+    border-color: $lightblue;
+    img {
+      filter: invert(57%) sepia(58%) saturate(667%) hue-rotate(158deg)
+        brightness(93%) contrast(90%);
+    }
+  }
+}
+
+.light-square-button-blue-hover:hover {
   color: $lightblue;
   border: $lightblue 1px solid;
+  box-shadow: 2px 2px 2px 1px $gray;
+}
+
+.light-square-button:hover {
   box-shadow: 2px 2px 2px 1px $gray;
 }
 
 .dark-round-button {
   background-color: $darkblue;
   border-radius: 50%;
+  &:hover {
+    border: $lightblue 2px solid;
+    background-color: $lightblue;
+  }
 }

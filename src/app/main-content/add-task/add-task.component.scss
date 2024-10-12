@@ -8,7 +8,9 @@
 }
 
 .content {
-  min-height: calc(100vh - $header-height - $mobile-navbar-height - 80px - 48px);
+  min-height: calc(
+    100vh - $header-height - $mobile-navbar-height - 80px - 48px
+  );
   padding-inline: 0.5em;
   background-color: verylightgray;
 }
@@ -26,6 +28,20 @@
   }
 }
 
+.desktop-clear-task-button {
+  display: none;
+}
+
 .info-required {
   font-size: clamp(0.75rem, 1vw, 1.1rem);
+}
+
+@media (min-width: 50em) {
+  .mobile-clear-task-button {
+    display: none;
+  }
+
+  .desktop-clear-task-button {
+    display: block;
+  }
 }

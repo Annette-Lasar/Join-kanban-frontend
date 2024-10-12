@@ -1,18 +1,19 @@
 @import "../../../scss_files/variables.scss";
+@import "../../../scss_files/mixins.scss";
 
 .content {
   min-height: calc(
-    100vh - header-height - mobile-navbar-height - 52px - 16px - 100px
+    100vh - $header-height - $mobile-navbar-height - 52px - 16px - 100px
   );
   min-height: calc(
-    100dvh - header-height - mobile-navbar-height - 52px - 16px - 100px
+    100dvh - $header-height - $mobile-navbar-height - 52px - 16px - 100px
   );
+  position: relative;
   background-color: $verylightgray;
 }
 
 .inner-content-header {
   margin-block: 8px;
-  padding-inline: 0.5em;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: 40px 32px 20px;
@@ -31,20 +32,51 @@ h1 {
   justify-self: flex-end;
 }
 
+.inner-task-button-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .search-wrapper {
   width: 100%;
+  height: 28px;
+  padding: 4px 8px;
   grid-area: search;
+  @include flex-container($align: center, $justify: space-between);
+  background-color: $white;
+  border: $bordergray 1.5px solid;
+  border-radius: 8px;
+  &:focus-within {
+    border: $lightblue 1.5px solid;
+  }
   input {
-    width: 100%;
+    width: 95%;
+    border: none;
+    outline: none;
+  }
+  .separator {
+    height: 95%;
+    width: 2px;
+    background-color: $gray;
+  }
+  img {
+    margin: 0 8px 0 12px;
+  }
+  .clear-icon {
+    cursor: pointer;
   }
 }
 
+
+
 .match-box {
+  grid-area: match;
   font-size: 0.6rem;
   color: $red;
 }
 
-.desktop-link-add-task {
+.desktop-add-task {
   display: none;
 }
 
@@ -54,10 +86,23 @@ h1 {
 }
 
 .mobile-link-add-task,
-.desktop-link-add-task {
+.desktop-add-task {
   height: 24px;
   width: 24px;
   position: relative;
+}
+
+join-info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.info-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .plus-button-dark {
@@ -70,15 +115,8 @@ h1 {
   }
 }
 
-.mobile-link-add-task a,
-.desktop-link-add-task img {
-  position: absolute;
-  inset: 0;
-}
-
 .outer-board-wrapper {
   height: calc(100vh - $header-height - $mobile-navbar-height - 92px - 16px);
-
   display: grid;
   grid-template-columns: 1fr;
   grid-auto-rows: 200px;
@@ -89,6 +127,23 @@ h1 {
     "done";
   gap: 1em;
   overflow-y: auto;
+  border: green 1px solid;
+  .list {
+    border: orange 1px solid;
+  }
+  .board-list-headline-wrapper {
+    height: 26px;
+  }
+  .list-content {
+    min-height: 40px;
+    margin: 12px 0 0;
+    @include flex-container($align: center, $justify: center);
+    color: $darkgray;
+    font-size: 0.75rem;
+    background-color: $lightgray;
+    border: $gray 2px dashed;
+    border-radius: 8px;
+  }
 }
 
 .todo {
@@ -117,42 +172,47 @@ h1 {
   position: fixed;
   inset: 0;
   background-color: white;
-  /* border: orange 2px solid; */
 }
 
-/* @media (min-width: 50em) {
-  section {
-    max-height: 1000px;
-    grid-template-columns: repeat(5, 1fr);
+@media (min-width: 50em) {
+  .inner-content-header {
+    grid-template-rows: 40px 20px;
     grid-template-areas:
-      "aside header header header header"
-      "aside main main main main";
-    grid-template-rows: 80px auto;
+      "title title search add-task"
+      ". . match .";
+    column-gap: 12px;
   }
 
-  join-navbar {
-    grid-area: aside;
+  .outer-board-wrapper {
+    height: calc(100vh - $header-height - 60px - 24px);
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas: "todo inProgress awaitFeedback done";
+    overflow-y: auto;
   }
 
-  h1 {
-    color: red;
+  .desktop-add-task {
+    min-width: 100px;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
   }
 
   .mobile-link-add-task {
     display: none;
   }
 
-  .desktop-link-add-task {
-    display: block;
-    cursor: pointer;
+  .button-content-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
   }
 
-  .outer-board-wrapper {
-    margin: 1em 0 0;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-areas: "todo inProgress awaitFeedback done";
-    grid-auto-rows: minmax(200px, 80%);
-    gap: 8px;
-    overflow-y: auto;
+  h2 {
+    font-size: clamp(0.9rem, 1vw, 1.2rem);
   }
-} */
+}
