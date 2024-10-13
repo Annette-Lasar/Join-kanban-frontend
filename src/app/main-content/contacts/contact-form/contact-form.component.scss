@@ -1,0 +1,140 @@
+@import "../../../../scss_files/variables.scss";
+@import "../../../../scss_files/mixins.scss";
+
+.outer-contact-form-wrapper {
+  width: 80%;
+  max-width: 300px;
+  height: calc(100vh - $header-height - $mobile-navbar-height);
+  position: fixed;
+  //   top: $header-height;
+  bottom: -100%;
+  left: 50%;
+  //   bottom: $mobile-navbar-height;
+  transform: translateX(-50%);
+  background-color: $white;
+  border-radius: 16px;
+}
+
+.inner-contact-form-wrapper {
+  height: 100%;
+  position: relative;
+  border: $bordergray 0.5px solid;
+  border-radius: 16px;
+}
+
+.form-header {
+  height: 45%;
+}
+
+.form-body {
+  height: 55%;
+  form {
+    height: 100%;
+    @include flex-container($direction: column, $align: flex-start);
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    .input-wrapper {
+      margin: 40px 0 0;
+      padding: 0 1em;
+      .name,
+      .mail,
+      .phone {
+        @include flex-container($gap: 4px);
+        border: $bordergray 1px solid;
+        border-radius: 4px;
+        &:focus-within {
+          border: $lightblue 1px solid;
+        }
+      }
+      .name {
+        img {
+          height: 20px;
+        }
+        .mail {
+          img {
+            height: 17px;
+          }
+        }
+        .phone {
+          img {
+            height: 17px;
+          }
+        }
+      }
+      input {
+        height: 24px;
+        border: none;
+        outline: none;
+      }
+      .warning-message {
+        margin: 0.25em 0 0.5em;
+        font-size: 0.5rem;
+        color: $red;
+        // opacity: 0;
+      }
+    }
+    .button-wrapper {
+      margin: 0 auto 0.5em;
+    }
+  }
+}
+
+.form-header {
+  background-color: $darkblue;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  .close-wrapper {
+    padding: 1em 1em 0;
+    margin: 0 0 1em;
+    text-align: right;
+    img {
+      cursor: pointer;
+    }
+  }
+
+  .headline-wrapper {
+    height: 30%;
+    max-height: 70px;
+    padding: 0 1em;
+    @include flex-container($direction: column, $align: flex-start);
+  }
+  h1,
+  .slogan {
+    color: white;
+  }
+
+  .slogan {
+    font-size: 0.8rem;
+  }
+  .blue-separator-line {
+    height: 2px;
+    width: 25%;
+    background-color: $lightblue;
+  }
+}
+
+.icon-wrapper {
+  width: 72px;
+  height: 72px;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  z-index: 5;
+  transform: translate(-50%, -50%);
+  border: $white 2px solid;
+  border-radius: 50%;
+  background-color: $white;
+  @include flex-container($justify: center);
+  .inner-icon-wrapper {
+    height: 100%;
+    width: 100%;
+    @include flex-container($justify: center);
+    background-color: $bordergray;
+    border-radius: 50%;
+    img {
+      height: 40%;
+      width: 40%;
+      filter: invert(0);
+    }
+  }
+}

@@ -1,109 +1,3 @@
-/* @import "../../../scss_files/variables.scss";
-@import "../../../scss_files/mixins.scss";
-
-.outer-content-wrapper {
-  height: calc(100vh - $header-height - $mobile-navbar-height);
-  background-color: $white;
-}
-
-.inner-content-wrapper {
-  max-width: 600px;
-  margin: 0 auto;
-  height: 100%;
-}
-
-.title-wrapper {
-  height: 80px;
-  padding: 1em 0.5em;
-  display: flex;
-  align-items: center;
-}
-
-.contact-list {
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  position: relative;
-  overflow-y: auto;
-  .alphabet-header {
-    height: 32px;
-    margin: 1.5em 0 0;
-    padding-inline: 24px;
-    // font-size: 1.2rem;
-  }
-  .alphabet-separator {
-    height: 3px;
-    width: 95%;
-    margin: 0 auto 1em;
-    border-bottom: $bordergray 1px solid;
-  }
-  .list-item {
-    margin: 0 0 1em;
-    padding-inline: 16px 0;
-    @include flex-container($justify: flex-start, $gap: 16px);
-    font-size: 0.8rem;
-    border: red 1px solid;
-    cursor: pointer;
-    .list-item-icon {
-      height: 32px;
-      width: 32px;
-      border-radius: 50%;
-      background-color: red;
-      @include flex-container($justify: center);
-    }
-  }
-  .list-item:first-of-type {
-    margin: 1em 0 1em;
-  }
-  .list-item:last-of-type {
-    margin: 0 0 1em;
-  }
-}
-
-.add-contact-button {
-  position: fixed;
-  right: clamp(12px, 8%, 28px);
-  bottom: 104px;
-  cursor: pointer;
-}
-
-@media (min-width: 50em) {
-  .outer-content-wrapper {
-    height: calc(100vh - $header-height - 10px);
-    @include flex-container($gap: 16px);
-  }
-  .inner-content-wrapper {
-    max-width: unset;
-    margin: unset;
-  }
-
-  .contact-list {
-    height: calc(100% - 48px);
-  }
-
-  .inner-details-wrapper {
-    width: 100%;
-    height: 100%;
-    .contacts-title-wrapper {
-      width: 100%;
-      height: 40px;
-      margin: 2em 0 0;
-      @include flex-container($justify: flex-start, $gap: 8px);
-      .title-separator {
-        width: 3px;
-        height: 80%;
-        background-color: $lightblue;
-      }
-    }
-
-  }
-
-  .mobile-add-contact-button {
-    display: none;
-  }
-} */
-
-
 @import "../../../scss_files/variables.scss";
 @import "../../../scss_files/mixins.scss";
 
@@ -125,15 +19,20 @@
   height: 100%;
 }
 
+.inner-list-wrapper {
+  height: 100%;
+  border: green 2px solid;
+}
+
 .contact-list {
   max-width: 600px;
   height: 100%;
   margin: 0 auto;
   padding: 0;
-  border: royalblue 2px solid;
   overflow-y: auto;
   .alphabet-header {
     margin: 1.5em 1em 1em;
+    padding-inline: 1em;
     list-style-type: none;
   }
   .alphabet-separator {
@@ -143,11 +42,13 @@
     background-color: $bordergray;
   }
   .list-item {
-    margin: 0.5em 1em;
+    margin: 0.5em;
+    padding: 1em;
     list-style-type: none;
     @include flex-container($justify: flex-start, $gap: 12px);
+    border-radius: 4px;
     cursor: pointer;
-    border: red 1px solid;
+    // border: red 1px solid;
     .list-item-icon {
       height: 32px;
       width: 32px;
@@ -163,13 +64,16 @@
   .list-item:last-of-type {
     margin-bottom: 1em;
   }
-}
 
+  .list-item.current {
+    background-color: $darkblue; /* Beispiel für eine dunkle Farbe */
+    color: white; /* Textfarbe anpassen, um Kontrast zu erhöhen */
+  }
+}
 
 .inner-details-wrapper {
   display: none;
 }
-
 
 .mobile-add-contact-button {
   position: fixed;
@@ -177,7 +81,6 @@
   bottom: 104px;
   cursor: pointer;
 }
-
 
 /* ===============================================
 
@@ -191,9 +94,14 @@ MEDIA QUERIES
     @include flex-container($gap: 16px);
   }
   .inner-content-wrapper {
+    width: 100%;
     @include flex-container($gap: 16px);
     max-width: unset;
     margin: unset;
+  }
+
+  .inner-list-wrapper {
+    height: calc(100% - 48px);
   }
 
   .desktop-add-contact-button {
@@ -201,7 +109,7 @@ MEDIA QUERIES
   }
 
   .contact-list {
-    height: calc(100% - 48px);
+    height: 100%;
     max-width: unset;
     margin: 0;
   }
@@ -221,7 +129,6 @@ MEDIA QUERIES
         background-color: $lightblue;
       }
     }
-
   }
 
   .mobile-add-contact-button {

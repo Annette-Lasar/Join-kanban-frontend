@@ -1,0 +1,137 @@
+@import "../../../../scss_files/variables.scss";
+@import "../../../../scss_files/mixins.scss";
+
+.content-wrapper {
+  height: 100%;
+}
+
+.mobile-content-wrapper {
+  height: calc(100% - 80px);
+  .name-wrapper {
+    padding: 1em 16px;
+    @include flex-container($justify: flex-start, $gap: 16px);
+    .initials {
+      height: 48px;
+      width: 48px;
+      @include flex-container($justify: center);
+      border-radius: 50%;
+    }
+    .name {
+      font-size: 1.3rem;
+    }
+  }
+  .contact-information {
+    padding: 1.5em 16px 1em;
+  }
+
+  .email-wrapper,
+  .phone-wrapper {
+    padding: 1em 16px;
+    font-size: 0.9rem;
+    .keyword {
+      margin: 0 0 0.5em;
+    }
+  }
+}
+
+.title-wrapper {
+  height: 80px;
+  margin: 1em;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-areas:
+    "headline headline . back"
+    "slogan slogan slogan slogan "
+    "separator separator . .";
+}
+
+h1 {
+  grid-area: headline;
+}
+
+.slogan {
+  grid-area: slogan;
+}
+
+.blue-separator-line {
+  grid-area: separator;
+  height: 2px;
+  width: 60px;
+  background-color: $lightblue;
+}
+
+.arrow-left {
+  grid-area: back;
+  justify-self: flex-end;
+  cursor: pointer;
+}
+
+/* ========================================================
+
+MEDIA QUERIES
+
+============================================================*/
+
+@media (min-width: 50em) {
+  .content-wrapper {
+    height: calc(100% - 72px);
+    border: orchid 1px solid;
+  }
+
+  .name-wrapper {
+    max-width: 600px;
+    margin: 32px 0;
+    display: grid;
+    grid-template-columns: 48px 48px repeat(4, 1fr);
+    grid-template-areas:
+      "initials initials name name name name"
+      "initials initials edit delete . .";
+    row-gap: 8px;
+  }
+
+  .initials {
+    height: 60px;
+    width: 60px;
+    grid-area: initials;
+    align-self: center;
+    justify-self: center;
+    @include flex-container($justify: center);
+    border-radius: 50%;
+  }
+
+  .name {
+    grid-area: name;
+    font-size: 1.7rem;
+  }
+
+  .edit {
+    grid-area: edit;
+  }
+
+  .delete {
+    margin: 0 0 0 1em;
+    grid-area: delete;
+  }
+
+  .edit,
+  .delete {
+    @include flex-container($justify: flex-start, $gap: 8px);
+    img {
+      cursor: pointer;
+    }
+  }
+
+  .information-wrapper {
+    padding: 0 0 0 44px;
+    .contact-information {
+      margin: 3em 0 2em;
+    }
+
+    .email-wrapper,
+    .phone-wrapper {
+      margin: 0 0 2em;
+      height: 48px;
+      @include flex-container($direction: column, $align: flex-start);
+    }
+  }
+}

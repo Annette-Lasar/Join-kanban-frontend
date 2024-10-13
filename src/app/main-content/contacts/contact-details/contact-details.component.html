@@ -1,0 +1,60 @@
+<div class="content-wrapper">
+  @if (showContactDetails && contact) { @if (isMobile) {
+  <div class="title-wrapper">
+    <h1>Contacts</h1>
+    <p class="slogan">Better with a team</p>
+    <div class="blue-separator-line"></div>
+    <img
+      class="arrow-left"
+      src="assets/icons/arrow_left_line_default.svg"
+      alt=""
+      (click)="onBackButtonClick()"
+    />
+  </div>
+  <div class="mobile-content-wrapper">
+    <div class="name-wrapper">
+      <div class="initials" [style.backgroundColor]="contact.contact_color">
+        {{ contact.name.charAt(0)
+        }}{{ contact.name.split(" ").pop()?.charAt(0) }}
+      </div>
+      <div class="name bold_600">{{ contact.name }}</div>
+    </div>
+    <div class="contact-information">Contact Information</div>
+    <div class="email-wrapper">
+      <div class="keyword bold_600">Email</div>
+      <div class="email blue">{{ contact.email }}</div>
+    </div>
+    <div class="phone-wrapper">
+      <div class="keyword bold_600">Phone</div>
+      <div class="phone">{{ contact.phone }}</div>
+    </div>
+  </div>
+
+  } @else {
+  <div class="name-wrapper">
+    <div class="initials" [style.backgroundColor]="contact.contact_color">
+      {{ contact.name.charAt(0) }}{{ contact.name.split(" ").pop()?.charAt(0) }}
+    </div>
+    <div class="name bold_600">{{ contact.name }}</div>
+    <div class="edit">
+      <img src="assets/icons/edit_dark.svg" alt="" />
+      <span>Edit</span>
+    </div>
+    <div class="delete">
+      <img src="assets/icons/delete.svg" alt="" />
+      <span>Delete</span>
+    </div>
+  </div>
+  <div class="information-wrapper">
+    <div class="contact-information">Contact Information</div>
+    <div class="email-wrapper">
+      <div class="keyword bold_600">Email</div>
+      <div class="email blue">{{ contact.email }}</div>
+    </div>
+    <div class="phone-wrapper">
+      <div class="keyword bold_600">Phone</div>
+      <div class="phone">{{ contact.phone }}</div>
+    </div>
+  </div>
+  } }
+</div>

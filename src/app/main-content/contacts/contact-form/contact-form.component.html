@@ -1,0 +1,63 @@
+<div class="outer-contact-form-wrapper">
+  <div class="inner-contact-form-wrapper">
+    @if (isEditMode) {
+    <p>Edit contact</p>
+    } @else {
+    <div class="form-header">
+      <div class="close-wrapper">
+        <img src="assets/icons/close_white.svg" alt="" />
+      </div>
+      <div class="headline-wrapper">
+        <h1>Add contact</h1>
+        <div class="slogan">Tasks are better with a team!</div>
+        <div class="blue-separator-line"></div>
+      </div>
+    </div>
+    <div class="form-body">
+      <form action="">
+        <div class="input-wrapper">
+          <div class="name">
+            <input type="text" placeholder="Name" />
+            <img src="assets/icons/person.svg" alt="" />
+          </div>
+          <div class="warning-message">Please enter a first and a last name.</div>
+          <div class="mail">
+            <input type="email" placeholder="Email" />
+            <img src="assets/icons/mail.svg" alt="" />
+          </div>
+          <div class="warning-message">
+            Please enter a correct email address.
+          </div>
+          <div class="phone">
+            <input type="tel" placeholder="Phone" />
+            <img src="assets/icons/phone.svg" alt="" />
+          </div>
+          <div class="warning-message">
+            Please enter a correct phone number.
+          </div>
+        </div>
+
+        <div class="button-wrapper">
+          <join-button
+            class="create-contact-button"
+            [buttonIcon]="true"
+            [buttonCaptionFirst]="true"
+            [caption]="'Create contact'"
+            [imgSrc]="'assets/icons/check_white.svg'"
+            [imgClass]="'check-icon'"
+            [buttonClass]="'dark-square-button'"
+            [width]="'150px'"
+            [height]="'48px'"
+            [padding]="'0'"
+          />
+        </div>
+      </form>
+    </div>
+    <div class="icon-wrapper">
+      <div class="inner-icon-wrapper">
+        <img src="assets/icons/person_white.svg" alt="" />
+      </div>
+    </div>
+    }
+  </div>
+</div>
