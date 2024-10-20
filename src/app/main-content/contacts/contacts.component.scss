@@ -48,7 +48,6 @@
     @include flex-container($justify: flex-start, $gap: 12px);
     border-radius: 4px;
     cursor: pointer;
-    // border: red 1px solid;
     .list-item-icon {
       height: 32px;
       width: 32px;
@@ -58,6 +57,9 @@
       border-radius: 50%;
     }
     .list-text-wrapper {
+      height: 32px;
+      flex: 1 1 0;
+      @include flex-container($direction: column, $align: flex-start, $justify: space-between);
       font-size: 0.8rem;
     }
   }
@@ -134,4 +136,8 @@ MEDIA QUERIES
   .mobile-add-contact-button {
     display: none;
   }
+}
+
+.white {
+  color: white;
 }

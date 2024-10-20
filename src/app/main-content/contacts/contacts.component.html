@@ -5,12 +5,14 @@
         class="desktop-add-contact-button"
         [buttonCaptionFirst]="true"
         [buttonIcon]="true"
+        [actionType]="'showAddContactForm'"
         [caption]="'Add new contact'"
         [imgSrc]="'assets/icons/person_add.svg'"
         [buttonClass]="'dark-square-button'"
         [width]="'100%'"
         [height]="'48px'"
-        [padding]="'0 2em'"
+        [padding]="'0'"
+        (isAddContactButtonClicked)="changeContactFormStatus()"
       />
       <div class="inner-list-wrapper">
         @if (showDetails && isMobile && currentContact) {
@@ -36,12 +38,13 @@
             <div
               class="list-item-icon"
               [style.backgroundColor]="contact.contact_color"
+              [style.color]="contact.colorBrightness ? '#000000' : '#ffffff'"
             >
               {{ contact.name.charAt(0)
               }}{{ contact.name.split(" ").pop()?.charAt(0) }}
             </div>
             <div class="list-text-wrapper">
-              <div class="list-item-name">{{ contact.name }}</div>
+              <div class="list-item-name">{{ contact.name }} </div>
               <div class="list-item-email blue">{{ contact.email }}</div>
             </div>
           </li>
@@ -53,21 +56,31 @@
       <join-button
         class="mobile-add-contact-button"
         [buttonIcon]="true"
+        [actionType]="'showContactDetailOptions'"
         [imgSrc]="'assets/icons/vertical_dots_white.svg'"
         [buttonClass]="'dark-round-button'"
         [width]="'48px'"
         [height]="'48px'"
         [padding]="'0.7em'"
+        (isContactDetailOptionsButtonClicked)="changeContactDetailFormStatus()"
       />
+      <div appOutsideClick (outsideClick)="hideContextMenu()">
+        <join-context-menu
+          [contactDetailFormStatus]="contactDetailFormStatus"
+          (isEditFormStatusChanged)="handleContactFormStatus($event)"
+        />
+      </div>
       } @else {
       <join-button
         class="mobile-add-contact-button"
         [buttonIcon]="true"
+        [actionType]="'showAddContactForm'"
         [imgSrc]="'assets/icons/person_add.svg'"
         [buttonClass]="'dark-round-button'"
         [width]="'48px'"
         [height]="'48px'"
         [padding]="'0.7em'"
+        (isAddContactButtonClicked)="changeContactFormStatus()"
       />
       }
     </div>
@@ -77,8 +90,16 @@
         <div class="title-separator"></div>
         <div class="title-slogan">Better with a team</div>
       </div>
-      <join-contact-details />
+      <join-contact-details 
+      (setContactFormStatus)="handleContactFormStatus($event)"
+      />
     </div>
   </div>
 </div>
-<join-contact-form />
+<join-contact-form
+  [detailStatus]="showDetails"
+  [contactFormStatus]="contactFormStatus"
+  (newContactFormStatus)="handleContactFormStatus($event)"
+  (closeContactFormStatus)="closeContactForm($event)"
+  [isAddContactMode]="isAddContactMode"
+/>

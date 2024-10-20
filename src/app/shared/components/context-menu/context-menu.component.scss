@@ -1,0 +1,45 @@
+@import "../../../../scss_files/variables.scss";
+@import "../../../../scss_files/mixins.scss";
+
+.context-menu-wrapper {
+  width: 100px;
+  position: fixed;
+  bottom: calc($mobile-navbar-height + 20px);
+  right: 20px;
+  transform: translateX(150%);
+  background-color: $white;
+  border: $bordergray 1px solid;
+  border-radius: 16px 16px 0 16px;
+  visibility: hidden;
+  transition: visibility 0s 0.5s;
+}
+
+.context-menu-wrapper.show {
+  visibility: visible;
+  animation: slideInFromRight 0.5s ease forwards;
+  transition: none;
+}
+
+.context-menu-wrapper.hide {
+  animation: slideOutToRight 0.5s ease forwards;
+  visibility: hidden;
+  transition: visibility 0s 0.5s;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(150%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToRight {
+  0% {
+    transform: translateX(0); /* Start innerhalb des Bildschirms */
+  }
+  100% {
+    transform: translateX(150%); /* Ziel außerhalb des Bildschirms */
+  }
+}

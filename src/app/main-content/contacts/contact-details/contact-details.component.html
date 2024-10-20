@@ -29,14 +29,13 @@
       <div class="phone">{{ contact.phone }}</div>
     </div>
   </div>
-
   } @else {
   <div class="name-wrapper">
     <div class="initials" [style.backgroundColor]="contact.contact_color">
       {{ contact.name.charAt(0) }}{{ contact.name.split(" ").pop()?.charAt(0) }}
     </div>
     <div class="name bold_600">{{ contact.name }}</div>
-    <div class="edit">
+    <div class="edit" (click)="isFormStatusChanged()">
       <img src="assets/icons/edit_dark.svg" alt="" />
       <span>Edit</span>
     </div>

@@ -30,14 +30,48 @@ export class ButtonComponent {
   @Input() defaultSrc: string = '';
   @Input() activeSrc: string = '';
   @Input() type: 'button' | 'submit' = 'button';
-  @Input() actionFunction: (event: Event) => void = () => {};
   @Input() prioStatus: string = '';
+  @Input() actionType: string = '';
+  @Input() actionFunction: (
+    event: Event,
+    actionType?: string,
+    message?: string
+  ) => void = (event, actionType, message) => {
+    event.stopPropagation();
+    this.handleAction(actionType, message);
+  };
 
   @Output() toggleContainer = new EventEmitter<string>();
+  @Output() isAddContactButtonClicked = new EventEmitter<boolean>();
+  @Output() isContactDetailOptionsButtonClicked = new EventEmitter<boolean>();
+  @Output() isEditContactButtonClicked = new EventEmitter<boolean>();
 
-  onButtonClick(event: Event, message: string) {
-    event.stopPropagation();
-    this.toggleContainer.emit(message);
+  handleAction(actionType?: string, message?: string): void {
+    if (actionType === 'toggle') {
+      this.toggleContainer.emit(message);
+    } else if (actionType === 'showAddContactForm') {
+      this.onIsAddContactButtonClick();
+    } else if (actionType === 'showContactDetailOptions') {
+      this.onIsContactDetailOptionsButtonClicked();
+    } else if (actionType === 'showEditContactForm') {
+      this.onIsEditContactButtonClick();
+    }
+  }
+
+  onIsAddContactButtonClick() {
+    this.isAddContactButtonClicked.emit();
+  }
+
+  onIsEditContactButtonClick() {
+    this.isEditContactButtonClicked.emit();
+  }
+
+  onIsContactDetailOptionsButtonClicked() {
+    this.isContactDetailOptionsButtonClicked.emit();
+  }
+
+  setPrioStatus(newStatus: string) {
+    this.prioStatus = newStatus;
   }
 
   get isPrioActive(): boolean {

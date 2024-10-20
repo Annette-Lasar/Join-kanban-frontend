@@ -1,4 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { ButtonComponent } from '../../shared/components/button/button.component';
@@ -10,6 +11,7 @@ import { OutsideClickDirective } from '../../shared/directives/outside-click.dir
   selector: 'join-board',
   standalone: true,
   imports: [
+    CommonModule,
     HeaderComponent,
     NavbarComponent,
     ButtonComponent,

@@ -1,15 +1,21 @@
-<div class="outer-contact-form-wrapper">
+<div class="outer-contact-form-wrapper" [ngClass]="{ show: contactFormStatus, hide: !contactFormStatus }">
   <div class="inner-contact-form-wrapper">
-    @if (isEditMode) {
-    <p>Edit contact</p>
-    } @else {
+    <div class="close-wrapper">
+      <img
+        [src]="
+          isMobile ? 'assets/icons/close_white.svg' : 'assets/icons/close.svg'
+        "
+        alt=""
+        (click)="closeContactForm()"
+      />
+    </div>
     <div class="form-header">
-      <div class="close-wrapper">
-        <img src="assets/icons/close_white.svg" alt="" />
-      </div>
       <div class="headline-wrapper">
-        <h1>Add contact</h1>
-        <div class="slogan">Tasks are better with a team!</div>
+        <img src="assets/icons/join_logo_white.svg" alt="" />
+        <h1 class="white bold_700">
+          {{ isAddContactMode ? "Add contact" : "Edit contact" }}
+        </h1>
+        <div class="slogan white">Tasks are better with a team</div>
         <div class="blue-separator-line"></div>
       </div>
     </div>
@@ -20,7 +26,9 @@
             <input type="text" placeholder="Name" />
             <img src="assets/icons/person.svg" alt="" />
           </div>
-          <div class="warning-message">Please enter a first and a last name.</div>
+          <div class="warning-message">
+            Please enter a first and a last name.
+          </div>
           <div class="mail">
             <input type="email" placeholder="Email" />
             <img src="assets/icons/mail.svg" alt="" />
@@ -36,8 +44,28 @@
             Please enter a correct phone number.
           </div>
         </div>
-
         <div class="button-wrapper">
+          @if (isAddContactMode) {
+          <join-button
+            class="mobile-clear-contact-button"
+            [buttonIcon]="true"
+            [imgSrc]="'assets/icons/close.svg'"
+            [buttonClass]="'light-square-button-blue-hover-completely '"
+            [width]="'30px'"
+            [height]="'30px'"
+            [padding]="'0'"
+          />
+          <join-button
+            class="desktop-clear-contact-button"
+            [buttonCaptionFirst]="true"
+            [buttonIcon]="true"
+            [imgSrc]="'assets/icons/close.svg'"
+            [caption]="'Clear'"
+            [buttonClass]="'light-square-button-blue-hover-completely '"
+            [width]="'80px'"
+            [height]="'32px'"
+            [padding]="'0'"
+          />
           <join-button
             class="create-contact-button"
             [buttonIcon]="true"
@@ -47,17 +75,43 @@
             [imgClass]="'check-icon'"
             [buttonClass]="'dark-square-button'"
             [width]="'150px'"
-            [height]="'48px'"
+            [height]="'32px'"
             [padding]="'0'"
           />
+          } @else {
+          <join-button
+            [caption]="'Delete'"
+            [buttonClass]="'light-square-button-blue-hover-completely '"
+            [width]="'80px'"
+            [height]="'32px'"
+            [padding]="'0'"
+          />
+          <join-button
+            class="create-contact-button"
+            [buttonIcon]="true"
+            [buttonCaptionFirst]="true"
+            [caption]="'Save'"
+            [imgSrc]="'assets/icons/check_white.svg'"
+            [imgClass]="'check-icon'"
+            [buttonClass]="'dark-square-button'"
+            [width]="'100px'"
+            [height]="'32px'"
+            [padding]="'0'"
+          />
+
+          }
         </div>
       </form>
+      <div class="icon-wrapper desktop">
+        <div class="inner-icon-wrapper">
+          <img src="assets/icons/person_white.svg" alt="" />
+        </div>
+      </div>
     </div>
-    <div class="icon-wrapper">
+    <div class="icon-wrapper mobile">
       <div class="inner-icon-wrapper">
         <img src="assets/icons/person_white.svg" alt="" />
       </div>
     </div>
-    }
   </div>
 </div>

@@ -1,0 +1,27 @@
+<div
+  class="context-menu-wrapper"
+  [ngClass]="{ show: contactDetailFormStatus, hide: !contactDetailFormStatus }"
+>
+  <join-button
+    [buttonCaptionSecond]="true"
+    [buttonIcon]="true"
+    [imgSrc]="'assets/icons/edit_dark.svg'"
+    [actionType]="'showEditContactForm'"
+    [caption]="'Edit'"
+    [buttonClass]="'context-button-light-top'"
+    [width]="'100%'"
+    [height]="'32px'"
+    [padding]="'0'"
+    (isEditContactButtonClicked)="changeFormMode()"
+  />
+  <join-button
+    [buttonCaptionSecond]="true"
+    [buttonIcon]="true"
+    [imgSrc]="'assets/icons/delete.svg'"
+    [caption]="'Delete'"
+    [buttonClass]="'context-button-light-bottom'"
+    [width]="'100%'"
+    [height]="'32px'"
+    [padding]="'0'"
+  />
+</div>

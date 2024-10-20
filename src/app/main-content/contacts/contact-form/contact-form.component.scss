@@ -6,114 +6,154 @@
   max-width: 300px;
   height: calc(100vh - $header-height - $mobile-navbar-height);
   position: fixed;
-  //   top: $header-height;
-  bottom: -100%;
   left: 50%;
-  //   bottom: $mobile-navbar-height;
-  transform: translateX(-50%);
+  transform: translate(-50%, 150%);
   background-color: $white;
+  border: $bordergray 0.5px solid;
   border-radius: 16px;
+  visibility: hidden;
+  transition: visibility 0s 0.5s;
+}
+
+.outer-contact-form-wrapper.show {
+  visibility: visible;
+  animation: slideInFromBottom 0.3s forwards;
+  transition: none;
+}
+
+.outer-contact-form-wrapper.hide {
+  animation: slideOutToBottom 0.5s forwards;
+  visibility: hidden;
+  transition: visibility 0s 0.5s;
+}
+
+@keyframes slideInFromBottom {
+  0% {
+    transform: translate(-50%, 150%);
+  }
+
+  100% {
+    transform: translate(-50%, -100%);
+  }
+}
+
+@keyframes slideOutToBottom {
+  0% {
+    transform: translate(-50%, -100%);
+  }
+
+  100% {
+    transform: translate(-50%, 150%);
+  }
 }
 
 .inner-contact-form-wrapper {
   height: 100%;
   position: relative;
-  border: $bordergray 0.5px solid;
   border-radius: 16px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 10% 35% 55%;
+  grid-template-areas:
+    "close"
+    "form-header"
+    "form-body";
 }
 
-.form-header {
-  height: 45%;
-}
-
-.form-body {
-  height: 55%;
-  form {
-    height: 100%;
-    @include flex-container($direction: column, $align: flex-start);
-    border-bottom-left-radius: 16px;
-    border-bottom-right-radius: 16px;
-    .input-wrapper {
-      margin: 40px 0 0;
-      padding: 0 1em;
-      .name,
-      .mail,
-      .phone {
-        @include flex-container($gap: 4px);
-        border: $bordergray 1px solid;
-        border-radius: 4px;
-        &:focus-within {
-          border: $lightblue 1px solid;
-        }
-      }
-      .name {
-        img {
-          height: 20px;
-        }
-        .mail {
-          img {
-            height: 17px;
-          }
-        }
-        .phone {
-          img {
-            height: 17px;
-          }
-        }
-      }
-      input {
-        height: 24px;
-        border: none;
-        outline: none;
-      }
-      .warning-message {
-        margin: 0.25em 0 0.5em;
-        font-size: 0.5rem;
-        color: $red;
-        // opacity: 0;
-      }
-    }
-    .button-wrapper {
-      margin: 0 auto 0.5em;
-    }
-  }
-}
-
-.form-header {
+.close-wrapper {
+  width: 100%;
+  padding-inline: 1em;
+  grid-area: close;
+  @include flex-container($justify: flex-end);
   background-color: $darkblue;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
-  .close-wrapper {
-    padding: 1em 1em 0;
-    margin: 0 0 1em;
-    text-align: right;
-    img {
-      cursor: pointer;
-    }
-  }
-
-  .headline-wrapper {
-    height: 30%;
-    max-height: 70px;
-    padding: 0 1em;
-    @include flex-container($direction: column, $align: flex-start);
-  }
-  h1,
-  .slogan {
-    color: white;
-  }
-
-  .slogan {
-    font-size: 0.8rem;
-  }
-  .blue-separator-line {
-    height: 2px;
-    width: 25%;
-    background-color: $lightblue;
+  img {
+    cursor: pointer;
   }
 }
 
-.icon-wrapper {
+.form-header {
+  padding-inline: 1em;
+  grid-area: form-header;
+  background-color: $darkblue;
+  @include flex-container($justify: flex-start);
+  .headline-wrapper {
+    height: 72px;
+    @include flex-container($direction: column, $align: flex-start);
+    img {
+      display: none;
+    }
+    h2 {
+      font-size: 1.5rem;
+    }
+    .blue-separator-line {
+      height: 2px;
+      width: 25%;
+      background-color: $lightblue;
+    }
+  }
+}
+
+.form-body {
+  padding: 38px 1em 0.5em;
+  grid-area: form-body;
+  form {
+    height: 100%;
+    @include flex-container($direction: column, $align: flex-start);
+  }
+}
+
+.input-wrapper {
+  width: 100%;
+  .name,
+  .mail,
+  .phone {
+    @include flex-container($gap: 4px);
+    border: $bordergray 1px solid;
+    border-radius: 4px;
+    &:focus-within {
+      border: $lightblue 1px solid;
+    }
+  }
+  .name {
+    img {
+      height: 20px;
+    }
+    .mail {
+      img {
+        height: 17px;
+      }
+    }
+    .phone {
+      img {
+        height: 17px;
+      }
+    }
+  }
+  input {
+    height: 24px;
+    flex: 1 1 0;
+    border: none;
+    outline: none;
+  }
+  .warning-message {
+    margin: 0.25em 0 0.5em;
+    font-size: 0.5rem;
+    color: $red;
+    // opacity: 0;
+  }
+}
+
+.button-wrapper {
+  margin: 0 auto;
+  @include flex-container($gap: 8px);
+  .desktop-clear-contact-button {
+    display: none;
+  }
+}
+
+.icon-wrapper.mobile {
   width: 72px;
   height: 72px;
   position: absolute;
@@ -135,6 +175,177 @@
       height: 40%;
       width: 40%;
       filter: invert(0);
+    }
+  }
+}
+
+.icon-wrapper.desktop {
+  display: none;
+}
+
+.white {
+  color: $white;
+}
+
+/* ==============================================
+
+MEDIA QUERIES
+
+=================================================*/
+
+@media (min-width: 50em) {
+  /*   .outer-contact-form-wrapper {
+    width: 90%;
+    max-width: 700px;
+    position: fixed;
+    max-height: 400px;
+    top: 50%;
+    transform: translate(100%, -50%);
+    border: $bordergray 1px solid;
+    transition: transform 0.75s ease;
+  }
+
+  .outer-contact-form-wrapper.show {
+    transform: translate(-50%, -50%);
+  } */
+
+  .outer-contact-form-wrapper {
+    width: 90%;
+    max-width: 700px;
+    position: fixed;
+    max-height: 400px;
+    top: 50%;
+    transform: translate(150%, -50%);
+    border: $bordergray 1px solid;
+    visibility: hidden;
+    transition: visibility 0s 0.5s;
+  }
+
+  .outer-contact-form-wrapper.show {
+    visibility: visible;
+    animation: slideInFromRightDesktop 0.5s ease forwards;
+    transition: none;
+  }
+
+  .outer-contact-form-wrapper.hide {
+    animation: slideOutToRightDesktop 0.5s ease forwards;
+    visibility: visible;
+    transition: visibility 0s 0.5s;
+  }
+
+  @keyframes slideInFromRightDesktop {
+    0% {
+      transform: translate(150%, -50%);
+    }
+    100% {
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  @keyframes slideOutToRightDesktop {
+    0% {
+      transform: translate(-50%, -50%);
+    }
+    100% {
+      transform: translate(150%, -50%);
+    }
+  }
+
+  .inner-contact-form-wrapper {
+    height: 100%;
+    position: relative;
+    border-radius: 16px;
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    grid-template-rows: 10% 90%;
+    grid-template-areas:
+      "form-header close"
+      "form-header form-body"
+      "form-header form-body";
+  }
+
+  .close-wrapper {
+    border-top-left-radius: unset;
+    background-color: white;
+  }
+
+  .form-header {
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    .headline-wrapper {
+      height: 120px;
+      // border: orchid 1px solid;
+      img {
+        width: 36px;
+        height: 36px;
+        display: unset;
+      }
+      .slogan {
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  .form-body {
+    padding: 0 1em 0 0;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-areas:
+      "icon form"
+      "icon form";
+    border-bottom-right-radius: 16px;
+    form {
+      margin: 0;
+      grid-area: form;
+      @include flex-container($direction: column, $justify: center, $gap: 48px);
+    }
+  }
+
+  .input-wrapper {
+    height: 45%;
+    @include flex-container($direction: column, $align: flex-start);
+    .name,
+    .mail,
+    .phone {
+      width: 100%;
+    }
+  }
+
+  .icon-wrapper.mobile {
+    display: none;
+  }
+
+  .icon-wrapper.desktop {
+    width: 72px;
+    height: 72px;
+    margin: 0 0 24px;
+    grid-area: icon;
+    align-self: center;
+    justify-self: center;
+    border: $white 2px solid;
+    border-radius: 50%;
+    background-color: $white;
+    @include flex-container($justify: center);
+    .inner-icon-wrapper {
+      height: 100%;
+      width: 100%;
+      @include flex-container($justify: center);
+      background-color: $bordergray;
+      border-radius: 50%;
+      img {
+        height: 40%;
+        width: 40%;
+        filter: invert(0);
+      }
+    }
+  }
+
+  .button-wrapper {
+    .mobile-clear-contact-button {
+      display: none;
+    }
+    .desktop-clear-contact-button {
+      display: block;
     }
   }
 }

@@ -22,17 +22,27 @@
     />
   </div>
   } @case (buttonCaptionFirst && buttonIcon) {
-  <div class="caption-image-wrapper" (click)="actionFunction($event)">
-    <span class="bold_600">{{ caption }}</span>
-    <img [class]="imgClass" [src]="imgSrc" [alt]="alt" />
+  <div
+    class="caption-image-wrapper"
+    (click)="actionFunction($event, actionType, infoMessage)"
+  >
+    <div class="inner-caption-image-wrapper">
+      <span class="bold_600">{{ caption }}</span>
+      <img [class]="imgClass" [src]="imgSrc" [alt]="alt" />
+    </div>
   </div>
   } @case (buttonCaptionSecond && buttonIcon) {
-  <img [src]="imgSrc" [alt]="alt" /> {{ caption }}
+  <div
+    class="inner-caption-image-wrapper"
+    (click)="actionFunction($event, actionType, infoMessage)"
+  >
+    <img [src]="imgSrc" [alt]="alt" /> <span>{{ caption }}</span>
+  </div>
   } @case (buttonIcon) {
   <img
     [src]="imgSrc"
     [alt]="alt"
-    (click)="onButtonClick($event, infoMessage)"
+    (click)="actionFunction($event, actionType, infoMessage)"
   />
   } @default {
   {{ caption }}

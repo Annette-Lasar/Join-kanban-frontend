@@ -16,11 +16,9 @@ export class AddTaskContentComponent {
 
   setPrioStatus(newStatus: string): void {
     this.prioStatus = newStatus;
-    console.log('Status: ', this.prioStatus);
   }
 
   prioChangeHandler(event: Event): void {
-    console.log('Prio change action triggered');
     // Implementiere die Logik für Prio-Änderungen
   }
 

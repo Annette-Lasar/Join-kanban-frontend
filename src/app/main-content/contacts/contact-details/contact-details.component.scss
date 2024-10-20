@@ -3,6 +3,7 @@
 
 .content-wrapper {
   height: 100%;
+  // background-color: $verylightgray;
 }
 
 .mobile-content-wrapper {
@@ -116,9 +117,7 @@ MEDIA QUERIES
   .edit,
   .delete {
     @include flex-container($justify: flex-start, $gap: 8px);
-    img {
-      cursor: pointer;
-    }
+    cursor: pointer;
   }
 
   .information-wrapper {

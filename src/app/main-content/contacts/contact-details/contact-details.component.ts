@@ -20,15 +20,16 @@ import { Subscription } from 'rxjs';
 })
 export class ContactDetailsComponent implements OnInit, OnDestroy {
   isMobile: boolean = false;
+  private subscription: Subscription | null = null;
   @Input() showContactDetails: boolean = false;
   @Input() contact: Contact | null = null;
   @Output() showContactOverview = new EventEmitter<boolean>();
-  private subscription: Subscription | null = null;
-
+  @Output() setContactFormStatus = new EventEmitter<boolean>();
+  
+  
   constructor(private contactService: ContactService) {}
 
   ngOnInit(): void {
-    console.log('Kontakt: ', this.contact);
     this.checkViewport();
     this.updateShowContactDetails();
     this.updateContactObject();
@@ -38,7 +39,6 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
   onResize(event: Event) {
     this.checkViewport();
   }
-
 
   checkViewport() {
     this.isMobile = window.innerWidth < 800;
@@ -54,13 +54,16 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
     this.subscription = this.contactService.currentContact$.subscribe(
       (contact) => {
         this.contact = contact;
-        console.log('Aktueller Kontakt in der Kindkomponente:', this.contact);
       }
     );
   }
 
   onBackButtonClick() {
     this.showContactOverview.emit(false);
+  }
+
+  isFormStatusChanged() {
+    this.setContactFormStatus.emit(false);
   }
 
   ngOnDestroy(): void {
