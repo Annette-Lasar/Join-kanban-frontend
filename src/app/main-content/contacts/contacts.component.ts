@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  HostListener,
-  OnDestroy,
-} from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 import { ButtonComponent } from '../../shared/components/button/button.component';
@@ -17,7 +11,8 @@ import { ContactFormComponent } from './contact-form/contact-form.component';
 import { ContextMenuComponent } from '../../shared/components/context-menu/context-menu.component';
 import { OutsideClickDirective } from '../../shared/directives/outside-click.directive';
 import { CommonModule } from '@angular/common';
-import { ColorBrightnessService } from '../../shared/services/color-brightness.service';
+import { GroupContactsService } from '../../shared/services/group-contacts.service';
+
 
 @Component({
   selector: 'join-contacts',
@@ -36,8 +31,9 @@ import { ColorBrightnessService } from '../../shared/services/color-brightness.s
   styleUrl: './contacts.component.scss',
 })
 export class ContactsComponent implements OnInit {
-  dummyContacts = contacts;
+  dummyContacts: Contact[] | null = contacts;
   groupedContacts: { key: string; value: Contact[] }[] = [];
+
   isMobile: boolean = true;
   showDetails: boolean = false;
   contactIsActive: boolean = false;
@@ -51,28 +47,22 @@ export class ContactsComponent implements OnInit {
 
   constructor(
     private contactService: ContactService,
-    private colorBrightnessService: ColorBrightnessService
+    private groupContactsService: GroupContactsService
   ) {}
 
   ngOnInit(): void {
     this.checkViewport();
+    this.initializeContactsValue();
+    this.updateContactsList();
     this.groupContacts();
+    this.getGroupedContacts();
     this.updateShowDetails();
-    this.setColorBrightnessforContact();
   }
 
   ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-  setColorBrightnessforContact() {
-    this.dummyContacts.forEach((contact) => {
-      contact.colorBrightness = this.colorBrightnessService.isColorBright(
-        contact.contact_color
-      );
-    });
   }
 
   @HostListener('window:resize', ['$event'])
@@ -84,22 +74,30 @@ export class ContactsComponent implements OnInit {
     this.isMobile = window.innerWidth < 800;
   }
 
-  groupContacts(): void {
-    const groups = this.dummyContacts.reduce((acc, contact) => {
-      const lastNameInitial =
-        contact.name.split(' ').pop()?.charAt(0).toUpperCase() ?? '';
-      if (!acc[lastNameInitial]) {
-        acc[lastNameInitial] = [];
-      }
-      acc[lastNameInitial].push(contact);
-      return acc;
-    }, {} as { [key: string]: Contact[] });
+  initializeContactsValue() {
+    if (this.dummyContacts) {
+      this.contactService.initializeContacts(this.dummyContacts);
+    }
+  }
 
-    this.sortLetters(groups);
+  updateContactsList() {
+    this.contactService.contacts$.subscribe((updatedContacts) => {
+      this.dummyContacts = [...updatedContacts];
+    });
+  }
+
+  groupContacts() {
+    this.groupContactsService.groupContactsAlphabetically(this.dummyContacts);
+  }
+
+  getGroupedContacts() {
+    this.groupContactsService.groupContactsSubject$.subscribe((groups) => {
+      this.groupedContacts = this.sortLetters(groups);
+    });
   }
 
   sortLetters(groups: any) {
-    this.groupedContacts = Object.keys(groups)
+    return Object.keys(groups)
       .sort()
       .map((key) => ({ key, value: groups[key] }));
   }

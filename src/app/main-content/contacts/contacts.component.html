@@ -29,7 +29,6 @@
           </li>
           <div class="alphabet-separator"></div>
           @for (contact of group.value; track contact) {
-
           <li
             class="list-item"
             [class.current]="contact === currentContact"
@@ -38,13 +37,13 @@
             <div
               class="list-item-icon"
               [style.backgroundColor]="contact.contact_color"
-              [style.color]="contact.colorBrightness ? '#000000' : '#ffffff'"
+              [style.color]="contact.color_brightness ? '#000000' : '#ffffff'"
             >
-              {{ contact.name.charAt(0)
+              {{ contact.name ? contact.name.charAt(0) : ''
               }}{{ contact.name.split(" ").pop()?.charAt(0) }}
             </div>
             <div class="list-text-wrapper">
-              <div class="list-item-name">{{ contact.name }} </div>
+              <div class="list-item-name">{{ contact.name }}</div>
               <div class="list-item-email blue">{{ contact.email }}</div>
             </div>
           </li>
@@ -61,7 +60,7 @@
         [buttonClass]="'dark-round-button'"
         [width]="'48px'"
         [height]="'48px'"
-        [padding]="'0.7em'"
+        [padding]="'0'"
         (isContactDetailOptionsButtonClicked)="changeContactDetailFormStatus()"
       />
       <div appOutsideClick (outsideClick)="hideContextMenu()">
@@ -79,7 +78,7 @@
         [buttonClass]="'dark-round-button'"
         [width]="'48px'"
         [height]="'48px'"
-        [padding]="'0.7em'"
+        [padding]="'0'"
         (isAddContactButtonClicked)="changeContactFormStatus()"
       />
       }
@@ -90,13 +89,14 @@
         <div class="title-separator"></div>
         <div class="title-slogan">Better with a team</div>
       </div>
-      <join-contact-details 
-      (setContactFormStatus)="handleContactFormStatus($event)"
+      <join-contact-details
+        (setContactFormStatus)="handleContactFormStatus($event)"
       />
     </div>
   </div>
 </div>
 <join-contact-form
+  [contacts]="dummyContacts"
   [detailStatus]="showDetails"
   [contactFormStatus]="contactFormStatus"
   (newContactFormStatus)="handleContactFormStatus($event)"

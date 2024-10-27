@@ -1,4 +1,7 @@
-<div class="outer-contact-form-wrapper" [ngClass]="{ show: contactFormStatus, hide: !contactFormStatus }">
+<div
+  class="outer-contact-form-wrapper"
+  [ngClass]="{ show: contactFormStatus, hide: !contactFormStatus }"
+>
   <div class="inner-contact-form-wrapper">
     <div class="close-wrapper">
       <img
@@ -6,7 +9,7 @@
           isMobile ? 'assets/icons/close_white.svg' : 'assets/icons/close.svg'
         "
         alt=""
-        (click)="closeContactForm()"
+        (click)="clearInputFields(contactForm); closeContactForm()"
       />
     </div>
     <div class="form-header">
@@ -20,56 +23,97 @@
       </div>
     </div>
     <div class="form-body">
-      <form action="">
+      <form (ngSubmit)="onSubmit()" #contactForm="ngForm" novalidate>
         <div class="input-wrapper">
           <div class="name">
-            <input type="text" placeholder="Name" />
+            <input
+              type="text"
+              placeholder="Name*"
+              [(ngModel)]="newContact.name"
+              name="name"
+              pattern="^[A-Za-zÄÖÜäöüß]+(\s[A-Za-zÄÖÜäöüß]+)?$"
+              #name="ngModel"
+              required
+            />
             <img src="assets/icons/person.svg" alt="" />
           </div>
-          <div class="warning-message">
-            Please enter a first and a last name.
+
+          <div
+            class="warning-message"
+            [ngStyle]="{ opacity: (name.invalid && name.touched) ? 1 : 0 }"
+          >
+            Please enter one first and one last name.
           </div>
+
           <div class="mail">
-            <input type="email" placeholder="Email" />
+            <input
+              type="email"
+              placeholder="Email"
+              [(ngModel)]="newContact.email"
+              name="email"
+              pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+              #email="ngModel"
+            />
             <img src="assets/icons/mail.svg" alt="" />
           </div>
-          <div class="warning-message">
+
+          <div
+            class="warning-message"
+            [ngStyle]="{ opacity: (email.invalid && email.touched) ? 1 : 0 }"
+          >
             Please enter a correct email address.
           </div>
+
           <div class="phone">
-            <input type="tel" placeholder="Phone" />
+            <input
+              type="tel"
+              placeholder="Phone"
+              [(ngModel)]="newContact.phone"
+              name="phone"
+              pattern="[0-9+\-\/\s]*"
+              #phone="ngModel"
+            />
             <img src="assets/icons/phone.svg" alt="" />
           </div>
-          <div class="warning-message">
+         
+          <div class="warning-message"
+          [ngStyle]="{ opacity: (phone.invalid && phone.touched) ? 1 : 0 }"
+          >
             Please enter a correct phone number.
           </div>
+          
         </div>
         <div class="button-wrapper">
           @if (isAddContactMode) {
           <join-button
             class="mobile-clear-contact-button"
             [buttonIcon]="true"
+            [actionType]="'clearInputFields'"
             [imgSrc]="'assets/icons/close.svg'"
             [buttonClass]="'light-square-button-blue-hover-completely '"
             [width]="'30px'"
             [height]="'30px'"
             [padding]="'0'"
+            (clearInputButtonClicked)="clearInputFields(contactForm)"
           />
           <join-button
             class="desktop-clear-contact-button"
             [buttonCaptionFirst]="true"
             [buttonIcon]="true"
+            [actionType]="'clearInputFields'"
             [imgSrc]="'assets/icons/close.svg'"
             [caption]="'Clear'"
             [buttonClass]="'light-square-button-blue-hover-completely '"
             [width]="'80px'"
             [height]="'32px'"
             [padding]="'0'"
+            (clearInputButtonClicked)="clearInputFields(contactForm)"
           />
           <join-button
             class="create-contact-button"
             [buttonIcon]="true"
             [buttonCaptionFirst]="true"
+            [actionType]="'createNewContact'"
             [caption]="'Create contact'"
             [imgSrc]="'assets/icons/check_white.svg'"
             [imgClass]="'check-icon'"
@@ -77,6 +121,7 @@
             [width]="'150px'"
             [height]="'32px'"
             [padding]="'0'"
+            (createNewContactClicked)="onSubmit()"
           />
           } @else {
           <join-button

@@ -38,5 +38,9 @@ p {
 }
 
 ol {
+  padding-inline: 14px 0;
   font-size: 0.75rem;
+  li {
+    margin: 0 0 0.5em;
+  }
 }

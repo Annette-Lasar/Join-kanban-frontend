@@ -42,9 +42,11 @@ export class ButtonComponent {
   };
 
   @Output() toggleContainer = new EventEmitter<string>();
-  @Output() isAddContactButtonClicked = new EventEmitter<boolean>();
-  @Output() isContactDetailOptionsButtonClicked = new EventEmitter<boolean>();
-  @Output() isEditContactButtonClicked = new EventEmitter<boolean>();
+  @Output() isAddContactButtonClicked = new EventEmitter<void>();
+  @Output() isContactDetailOptionsButtonClicked = new EventEmitter<void>();
+  @Output() isEditContactButtonClicked = new EventEmitter<void>();
+  @Output() createNewContactClicked = new EventEmitter<void>();
+  @Output() clearInputButtonClicked = new EventEmitter<void>();
 
   handleAction(actionType?: string, message?: string): void {
     if (actionType === 'toggle') {
@@ -55,6 +57,10 @@ export class ButtonComponent {
       this.onIsContactDetailOptionsButtonClicked();
     } else if (actionType === 'showEditContactForm') {
       this.onIsEditContactButtonClick();
+    } else if (actionType === 'createNewContact') {
+      this.onCreateContactClick();
+    } else if (actionType === 'clearInputFields') {
+      this.onClearInputClick();
     }
   }
 
@@ -70,11 +76,21 @@ export class ButtonComponent {
     this.isContactDetailOptionsButtonClicked.emit();
   }
 
+  onCreateContactClick() {
+    this.createNewContactClicked.emit();
+  }
+
+  onClearInputClick() {
+    this.clearInputButtonClicked.emit();
+  }
+
   setPrioStatus(newStatus: string) {
     this.prioStatus = newStatus;
   }
 
+ 
+
   get isPrioActive(): boolean {
-    return this.prioStatus === this.caption.toLowerCase(); // Vergleich zentraler prioStatus mit caption
+    return this.prioStatus === this.caption.toLowerCase();
   }
 }
