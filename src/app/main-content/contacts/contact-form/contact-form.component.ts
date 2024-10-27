@@ -5,8 +5,6 @@ import {
   Input,
   Output,
   EventEmitter,
-  OnChanges,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -17,6 +15,7 @@ import { RandomColorService } from '../../../shared/services/random-color.servic
 import { ColorBrightnessService } from '../../../shared/services/color-brightness.service';
 import { ContactService } from '../../../shared/services/contact.service';
 import { GroupContactsService } from '../../../shared/services/group-contacts.service';
+import { ValidatateInputFieldsService } from '../../../shared/services/validateInputFields.service';
 
 @Component({
   selector: 'join-contact-form',
@@ -38,6 +37,7 @@ export class ContactFormComponent implements OnInit {
   };
 
   @Input() contacts: Contact[] | null = null;
+  @Input() currentContact: Contact | null = null;
   @Input() isAddContactMode: boolean = true;
   @Input() contactFormStatus: boolean = false;
   @Input() detailStatus: boolean = false;
@@ -50,18 +50,18 @@ export class ContactFormComponent implements OnInit {
     private contactService: ContactService,
     private groupContactsService: GroupContactsService,
     private randomColorService: RandomColorService,
-    private colorBrightnessService: ColorBrightnessService
+    private colorBrightnessService: ColorBrightnessService,
+    private validatateInputFieldsService: ValidatateInputFieldsService
   ) {}
 
   ngOnInit(): void {
     this.checkViewport();
+    this.contactService.currentContact$.subscribe((contact) => {
+      if (contact) {
+        this.newContact = { ...contact }; 
+      }
+    });
   }
-
-/*   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['contacts']) {
-      console.log('Aktualisierte Kontaktliste: ', this.contacts);
-    }
-  } */
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
@@ -78,15 +78,29 @@ export class ContactFormComponent implements OnInit {
     this.closeContactFormStatus.emit(this.contactFormStatus);
   }
 
-  emailIsValid(): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return this.newContact.email
-      ? emailRegex.test(this.newContact.email)
-      : false;
+  inputIsValid(inputType: string): boolean {
+    let validationResult = false;
+    if (inputType === 'name') {
+      validationResult = this.validatateInputFieldsService.checkIfNameIsValid(
+        this.newContact.name
+      );
+    } else if (inputType === 'email') {
+      validationResult = this.validatateInputFieldsService.checkIfEmailIsValid(
+        this.newContact.email
+      );
+    } else {
+      validationResult = this.validatateInputFieldsService.checkIfPhoneIsValid(
+        this.newContact.phone
+      );
+    }
+    return validationResult;
   }
 
   onSubmit() {
-    if (this.newContact.name && this.emailIsValid()) {
+    const nameIsValid = this.newContact.name && this.inputIsValid('name');
+    const emailIsValid = !this.newContact.email || this.inputIsValid('email');
+    const phoneIsValid = !this.newContact.phone || this.inputIsValid('phone');
+    if (nameIsValid && emailIsValid && phoneIsValid) {
       this.setRandomColorForContact();
       this.addNewContactToList();
       this.groupContactsService.groupContactsAlphabetically(this.contacts);
@@ -125,7 +139,7 @@ export class ContactFormComponent implements OnInit {
     if (form) {
       form.resetForm();
     } else if (this.contactForm) {
-      this.contactForm.controls['name'].markAsPristine(); 
+      this.contactForm.controls['name'].markAsPristine();
       this.contactForm.controls['name'].markAsUntouched();
     }
     this.resetForm();

@@ -31,16 +31,14 @@
               placeholder="Name*"
               [(ngModel)]="newContact.name"
               name="name"
-              pattern="^[A-Za-zÄÖÜäöüß]+(\s[A-Za-zÄÖÜäöüß]+)?$"
               #name="ngModel"
-              required
             />
             <img src="assets/icons/person.svg" alt="" />
           </div>
 
           <div
             class="warning-message"
-            [ngStyle]="{ opacity: (name.invalid && name.touched) ? 1 : 0 }"
+            [ngStyle]="{ opacity: name.invalid && name.touched ? 1 : 0 }"
           >
             Please enter one first and one last name.
           </div>
@@ -51,7 +49,6 @@
               placeholder="Email"
               [(ngModel)]="newContact.email"
               name="email"
-              pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
               #email="ngModel"
             />
             <img src="assets/icons/mail.svg" alt="" />
@@ -59,7 +56,7 @@
 
           <div
             class="warning-message"
-            [ngStyle]="{ opacity: (email.invalid && email.touched) ? 1 : 0 }"
+            [ngStyle]="{ opacity: email.invalid && email.touched ? 1 : 0 }"
           >
             Please enter a correct email address.
           </div>
@@ -70,18 +67,17 @@
               placeholder="Phone"
               [(ngModel)]="newContact.phone"
               name="phone"
-              pattern="[0-9+\-\/\s]*"
               #phone="ngModel"
             />
             <img src="assets/icons/phone.svg" alt="" />
           </div>
-         
-          <div class="warning-message"
-          [ngStyle]="{ opacity: (phone.invalid && phone.touched) ? 1 : 0 }"
+
+          <div
+            class="warning-message"
+            [ngStyle]="{ opacity: phone.invalid && phone.touched ? 1 : 0 }"
           >
             Please enter a correct phone number.
           </div>
-          
         </div>
         <div class="button-wrapper">
           @if (isAddContactMode) {
@@ -154,9 +150,20 @@
       </div>
     </div>
     <div class="icon-wrapper mobile">
+      @if (isAddContactMode) {
       <div class="inner-icon-wrapper">
         <img src="assets/icons/person_white.svg" alt="" />
       </div>
+      } @else {
+      <div
+        class="inner-icon-wrapper"
+        [style.backgroundColor]="newContact.contact_color"
+        [style.color]="newContact.color_brightness ? '#000000' : '#ffffff'"
+      >
+        {{ newContact.name ? newContact.name.charAt(0) : ""
+        }}{{ newContact.name.split(" ").pop()?.charAt(0) }}
+      </div>
+      }
     </div>
   </div>
 </div>

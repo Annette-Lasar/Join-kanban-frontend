@@ -108,12 +108,22 @@ export class ContactsComponent implements OnInit {
     });
   }
 
-  showContactDetails(contact: Contact) {
+/*   showContactDetails(contact: Contact) {
     this.contactService.setShowDetails(true);
     this.currentContact = contact;
+    console.log('aktueller Kontakt: ', this.currentContact);
     this.contactService.setCurrentContact(contact);
     this.contactIsActive = !this.contactIsActive;
-  }
+  } */
+
+    showContactDetails(contact: Contact) {
+      this.contactService.setShowDetails(true); // Zeigt den Detailmodus an
+      this.currentContact = contact;
+      console.log('aktueller Kontakt: ', this.currentContact);
+      this.contactService.setCurrentContact(contact); // Setzt den Kontakt im Service
+      this.contactIsActive = true; // Setzt den aktiven Status, falls nötig
+    }
+    
 
   goBackToContactOverview() {
     this.contactService.setShowDetails(false);

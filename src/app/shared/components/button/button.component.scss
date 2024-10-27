@@ -13,7 +13,6 @@
   .inner-caption-image-wrapper {
     width: fit-content;
     @include flex-container($justify: space-around, $gap: 8px);
-    border: red 2px solid;
   }
   img {
     width: 20px;
