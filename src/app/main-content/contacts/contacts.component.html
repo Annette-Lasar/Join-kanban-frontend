@@ -20,6 +20,8 @@
           (showContactOverview)="goBackToContactOverview()"
           [showContactDetails]="showDetails"
           [contact]="currentContact"
+          [shallContactBeDeleted]="deleteContactStatus"
+          (securityInfoStatus)="setSecurityInfoStatus($event)"
         />
         } @else {
         <ul class="contact-list">
@@ -67,6 +69,7 @@
         <join-context-menu
           [contactDetailFormStatus]="contactDetailFormStatus"
           (isEditFormStatusChanged)="handleContactFormStatus($event)"
+          (reallyDeleteContact)="setDeleteContactStatus($event)"
         />
       </div>
       } @else {
@@ -91,6 +94,8 @@
       </div>
       <join-contact-details
         (setContactFormStatus)="handleContactFormStatus($event)"
+        [shallContactBeDeleted]="deleteContactStatus"
+        (securityInfoStatus)="setSecurityInfoStatus($event)"
       />
     </div>
   </div>
@@ -100,7 +105,13 @@
   [currentContact]="currentContact"
   [detailStatus]="showDetails"
   [contactFormStatus]="contactFormStatus"
+  [isAddContactMode]="isAddContactMode"
   (newContactFormStatus)="handleContactFormStatus($event)"
   (closeContactFormStatus)="closeContactForm($event)"
-  [isAddContactMode]="isAddContactMode"
+  (addContactSuccessful)="setSuccessStatus($event)"
+/>
+<join-info
+[infoText]="'Contact successfully created'"
+[infoMessageClass]="'success-message'"
+[isSuccessMessageVisible]="successStatus"
 />

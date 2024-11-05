@@ -3,6 +3,7 @@
   <div class="title-wrapper">
     <h1>Contacts</h1>
     <p class="slogan">Better with a team</p>
+    <p>{{shallContactBeDeleted}}</p>
     <div class="blue-separator-line"></div>
     <img
       class="arrow-left"
@@ -61,3 +62,13 @@
   </div>
   } }
 </div>
+<join-info
+  [alertTitle]="'Alert'"
+  [infoQuestion]="'Are you sure you want to delete this contact permanently?'"
+  [infoText]="'This process is irreversible.'"
+  [imageSrc]="'assets/icons/join_logo_white.svg'"
+  [imageSrc2]="'assets/icons/close_white.svg'"
+  [infoMessageClass]="'security-info-box'"
+  [securityQuestion]="true"
+  (isSecurityInfoClosed)="closeSecurityInfo()"
+/>

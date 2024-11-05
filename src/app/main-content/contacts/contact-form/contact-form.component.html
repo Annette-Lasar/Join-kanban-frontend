@@ -1,6 +1,6 @@
 <div
   class="outer-contact-form-wrapper"
-  [ngClass]="{ show: contactFormStatus, hide: !contactFormStatus }"
+  [ngClass]="{ show: contactFormStatus }"
 >
   <div class="inner-contact-form-wrapper">
     <div class="close-wrapper">
@@ -118,11 +118,13 @@
             [height]="'32px'"
             [padding]="'0'"
             (createNewContactClicked)="onSubmit()"
+            (successMessage)="isContactSuccessfullyAdded()"
           />
           } @else {
           <join-button
             [caption]="'Delete'"
             [buttonClass]="'light-square-button-blue-hover-completely '"
+            [actionType]="'deleteContact'"
             [width]="'80px'"
             [height]="'32px'"
             [padding]="'0'"

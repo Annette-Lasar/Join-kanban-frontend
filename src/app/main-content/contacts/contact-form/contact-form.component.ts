@@ -16,6 +16,7 @@ import { ColorBrightnessService } from '../../../shared/services/color-brightnes
 import { ContactService } from '../../../shared/services/contact.service';
 import { GroupContactsService } from '../../../shared/services/group-contacts.service';
 import { ValidatateInputFieldsService } from '../../../shared/services/validateInputFields.service';
+import { EVENT_MANAGER_PLUGINS } from '@angular/platform-browser';
 
 @Component({
   selector: 'join-contact-form',
@@ -43,6 +44,7 @@ export class ContactFormComponent implements OnInit {
   @Input() detailStatus: boolean = false;
   @Output() newContactFormStatus = new EventEmitter<boolean>();
   @Output() closeContactFormStatus = new EventEmitter<boolean>();
+  @Output() addContactSuccessful = new EventEmitter<boolean>();
 
   @ViewChild('contactForm') contactForm!: NgForm;
 
@@ -58,7 +60,7 @@ export class ContactFormComponent implements OnInit {
     this.checkViewport();
     this.contactService.currentContact$.subscribe((contact) => {
       if (contact) {
-        this.newContact = { ...contact }; 
+        this.newContact = { ...contact };
       }
     });
   }
@@ -136,12 +138,18 @@ export class ContactFormComponent implements OnInit {
   }
 
   clearInputFields(form?: NgForm) {
-    if (form) {
+    if (form && this.isAddContactMode) {
       form.resetForm();
-    } else if (this.contactForm) {
+    } else if (this.contactForm && this.isAddContactMode) {
       this.contactForm.controls['name'].markAsPristine();
       this.contactForm.controls['name'].markAsUntouched();
     }
-    this.resetForm();
+    if (this.isAddContactMode) {
+      this.resetForm();
+    }
+  }
+
+  isContactSuccessfullyAdded() {
+    this.addContactSuccessful.emit(true);
   }
 }

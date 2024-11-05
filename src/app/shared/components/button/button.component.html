@@ -46,7 +46,8 @@
     (click)="actionFunction($event, actionType, infoMessage)"
   />
   } @default {
-  {{ caption }}
+    <span (click)="actionFunction($event, actionType, infoMessage)">{{ caption }}</span>
+  
   } }
 </button>
 } @else {

@@ -10,22 +10,27 @@ import {
 import { Contact } from '../../../shared/interfaces/contact.interface';
 import { ContactService } from '../../../shared/services/contact.service';
 import { Subscription } from 'rxjs';
+import { InfoComponent } from "../../../shared/components/info/info.component";
 
 @Component({
   selector: 'join-contact-details',
   standalone: true,
-  imports: [],
+  imports: [InfoComponent],
   templateUrl: './contact-details.component.html',
   styleUrl: './contact-details.component.scss',
 })
 export class ContactDetailsComponent implements OnInit, OnDestroy {
   isMobile: boolean = false;
   private subscription: Subscription | null = null;
-  @Input() showContactDetails: boolean = false;
+  
   @Input() contact: Contact | null = null;
+  @Input() showContactDetails: boolean = false;
+  @Input() shallContactBeDeleted: boolean = false;
+
   @Output() showContactOverview = new EventEmitter<boolean>();
   @Output() setContactFormStatus = new EventEmitter<boolean>();
-  
+  @Output() securityInfoStatus = new EventEmitter<boolean>();
+
   
   constructor(private contactService: ContactService) {}
 
@@ -64,6 +69,10 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
 
   isFormStatusChanged() {
     this.setContactFormStatus.emit(false);
+  }
+
+  closeSecurityInfo() {
+    this.securityInfoStatus.emit(false);
   }
 
   ngOnDestroy(): void {

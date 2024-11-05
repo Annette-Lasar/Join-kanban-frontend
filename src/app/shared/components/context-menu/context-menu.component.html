@@ -17,11 +17,14 @@
   <join-button
     [buttonCaptionSecond]="true"
     [buttonIcon]="true"
+    [actionType]="'deleteContact'"
     [imgSrc]="'assets/icons/delete.svg'"
     [caption]="'Delete'"
     [buttonClass]="'context-button-light-bottom'"
     [width]="'100%'"
     [height]="'32px'"
     [padding]="'0'"
+    
+    (securityMessage)="setReallyDeleteContact()"
   />
 </div>

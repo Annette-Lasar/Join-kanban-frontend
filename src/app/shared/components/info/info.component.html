@@ -1,5 +1,52 @@
-<div class="outer-info-wrapper">
-    <p>{{infoText}}</p>
+<div
+  [ngClass]="[
+    infoMessageClass,
+    isSuccessMessageVisible ? 'visible' : '',
+    isInfoBoxPresent ? 'present' : ''
+  ]"
+  class="outer-info-wrapper"
+>
+  @switch (true) { @case (securityQuestion) {
+  <div class="info-box-wrapper">
+    <div class="info-title-wrapper">
+      <img class="logo" [src]="imageSrc" alt="" />
+      <div class="bold_700">{{ alertTitle }}</div>
+      <img class="close-button" [src]="imageSrc2" alt="Close dialog" (click)="closeInfoBox()" />
+    </div>
+    <div class="info-body-wrapper">
+      <div class="body-text-wrapper">
+        <span>{{ infoQuestion }} </span> <span>{{ infoText }}</span>
+      </div>
+
+      <div class="button-wrapper">
+        <join-button
+          [actionType]="'deleteContact'"
+          [buttonClass]="'dark-square-button'"
+          [caption]="'Yes, proceed'"
+          [width]="'100px'"
+          [height]="'32px'"
+          [padding]="'0.5em'"
+        />
+        <join-button
+          [actionType]="'closeSecurityInfo'"
+          [buttonClass]="'dark-square-button'"
+          [caption]="'No, preserve'"
+          [width]="'100px'"
+          [height]="'32px'"
+          [padding]="'0.5em'"
+        />
+      </div>
+    </div>
+  </div>
+  } @case (textAndIcon) {
+  <div class="text-and-icon-wrapper">
+    <p>{{ infoText }}</p>
+    <img [src]="imageSrc" alt="" />
+  </div>
+  }@default {
+  <div class="inner-success-message-wrapper">
+    <p class="infoMessageClass">{{ infoText }}</p>
+  </div>
+
+  } }
 </div>
-
-

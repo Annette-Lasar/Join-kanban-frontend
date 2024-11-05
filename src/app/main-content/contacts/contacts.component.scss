@@ -68,8 +68,8 @@
   }
 
   .list-item.current {
-    background-color: $darkblue; /* Beispiel für eine dunkle Farbe */
-    color: white; /* Textfarbe anpassen, um Kontrast zu erhöhen */
+    background-color: $darkblue; 
+    color: $white; 
   }
 }
 
@@ -114,6 +114,9 @@ MEDIA QUERIES
     height: 100%;
     max-width: unset;
     margin: 0;
+    .list-item:hover {
+      background-image: linear-gradient($hovergraylight, $hovergraydark);
+    }
   }
 
   .inner-details-wrapper {
@@ -139,5 +142,5 @@ MEDIA QUERIES
 }
 
 .white {
-  color: white;
+  color: $white;
 }

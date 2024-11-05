@@ -11,13 +11,22 @@ import { CommonModule } from '@angular/common';
 })
 export class ContextMenuComponent {
   @Input() contactDetailFormStatus: boolean = false;
- 
 
   @Output() isEditFormStatusChanged = new EventEmitter<boolean>();
+  // @Output() deleteButtonClicked = new EventEmitter<void>();
+  @Output() reallyDeleteContact = new EventEmitter<boolean>();
 
   changeFormMode() {
     this.isEditFormStatusChanged.emit(false);
   }
 
 
+/*   deleteButtonWasClicked() {
+    this.deleteButtonClicked.emit();
+    
+  } */
+
+  setReallyDeleteContact() {
+    this.reallyDeleteContact.emit(true);
+  }
 }
