@@ -9,8 +9,8 @@ export class ContactService {
   private contactsSubject = new BehaviorSubject<Contact[]>([]);
   contacts$ = this.contactsSubject.asObservable();
 
-  private showDetailsSubject = new BehaviorSubject<boolean>(false);
-  showDetails$ = this.showDetailsSubject.asObservable();
+/*   private showDetailsSubject = new BehaviorSubject<boolean>(false);
+  showDetails$ = this.showDetailsSubject.asObservable(); */
 
   private currentContactSubject = new BehaviorSubject<Contact | null>(null);
   currentContact$ = this.currentContactSubject.asObservable();
@@ -29,9 +29,9 @@ export class ContactService {
     this.contactsSubject.next(updatedContacts);
   }
 
-  setShowDetails(value: boolean) {
+/*   setShowDetails(value: boolean) {
     this.showDetailsSubject.next(value);
-  }
+  } */
 
   setCurrentContact(contact: Contact | null) {
     this.currentContactSubject.next(contact);

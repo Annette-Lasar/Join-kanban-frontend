@@ -11,6 +11,7 @@ import { Contact } from '../../../shared/interfaces/contact.interface';
 import { ContactService } from '../../../shared/services/contact.service';
 import { Subscription } from 'rxjs';
 import { InfoComponent } from "../../../shared/components/info/info.component";
+import { ContactStatusService } from '../../../shared/services/contact-status.service';
 
 @Component({
   selector: 'join-contact-details',
@@ -24,19 +25,16 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
   private subscription: Subscription | null = null;
   
   @Input() contact: Contact | null = null;
-  @Input() showContactDetails: boolean = false;
-  @Input() shallContactBeDeleted: boolean = false;
-
-  @Output() showContactOverview = new EventEmitter<boolean>();
-  @Output() setContactFormStatus = new EventEmitter<boolean>();
-  @Output() securityInfoStatus = new EventEmitter<boolean>();
+  showContactDetails: boolean = false;
 
   
-  constructor(private contactService: ContactService) {}
+  constructor(private contactService: ContactService,
+    private contactStatusService: ContactStatusService
+  ) {}
 
   ngOnInit(): void {
     this.checkViewport();
-    this.updateShowContactDetails();
+    this.getUpdatedShowContactDetails();
     this.updateContactObject();
   }
 
@@ -49,10 +47,11 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
     this.isMobile = window.innerWidth < 800;
   }
 
-  updateShowContactDetails() {
-    this.subscription = this.contactService.showDetails$.subscribe((value) => {
-      this.showContactDetails = value;
-    });
+
+  getUpdatedShowContactDetails() {
+    this.subscription = this.contactStatusService.showDetailsStatus$.subscribe((status) => {
+      this.showContactDetails = status;
+    })
   }
 
   updateContactObject() {
@@ -64,16 +63,14 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
   }
 
   onBackButtonClick() {
-    this.showContactOverview.emit(false);
+    this.contactStatusService.setShowDetailsStatus(false);
+    this.contactStatusService.setIsAddContactModeStatus(true);
   }
 
   isFormStatusChanged() {
-    this.setContactFormStatus.emit(false);
+    this.contactStatusService.setContactFormStatus(false);
   }
 
-  closeSecurityInfo() {
-    this.securityInfoStatus.emit(false);
-  }
 
   ngOnDestroy(): void {
     if (this.subscription) {

@@ -23,8 +23,6 @@ export class InfoComponent implements OnInit {
   @Input() imageSrc: string = '';
   @Input() imageSrc2: string = '';
 
-  @Output() isSecurityInfoClosed = new EventEmitter<void>();
-
   constructor(private contactStatusService: ContactStatusService) {}
 
   ngOnInit(): void {

@@ -16,13 +16,7 @@
       />
       <div class="inner-list-wrapper">
         @if (showDetails && isMobile && currentContact) {
-        <join-contact-details
-          (showContactOverview)="goBackToContactOverview()"
-          [showContactDetails]="showDetails"
-          [contact]="currentContact"
-          [shallContactBeDeleted]="deleteContactStatus"
-          (securityInfoStatus)="setSecurityInfoStatus($event)"
-        />
+        <join-contact-details [contact]="currentContact" />
         } @else {
         <ul class="contact-list">
           @for (group of groupedContacts; track group) {
@@ -41,7 +35,7 @@
               [style.backgroundColor]="contact.contact_color"
               [style.color]="contact.color_brightness ? '#000000' : '#ffffff'"
             >
-              {{ contact.name ? contact.name.charAt(0) : ''
+              {{ contact.name ? contact.name.charAt(0) : ""
               }}{{ contact.name.split(" ").pop()?.charAt(0) }}
             </div>
             <div class="list-text-wrapper">
@@ -69,7 +63,6 @@
         <join-context-menu
           [contactDetailFormStatus]="contactDetailFormStatus"
           (isEditFormStatusChanged)="handleContactFormStatus($event)"
-          (reallyDeleteContact)="setDeleteContactStatus($event)"
         />
       </div>
       } @else {
@@ -92,13 +85,18 @@
         <div class="title-separator"></div>
         <div class="title-slogan">Better with a team</div>
       </div>
-      <join-contact-details
-        (setContactFormStatus)="handleContactFormStatus($event)"
-        [shallContactBeDeleted]="deleteContactStatus"
-        (securityInfoStatus)="setSecurityInfoStatus($event)"
-      />
+      <join-contact-details />
     </div>
   </div>
+  <span class="white" style="font-size: xx-small"
+    >contactForm: {{ contactFormStatus }}
+  </span>
+  <span class="white" style="font-size: xx-small"
+    >showDetails: {{ showDetails }}
+  </span>
+  <span class="white" style="font-size: xx-small"
+    >addContactMode: {{ isAddContactMode }}</span
+  >
 </div>
 <join-contact-form
   [contacts]="dummyContacts"
@@ -111,7 +109,7 @@
   (addContactSuccessful)="setSuccessStatus($event)"
 />
 <join-info
-[infoText]="'Contact successfully created'"
-[infoMessageClass]="'success-message'"
-[isSuccessMessageVisible]="successStatus"
+  [infoText]="'Contact successfully created'"
+  [infoMessageClass]="'success-message'"
+  [isSuccessMessageVisible]="successStatus"
 />
