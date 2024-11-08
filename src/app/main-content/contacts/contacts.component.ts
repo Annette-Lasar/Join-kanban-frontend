@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { GroupContactsService } from '../../shared/services/group-contacts.service';
 import { InfoComponent } from '../../shared/components/info/info.component';
 import { ContactStatusService } from '../../shared/services/contact-status.service';
+import { ButtonPropertyService } from '../../shared/services/button-propertys.service';
 
 @Component({
   selector: 'join-contacts',
@@ -41,6 +42,7 @@ export class ContactsComponent implements OnInit {
   contactIsActive: boolean = false;
   contactFormStatus: boolean = false;
   contactDetailFormStatus: boolean = false;
+  infoBoxStatus: boolean = false;
   deleteContactStatus: boolean = false;
   successStatus: boolean = false;
   currentContact: Contact | null = null;
@@ -52,7 +54,8 @@ export class ContactsComponent implements OnInit {
   constructor(
     private contactService: ContactService,
     private groupContactsService: GroupContactsService,
-    private contactStatusService: ContactStatusService
+    private contactStatusService: ContactStatusService,
+    private buttonPropertyService: ButtonPropertyService
   ) {}
 
   ngOnInit(): void {
@@ -66,6 +69,10 @@ export class ContactsComponent implements OnInit {
     this.getUpdatedContactFormStatus();
     this.getUpdatedIsAddContactModeStatus();
     this.updateDeleteContactStatus();
+    this.getUpdatedDetailFormStatus();
+    this.getUpdatedButtonPropertyStatus();
+    this.getUpdatedSuccessStatus();
+    this.getUpdatedInfoBoxStatus();
   }
 
   ngOnDestroy(): void {
@@ -103,18 +110,45 @@ export class ContactsComponent implements OnInit {
   getUpdatedContactFormStatus(): void {
     this.contactStatusService.contactFormStatus$.subscribe((status) => {
       this.contactFormStatus = status;
-    })
+    });
   }
 
   getUpdatedShowDetailsStatus(): void {
     this.contactStatusService.showDetailsStatus$.subscribe((status) => {
       this.showDetails = status;
-    })
+    });
   }
 
   getUpdatedIsAddContactModeStatus(): void {
     this.contactStatusService.isAddContactModeStatus$.subscribe((status) => {
       this.isAddContactMode = status;
+    });
+  }
+
+  getUpdatedDetailFormStatus(): void {
+    this.contactStatusService.contactDetailFormStatus$.subscribe((status) => {
+      this.contactDetailFormStatus = status;
+    });
+  }
+
+  getUpdatedButtonPropertyStatus(): void {
+    this.buttonPropertyService.isAddContactButtonClicked$.subscribe(
+      (status) => {
+        this.contactStatusService.setContactFormStatus(status);
+      }
+    );
+  }
+
+  getUpdatedSuccessStatus() {
+    this.contactStatusService.successStatus$.subscribe((status) => {
+      this.successStatus = status;
+      // this.setSuccessStatus(this.successStatus);
+    });
+  }
+
+  getUpdatedInfoBoxStatus() {
+    this.contactStatusService.infoBoxStatus$.subscribe((status) => {
+      this.infoBoxStatus = status;
     })
   }
 
@@ -145,13 +179,14 @@ export class ContactsComponent implements OnInit {
   }
 
   updateShowDetails() {
-    this.subscription = this.contactStatusService.showDetailsStatus$.subscribe((value) => {
-      this.showDetails = value;
-    });
+    this.subscription = this.contactStatusService.showDetailsStatus$.subscribe(
+      (value) => {
+        this.showDetails = value;
+      }
+    );
   }
 
   showContactDetails(contact: Contact) {
-    // this.contactService.setShowDetails(true);
     this.contactStatusService.setShowDetailsStatus(true);
     this.contactStatusService.setIsAddContactModeStatus(false);
     this.currentContact = contact;
@@ -159,47 +194,16 @@ export class ContactsComponent implements OnInit {
     this.contactIsActive = true;
   }
 
-/*   goBackToContactOverview() {
-    this.contactStatusService.setShowDetailsStatus(false);
-  } */
-
-/*   changeContactFormStatus() {
-    this.contactFormStatus = true;
-  } */
-
-    changeContactFormStatus() {
-      this.setNewContactFormStatus(true);
-      this.getUpdatedContactFormStatus();
-    }
-
-  changeContactDetailFormStatus() {
-    this.contactDetailFormStatus = true;
-  }
-
-    handleContactFormStatus(newStatus: boolean) {
-      if (this.showDetails) {
-        this.setNewContactFormStatus(true);
-        // this.isAddContactMode = newStatus;
-        this.setNewIsAddContactModeStatus(newStatus);
-      } else {
-        this.setNewContactFormStatus(newStatus);
-        // this.isAddContactMode = true;
-        this.setNewIsAddContactModeStatus(true);
-      }
-      this.getUpdatedContactFormStatus();
-    }
-
-  closeContactForm(closeStatus: boolean) {
-    this.contactFormStatus = closeStatus;
-    // this.isAddContactMode = true;
-    this.setNewIsAddContactModeStatus(true);
+  changeContactFormStatus() {
+    this.setNewContactFormStatus(true);
+    this.getUpdatedContactFormStatus();
   }
 
   hideContextMenu() {
-    this.contactDetailFormStatus = false;
+    this.contactStatusService.setContactDetailFormStatus(false);
   }
 
-/*   deleteContactFromList() {
+  /*   deleteContactFromList() {
     let currentContactIndex = this.dummyContacts?.findIndex((oneContact) => {
       return this.currentContact
         ? oneContact.name === this.currentContact.name
@@ -223,12 +227,11 @@ export class ContactsComponent implements OnInit {
   }
 
   setSecurityInfoStatus(newStatus: boolean) {
-    this.deleteContactStatus = newStatus;
-    console.log('neuer Status: ', this.deleteContactStatus);
-
+    this.infoBoxStatus = newStatus;
+    console.log('neuer Status: ', this.infoBoxStatus);
   }
 
-  setDeleteContactStatus(newStatus: boolean) {
+/*   setDeleteContactStatus(newStatus: boolean) {
     this.deleteContactStatus = newStatus;
-  }
+  } */
 }

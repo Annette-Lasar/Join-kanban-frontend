@@ -102,6 +102,8 @@
       <div class="list in-progress">
         <div class="board-list-headline-wrapper">
           <h2 class="bold_700">In progress</h2>
+          <span style="font-size: xx-small;">Container visible: {{isContainerVisible}}</span>
+          <span style="font-size: xx-small;">Message : {{message}}</span>
           <div class="inner-task-button-wrapper">
             <join-button
               (toggleContainer)="toggleContainerVisibility($event)"

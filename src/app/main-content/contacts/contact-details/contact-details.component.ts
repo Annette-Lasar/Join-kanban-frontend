@@ -4,13 +4,11 @@ import {
   OnInit,
   OnDestroy,
   Input,
-  Output,
-  EventEmitter,
 } from '@angular/core';
 import { Contact } from '../../../shared/interfaces/contact.interface';
 import { ContactService } from '../../../shared/services/contact.service';
 import { Subscription } from 'rxjs';
-import { InfoComponent } from "../../../shared/components/info/info.component";
+import { InfoComponent } from '../../../shared/components/info/info.component';
 import { ContactStatusService } from '../../../shared/services/contact-status.service';
 
 @Component({
@@ -23,12 +21,12 @@ import { ContactStatusService } from '../../../shared/services/contact-status.se
 export class ContactDetailsComponent implements OnInit, OnDestroy {
   isMobile: boolean = false;
   private subscription: Subscription | null = null;
-  
+
   @Input() contact: Contact | null = null;
   showContactDetails: boolean = false;
 
-  
-  constructor(private contactService: ContactService,
+  constructor(
+    private contactService: ContactService,
     private contactStatusService: ContactStatusService
   ) {}
 
@@ -47,11 +45,12 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
     this.isMobile = window.innerWidth < 800;
   }
 
-
   getUpdatedShowContactDetails() {
-    this.subscription = this.contactStatusService.showDetailsStatus$.subscribe((status) => {
-      this.showContactDetails = status;
-    })
+    this.subscription = this.contactStatusService.showDetailsStatus$.subscribe(
+      (status) => {
+        this.showContactDetails = status;
+      }
+    );
   }
 
   updateContactObject() {
@@ -68,9 +67,12 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
   }
 
   isFormStatusChanged() {
-    this.contactStatusService.setContactFormStatus(false);
+    this.contactStatusService.setContactFormStatus(true);
   }
 
+  showWarningMessage() {
+    this.contactStatusService.setInfoBoxStatus(true);
+  }
 
   ngOnDestroy(): void {
     if (this.subscription) {

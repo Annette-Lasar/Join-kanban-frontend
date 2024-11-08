@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
 import { CommonModule } from '@angular/common';
+import { ContactStatusService } from '../../services/contact-status.service';
 
 @Component({
   selector: 'join-context-menu',
@@ -9,12 +10,14 @@ import { CommonModule } from '@angular/common';
   templateUrl: './context-menu.component.html',
   styleUrl: './context-menu.component.scss',
 })
-export class ContextMenuComponent {
-  @Input() contactDetailFormStatus: boolean = false;
+export class ContextMenuComponent implements OnInit {
+  contactDetailFormStatus: boolean = false;
 
-  @Output() isEditFormStatusChanged = new EventEmitter<boolean>();
+  constructor(private contactStatusService: ContactStatusService) {}
 
-  changeFormMode() {
-    this.isEditFormStatusChanged.emit(false);
+  ngOnInit(): void {
+    this.contactStatusService.contactDetailFormStatus$.subscribe((status) => {
+      this.contactDetailFormStatus = status;
+    });
   }
 }

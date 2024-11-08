@@ -1,7 +1,4 @@
-<div
-  class="outer-contact-form-wrapper"
-  [ngClass]="{ show: contactFormStatus }"
->
+<div class="outer-contact-form-wrapper" [ngClass]="{ show: contactFormStatus }">
   <div class="inner-contact-form-wrapper">
     <div class="close-wrapper">
       <img
@@ -30,17 +27,18 @@
               type="text"
               placeholder="Name*"
               [(ngModel)]="newContact.name"
+              (ngModelChange)="validateName($event)"
               name="name"
               #name="ngModel"
+              required
             />
             <img src="assets/icons/person.svg" alt="" />
           </div>
-
           <div
             class="warning-message"
-            [ngStyle]="{ opacity: name.invalid && name.touched ? 1 : 0 }"
+            [ngStyle]="{ opacity: !nameIsValid && name.touched ? 1 : 0 }"
           >
-            Please enter one first and one last name.
+            Please enter just one first and one last name.
           </div>
 
           <div class="mail">
@@ -48,15 +46,16 @@
               type="email"
               placeholder="Email"
               [(ngModel)]="newContact.email"
+              (ngModelChange)="validateEmail($event)"
               name="email"
               #email="ngModel"
             />
             <img src="assets/icons/mail.svg" alt="" />
           </div>
-
+          
           <div
             class="warning-message"
-            [ngStyle]="{ opacity: email.invalid && email.touched ? 1 : 0 }"
+            [ngStyle]="{ opacity: !emailIsValid && email.touched ? 1 : 0 }"
           >
             Please enter a correct email address.
           </div>
@@ -66,15 +65,15 @@
               type="tel"
               placeholder="Phone"
               [(ngModel)]="newContact.phone"
+              (ngModelChange)="validatePhone($event)"
               name="phone"
               #phone="ngModel"
             />
             <img src="assets/icons/phone.svg" alt="" />
           </div>
-
           <div
             class="warning-message"
-            [ngStyle]="{ opacity: phone.invalid && phone.touched ? 1 : 0 }"
+            [ngStyle]="{ opacity: !phoneIsValid && phone.touched ? 1 : 0 }"
           >
             Please enter a correct phone number.
           </div>
@@ -117,8 +116,6 @@
             [width]="'150px'"
             [height]="'32px'"
             [padding]="'0'"
-            (createNewContactClicked)="onSubmit()"
-            (successMessage)="isContactSuccessfullyAdded()"
           />
           } @else {
           <join-button

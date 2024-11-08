@@ -14,8 +14,23 @@ export class ContactStatusService {
   private showDetailsStatus = new BehaviorSubject<boolean>(false);
   showDetailsStatus$ = this.showDetailsStatus.asObservable();
 
+  private contactDetailFormStatus = new BehaviorSubject<boolean>(false);
+  contactDetailFormStatus$ = this.contactDetailFormStatus.asObservable();
+
   private deleteContactStatus = new BehaviorSubject<boolean>(false);
   deleteContactStatus$ = this.deleteContactStatus.asObservable();
+
+  private successStatus = new BehaviorSubject<boolean>(false);
+  successStatus$ = this.successStatus.asObservable();
+
+  private infoBoxStatus = new BehaviorSubject<boolean>(false);
+  infoBoxStatus$ = this.infoBoxStatus.asObservable();
+
+  /* =============================================================
+  
+  METHODS
+
+  ================================================================  */
 
   setIsAddContactModeStatus(status: boolean): void {
     this.isAddContactModeStatus.next(status);
@@ -29,7 +44,20 @@ export class ContactStatusService {
     this.showDetailsStatus.next(status);
   }
 
+  setContactDetailFormStatus(status: boolean): void {
+    this.contactDetailFormStatus.next(status);
+  }
+
   setDeleteContactStatus(status: boolean): void {
     this.deleteContactStatus.next(status);
+  }
+
+  setSuccessStatus(status: boolean): void {
+    this.successStatus.next(status);
+  }
+
+
+  setInfoBoxStatus(status: boolean): void {
+    this.infoBoxStatus.next(status);
   }
 }

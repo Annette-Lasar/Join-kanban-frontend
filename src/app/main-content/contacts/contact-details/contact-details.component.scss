@@ -3,7 +3,6 @@
 
 .content-wrapper {
   height: 100%;
-  // background-color: $verylightgray;
 }
 
 .mobile-content-wrapper {
@@ -118,6 +117,13 @@ MEDIA QUERIES
   .delete {
     @include flex-container($justify: flex-start, $gap: 8px);
     cursor: pointer;
+    &:hover {
+      color: $lightblue;
+    }
+    &:hover img {
+      filter: invert(57%) sepia(92%) saturate(1128%) hue-rotate(165deg)
+        brightness(92%) contrast(92%);
+    }
   }
 
   .information-wrapper {

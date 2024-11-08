@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
+import { of, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ValidatateInputFieldsService {
-  checkIfNameIsValid(name: string): boolean {
+  checkIfNameIsValid(name: string): Observable<boolean> {
     const nameRegEx = /^[A-Za-zÄÖÜäöüß]+(\s[A-Za-zÄÖÜäöüß]+)?$/;
-    return name ? nameRegEx.test(name) : false;
+    return of(name ? nameRegEx.test(name.trim()) : false);
   }
 
-  checkIfEmailIsValid(email: string | undefined): boolean {
+  checkIfEmailIsValid(email: string | undefined): Observable<boolean> {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return email ? emailRegex.test(email) : true;
+    return of(email ? emailRegex.test(email.trim()) : true);
   }
 
-  checkIfPhoneIsValid(phone: string | undefined): boolean {
+  checkIfPhoneIsValid(phone: string | undefined): Observable<boolean> {
     const phoneRegEx = /^[0-9+\-\/\s]*$/;
-    return phone ? phoneRegEx.test(phone) : true;
+    return of(phone ? phoneRegEx.test(phone.trim()) : true);
   }
 }

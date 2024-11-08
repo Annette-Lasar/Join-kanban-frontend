@@ -30,12 +30,12 @@ export class InfoComponent implements OnInit {
   }
 
   updateIsInfoBoxPresent(): void {
-    this.contactStatusService.deleteContactStatus$.subscribe((status) => {
+    this.contactStatusService.infoBoxStatus$.subscribe((status) => {
       this.isInfoBoxPresent = status;
     });
   }
 
   closeInfoBox(): void {
-    this.contactStatusService.setDeleteContactStatus(false);
+    this.contactStatusService.setInfoBoxStatus(false);
   }
 }
