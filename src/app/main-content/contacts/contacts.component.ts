@@ -1,6 +1,4 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { HeaderComponent } from '../../shared/components/header/header.component';
-import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { Contact } from '../../shared/interfaces/contact.interface';
 import { ContactDetailsComponent } from './contact-details/contact-details.component';
@@ -21,8 +19,6 @@ import { ButtonPropertyService } from '../../shared/services/button-propertys.se
   standalone: true,
   imports: [
     CommonModule,
-    HeaderComponent,
-    NavbarComponent,
     ButtonComponent,
     ContactDetailsComponent,
     ContactFormComponent,
@@ -48,6 +44,7 @@ export class ContactsComponent implements OnInit {
   currentContact: Contact | null = null;
   isAddContactMode: boolean = true;
   colorBrightness: boolean = false;
+  isInitialLoad: boolean = true;
 
   private subscription: Subscription | null = null;
 
@@ -68,7 +65,7 @@ export class ContactsComponent implements OnInit {
     this.getUpdatedShowDetailsStatus();
     this.getUpdatedContactFormStatus();
     this.getUpdatedIsAddContactModeStatus();
-    this.updateDeleteContactStatus();
+    this.getUpdatedDeleteContactStatus();
     this.getUpdatedDetailFormStatus();
     this.getUpdatedButtonPropertyStatus();
     this.getUpdatedSuccessStatus();
@@ -142,25 +139,35 @@ export class ContactsComponent implements OnInit {
   getUpdatedSuccessStatus() {
     this.contactStatusService.successStatus$.subscribe((status) => {
       this.successStatus = status;
-      // this.setSuccessStatus(this.successStatus);
     });
   }
 
   getUpdatedInfoBoxStatus() {
     this.contactStatusService.infoBoxStatus$.subscribe((status) => {
       this.infoBoxStatus = status;
-    })
+    });
   }
 
   setNewIsAddContactModeStatus(newStatus: boolean): void {
     this.contactStatusService.setIsAddContactModeStatus(newStatus);
   }
 
-  updateDeleteContactStatus() {
+  getUpdatedDeleteContactStatus() {
     this.contactStatusService.deleteContactStatus$.subscribe((status) => {
-      this.deleteContactStatus = status;
+      if (!this.isInitialLoad && status) {
+        this.deleteContactStatus = status;
+        this.deleteContactFromList();
+      }
+      this.isInitialLoad = false;
     });
   }
+
+  /*   getUpdatedDeleteContactStatus() {
+    this.contactStatusService.deleteContactStatus$.subscribe((status) => {
+      this.deleteContactStatus = status;
+      this.deleteContactFromList();
+    });
+  } */
 
   groupContacts() {
     this.groupContactsService.groupContactsAlphabetically(this.dummyContacts);
@@ -203,21 +210,23 @@ export class ContactsComponent implements OnInit {
     this.contactStatusService.setContactDetailFormStatus(false);
   }
 
-  /*   deleteContactFromList() {
+  deleteContactFromList() {
+    console.log('Kontakte: ', this.dummyContacts);
     let currentContactIndex = this.dummyContacts?.findIndex((oneContact) => {
       return this.currentContact
         ? oneContact.name === this.currentContact.name
         : false;
     });
-
-    if (currentContactIndex) {
+    console.log('currentContactIndex: ', currentContactIndex);
+    if (currentContactIndex !== undefined && currentContactIndex !== -1) {
+      console.log('Ich werde ausgeführt.');
       this.dummyContacts?.splice(currentContactIndex, 1);
+      console.log('Kontakt', this.currentContact?.name, 'gelöscht.');
+      console.log('Kontakte: ', this.dummyContacts);
     }
-    console.log('Kontakt', this.currentContact?.name, 'gelöscht.');
-    console.log('Kontakte: ', this.dummyContacts);
     this.updateContactsList();
     this.updateShowDetails();
-  } */
+  }
 
   setSuccessStatus(newStatus: boolean) {
     this.successStatus = newStatus;
@@ -230,8 +239,4 @@ export class ContactsComponent implements OnInit {
     this.infoBoxStatus = newStatus;
     console.log('neuer Status: ', this.infoBoxStatus);
   }
-
-/*   setDeleteContactStatus(newStatus: boolean) {
-    this.deleteContactStatus = newStatus;
-  } */
 }

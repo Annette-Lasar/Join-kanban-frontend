@@ -27,6 +27,9 @@ export class ButtonPropertyService {
   private successMessage = new BehaviorSubject<string | undefined>('');
   successMessage$ = this.successMessage.asObservable();
 
+  private loginStatusSubject = new BehaviorSubject<boolean>(true);
+  loginStatus$ = this.loginStatusSubject.asObservable();
+
   /* =============================================================
   
   METHODS
@@ -57,5 +60,10 @@ export class ButtonPropertyService {
 
   setOnSuccessMessageStatus(message?: string): void {
     this.successMessage.next(message);
+  }
+
+
+  setLoginStatus(status: boolean): void {
+    this.loginStatusSubject.next(status);
   }
 }

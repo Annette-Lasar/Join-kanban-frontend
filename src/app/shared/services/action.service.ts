@@ -36,6 +36,8 @@ export class ActionService {
     ],
     ['openSecurityInfo', () => this.showOrHideInfoBox(true)],
     ['closeSecurityInfo', () => this.showOrHideInfoBox(false)],
+    ['deleteContact', () => this.deleteContact()],
+    ['onToggleShowLogin', () => this.showSignUp()],
     // add further actions here if necessary
   ]);
 
@@ -65,27 +67,11 @@ export class ActionService {
     }
   }
 
-  /*   private actionMap = new Map<string, (message?: string) => void>([
-    ['toggle', (message) => this.toggleContainer.emit(message)],
-    ['showAddContactForm', () => this.onIsAddContactButtonClick()],
-    [
-      'showContactDetailOptions',
-      () => this.onIsContactDetailOptionsButtonClicked(),
-    ],
-    ['showEditContactForm', () => this.onIsEditContactButtonClick()],
-    ['createNewContact', () => this.onCreateContactClick()],
-    ['clearInputFields', () => this.onClearInputClick()],
-    ['openSecurityInfo', () => this.showOrHideInfoBox(true)],
-    ['closeSecurityInfo', () => this.showOrHideInfoBox(false)],
-    // add further actions here if necessary
-  ]);
+  deleteContact(): void {
+    this.contactStatusService.setDeleteContactStatus(true);
+  }
 
-  executeAction(actionType: string, message?: string) {
-    const action = this.actionMap.get(actionType);
-    if (action) {
-      action(message);
-    } else {
-      console.warn(`Aktion ${actionType} ist nicht definiert`);
-    }
-  } */
+  showSignUp(): void {
+    this.buttonPropertyService.setLoginStatus(false);
+  }
 }

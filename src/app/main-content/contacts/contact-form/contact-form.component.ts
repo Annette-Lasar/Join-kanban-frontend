@@ -232,6 +232,7 @@ export class ContactFormComponent implements OnInit {
   isClearInputFieldClicked: boolean = false;
   isAddContactMode: boolean = true;
   contactFormStatus: boolean = false;
+  detailStatus: boolean = false;
   isInitialLoad: boolean = true;
   nameIsValid: boolean = false;
   emailIsValid: boolean = true;
@@ -248,7 +249,7 @@ export class ContactFormComponent implements OnInit {
 
   @Input() contacts: Contact[] | null = null;
   @Input() currentContact: Contact | null = null;
-  @Input() detailStatus: boolean = false;
+  // @Input() detailStatus: boolean = false;
 
   @ViewChild('contactForm') contactForm!: NgForm;
 
@@ -266,6 +267,7 @@ export class ContactFormComponent implements OnInit {
     this.checkViewport();
     this.updateContactList();
     this.getUpdatedContactFormStatus();
+    this.getUpdatedDetailStatus();
     this.getUpdatedIsContactModeStatus();
     this.getUpdatedIsCreateContactClicked();
     this.getUpdatedIsClearInputFieldClicked();
@@ -291,6 +293,12 @@ export class ContactFormComponent implements OnInit {
   getUpdatedContactFormStatus(): void {
     this.contactStatusService.contactFormStatus$.subscribe((status) => {
       this.contactFormStatus = status;
+    });
+  }
+
+  getUpdatedDetailStatus(): void {
+    this.contactStatusService.showDetailsStatus$.subscribe((status) => {
+      this.detailStatus = status;
     });
   }
 
@@ -322,7 +330,10 @@ export class ContactFormComponent implements OnInit {
 
   closeContactForm(): void {
     this.contactStatusService.setContactFormStatus(false);
-    this.setNewIsAddContactModeStatus(true);
+    if (this.contactStatusService.getAddContactModeStatus()) {
+      this.setNewIsAddContactModeStatus(true);
+    }
+    this.setNewIsAddContactModeStatus(false);
   }
 
   validateName(email: string) {

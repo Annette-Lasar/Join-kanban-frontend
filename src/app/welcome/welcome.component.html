@@ -52,10 +52,10 @@
     </defs>
   </svg>
   <div class="content-wrapper">
-    @if(showLogin) {
-    <join-login (toggleLogIn)="onToggleShowLogin($event)" />
+    @if(loginStatus) {
+    <join-login />
     } @else {
-    <join-sign-up (toggleLogIn)="onToggleShowLogin($event)" />
+    <join-sign-up />
 
     }
     <join-legal-links

@@ -6,3 +6,8 @@ export interface Contact {
     contact_color: string;
     color_brightness?: boolean; 
 }
+
+
+
+
+

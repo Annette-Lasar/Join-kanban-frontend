@@ -36,7 +36,7 @@
 
 form {
   width: 90%;
-  height: 75%;
+  height: 80%;
   border: orange 2px solid;
   @include flex-container(column, center, space-between);
 }
@@ -92,7 +92,7 @@ form {
 
 .login-button-wrapper {
   width: 90%;
-  @include flex-container($direction: column, $align: center, $gap: 8px);
+  @include flex-container($direction: column, $align: center, $gap: 4px);
   button {
     width: 120px;
     height: 32px;

@@ -4,6 +4,7 @@
 .outer-content-wrapper {
   height: calc(100vh - $header-height - $mobile-navbar-height);
   background-color: $white;
+  border: green 2px solid;
 }
 
 .inner-content-wrapper {
@@ -59,7 +60,11 @@
     .list-text-wrapper {
       height: 32px;
       flex: 1 1 0;
-      @include flex-container($direction: column, $align: flex-start, $justify: space-between);
+      @include flex-container(
+        $direction: column,
+        $align: flex-start,
+        $justify: space-between
+      );
       font-size: 0.8rem;
     }
   }
@@ -68,8 +73,8 @@
   }
 
   .list-item.current {
-    background-color: $darkblue; 
-    color: $white; 
+    background-color: $darkblue;
+    color: $white;
   }
 }
 
@@ -92,8 +97,10 @@ MEDIA QUERIES
 
 @media (min-width: 50em) {
   .outer-content-wrapper {
-    height: calc(100vh - $header-height - 10px);
-    @include flex-container($gap: 16px);
+    height: 100%;
+    max-height: calc(800px - $header-height);
+    // @include flex-container($gap: 16px);
+    border: #11f2e6 3px solid;
   }
   .inner-content-wrapper {
     width: 100%;

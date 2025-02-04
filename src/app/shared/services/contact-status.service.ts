@@ -36,6 +36,10 @@ export class ContactStatusService {
     this.isAddContactModeStatus.next(status);
   }
 
+  getAddContactModeStatus(): boolean {
+    return this.isAddContactModeStatus.getValue();
+  }
+
   setContactFormStatus(status: boolean): void {
     this.contactFormStatus.next(status);
   }

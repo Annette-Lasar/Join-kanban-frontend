@@ -29,11 +29,17 @@ export class ContactService {
     this.contactsSubject.next(updatedContacts);
   }
 
-/*   setShowDetails(value: boolean) {
-    this.showDetailsSubject.next(value);
-  } */
+  removeContact() {
+    // Code: aktuellen Kontakt aus dem Dummy-Array löschen
+  }
 
   setCurrentContact(contact: Contact | null) {
     this.currentContactSubject.next(contact);
   }
+
+  
+  
+
+
+
 }
