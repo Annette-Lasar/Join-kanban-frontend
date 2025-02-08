@@ -1,4 +1,4 @@
-<div class="section-wrapper">
+<header>
   <div class="header-wrapper">
     <img
       class="header-join-logo"
@@ -6,25 +6,21 @@
       alt="logo"
       width="32"
     />
-    <p>Kanban Project Management Tool</p>
-    <div id="header_icons" class="header-icon-wrapper">
-      <div id="header_help_icon" class="header-help-icon">
-        <a routerLink="help-user">
-          <img src="../assets/icons/help.svg" alt="" />
-        </a>
+    <div class="title-and-initial-wrapper">
+      <p>Kanban Project Management Tool</p>
+      <div id="header_icons" class="header-icon-wrapper">
+        <div id="header_help_icon" class="header-help-icon">
+          <a routerLink="help-user">
+            <img src="assets/icons/help.svg" alt="" />
+          </a>
+        </div>
+        <div id="user_icon" class="user-icon" onclick="toggleHeaderMenu()">
+          WW
+        </div>
       </div>
-      <div id="user_icon" class="user-icon" onclick="toggleHeaderMenu()"></div>
-    </div>
-    <div
-      id="background_wrapper"
-      class="background-wrapper d-none"
-      onclick="toggleHeaderMenu()"
-    >
-      <div id="header_menu" class="header-menu d-none">
-        <a href="../html/legal_notice.html">Legal Notice</a>
-        <a href="../html/privacy_policy.html">Privacy Policy</a>
-        <a onclick="logout()">Log out</a>
+      <div id="header_menu" class="header-menu">
+        <join-logout-menu />
       </div>
     </div>
   </div>
-</div>
+</header>

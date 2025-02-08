@@ -1,10 +1,14 @@
 <div class="outer-wrapper">
   <div class="sign-up-header">
     <div class="title-wrapper">
-      <img
-        src="../../../assets/icons/arrow_left_line_default.svg"
-        alt=""
-        (click)="onSignUpClick()"
+      <join-button
+      [buttonIcon]="true"
+      [imgSrc]="'assets/icons/arrow_left_line_default.svg'"
+      [padding]="'0.5em'"
+      [width]="''"
+      [height]="''"
+      [buttonClass]="'arrow-button'"
+      [actionType]="'onToggleShowLogin'"
       />
       <h1>Sign up</h1>
     </div>

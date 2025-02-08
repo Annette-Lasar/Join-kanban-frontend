@@ -4,11 +4,17 @@
       <h1>Log in</h1>
       <div class="separator"></div>
     </div>
-    <form action="">
+    <form (ngSubmit)="login()">
       <div class="data-wrapper">
         <div class="input-wrapper">
           <div class="email-wrapper">
-            <input type="text" name="email" id="email" placeholder="Email" />
+            <input
+              type="text"
+              name="email"
+              id="email"
+              placeholder="Email"
+              [(ngModel)]="username"
+            />
             <img src="assets/icons/mail.svg" alt="" />
           </div>
           <div class="password-wrapper">
@@ -17,6 +23,7 @@
               name="password"
               id="password"
               placeholder="Password"
+              [(ngModel)]="password"
             />
             <img src="assets/icons/lock.svg" alt="" />
           </div>
@@ -32,6 +39,7 @@
       <div class="login-button-wrapper">
         <join-button
           [caption]="'Log in'"
+          [type]="'submit'"
           [buttonClass]="'dark-square-button'"
           [width]="'120px'"
           [height]="'32px'"
@@ -44,6 +52,7 @@
             [width]="'120px'"
             [height]="'32px'"
             [padding]="'0'"
+            [actionType]="'guestLogin'"
           ></join-button>
         </a>
       </div>
@@ -62,6 +71,4 @@
       ></join-button>
     </div>
   </div>
-  
 </div>
-

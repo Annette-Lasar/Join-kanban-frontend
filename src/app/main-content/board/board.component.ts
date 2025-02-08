@@ -1,7 +1,5 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
-import { HeaderComponent } from '../../shared/components/header/header.component';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { RouterLink } from '@angular/router';
 import { InfoComponent } from '../../shared/components/info/info.component';
@@ -9,6 +7,8 @@ import { OutsideClickDirective } from '../../shared/directives/outside-click.dir
 import { ContactStatusService } from '../../shared/services/contact-status.service';
 import { ButtonPropertyService } from '../../shared/services/button-propertys.service';
 import { BoardStatusService } from '../../shared/services/board-status.service';
+import { TaskService } from '../../shared/services/task.service';
+import { Task } from '../../shared/interfaces/task.interface';
 
 
 @Component({
@@ -16,8 +16,6 @@ import { BoardStatusService } from '../../shared/services/board-status.service';
   standalone: true,
   imports: [
     CommonModule,
-    HeaderComponent,
-    NavbarComponent,
     ButtonComponent,
     RouterLink,
     InfoComponent,
@@ -30,18 +28,22 @@ export class BoardComponent implements OnInit {
   isFocused = false;
   isContainerVisible = false;
   message: string = '';
+  allTasks: Task[] = [];
 
   @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private contactStatusService: ContactStatusService,
     private buttonPropertyService: ButtonPropertyService,
-    private boardStatusService: BoardStatusService
+    private boardStatusService: BoardStatusService,
+    private taskService: TaskService
   ) {}
 
   ngOnInit(): void {
     this.getUpdatedBoardSuccessStatus();
     this.getUpdatedMessage();
+    this.taskService.fetchTasks().subscribe();
+    this.getUpdatedTasks();
   }
 
   getUpdatedBoardSuccessStatus(): void {
@@ -56,6 +58,15 @@ export class BoardComponent implements OnInit {
         this.message = message;
       }
     });
+  }
+
+  getUpdatedTasks(): void {
+    this.taskService.tasks$.subscribe((tasks) => {
+      if (tasks) {
+        this.allTasks = tasks;
+        console.log('Alle Aufgaben: ', this.allTasks);
+      }
+    })
   }
 
   leaveSearchInputFocus() {

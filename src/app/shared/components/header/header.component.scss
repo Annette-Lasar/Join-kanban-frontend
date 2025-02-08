@@ -1,6 +1,7 @@
 @import "../../../../scss_files/variables.scss";
+@import "../../../../scss_files/mixins.scss";
 
-.section-wrapper {
+header {
   width: 100%;
   padding: 1em 0.5em;
   background-color: $white;
@@ -11,19 +12,62 @@
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @include flex-container();
   border: blue 1px solid;
+  & p {
+    display: none;
+  }
 }
 
-.header-wrapper p {
-  display: none;
+.title-and-initial-wrapper {
+  width: 90%;
+  position: relative;
+  @include flex-container($justify: flex-end);
+  border: greenyellow 1px solid;
+}
+
+.header-icon-wrapper {
+  @include flex-container($gap: 16px);
+  border: purple 1px solid;
+  .header-help-icon {
+    display: none;
+  }
+  .user-icon {
+    width: 40px;
+    height: 40px;
+    @include flex-container($justify: center);
+    border: $darkblue 2px solid;
+    border-radius: 50%;
+    font-weight: 700;
+    color: $lightblue;
+    cursor: pointer;
+  }
+}
+
+.header-menu {
+  position: absolute;
+  top: 52px;
+  right: 0;
+  z-index: 5;
 }
 
 @media (min-width: 50em) {
   .header-wrapper {
     margin-inline: 0;
     max-width: unset;
+    & p {
+      display: block;
+      border: red 1px solid;
+    }
+  }
+
+  .title-and-initial-wrapper {
+    @include flex-container($justify: space-between);
+  }
+
+  .header-icon-wrapper {
+    .header-help-icon {
+      display: block;
+    }
   }
 }

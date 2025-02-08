@@ -1,0 +1,45 @@
+@import "../../../../scss_files/variables.scss";
+@import "../../../../scss_files/mixins.scss";
+
+.menu-wrapper {
+  width: 120px;
+  @include flex-container(
+    $direction: column,
+    $justify: space-between,
+    $gap: 4px
+  );
+  border: none;
+  border-radius: 20px 0 20px 20px;
+  background-color: $darkblue;
+  button {
+    width: 100%;
+    height: 40px;
+    padding: 0 0 0 20px;
+    @include flex-container($justify: flex-start);
+    background-color: transparent;
+    border: none;
+    color: $white;
+    cursor: pointer;
+    &:first-of-type {
+      border-radius: 20px 0 0 0;
+    }
+    &:last-of-type {
+      border: none;
+      border-radius: 0 0 20px 20px;
+    }
+    &:hover {
+      border: none;
+      background-color: $verydarkblue;
+    }
+  }
+}
+
+@media (min-width: 50em) {
+    .menu-wrapper {
+        button{
+            &:first-of-type {
+                display: none;
+            }
+        }
+    }
+}

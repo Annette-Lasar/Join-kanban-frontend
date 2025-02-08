@@ -14,7 +14,6 @@ export class ButtonPropertyService {
   isAddContactButtonClicked$ =
     this.isAddContactButtonClickedSubject.asObservable();
 
-
   private createNewContactClicked = new BehaviorSubject<boolean>(false);
   createNewContactClicked$ = this.createNewContactClicked.asObservable();
 
@@ -44,8 +43,6 @@ export class ButtonPropertyService {
     this.isAddContactButtonClickedSubject.next(status);
   }
 
-
-
   setCreateNewContactStatus(status: boolean): void {
     this.createNewContactClicked.next(status);
   }
@@ -63,7 +60,8 @@ export class ButtonPropertyService {
   }
 
 
-  setLoginStatus(status: boolean): void {
-    this.loginStatusSubject.next(status);
+  toggleLoginStatus(): void {
+    const currentStatus = this.loginStatusSubject.value; 
+    this.loginStatusSubject.next(!currentStatus);
   }
 }

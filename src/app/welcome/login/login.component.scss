@@ -4,7 +4,7 @@
 .outer-wrapper {
   width: 90%;
   max-width: 500px;
-  height: 85%;
+  height: 95%;
   max-height: 600px;
   @include flex-container(column, center, space-between);
   border: green 2px solid;
