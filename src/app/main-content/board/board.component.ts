@@ -142,7 +142,7 @@ export class BoardComponent implements OnInit {
         this.contactService.contacts$.subscribe({
           next: (contacts) => {
             this.contacts = contacts;
-            console.log('Kontakte in auf dem Board:', this.contacts);
+            console.log('Kontakte auf dem Board:', this.contacts);
           },
           error: (err) =>
             console.error('Fehler beim Abrufen der Kontakte:', err),
