@@ -14,11 +14,15 @@
             <img src="assets/icons/help.svg" alt="" />
           </a>
         </div>
-        <div id="user_icon" class="user-icon" onclick="toggleHeaderMenu()">
-          WW
+        <div id="user_icon" class="user-icon" (click)="toggleHeaderMenu()">
+          {{ getUserInitials() }}
         </div>
       </div>
-      <div id="header_menu" class="header-menu">
+      <div
+        id="header_menu"
+        class="header-menu"
+        [ngClass]="{ 'd-none': !isMenuVisible }"
+      >
         <join-logout-menu />
       </div>
     </div>

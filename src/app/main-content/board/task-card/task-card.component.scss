@@ -1,0 +1,129 @@
+@import "../../../../scss_files/variables.scss";
+@import "../../../../scss_files/mixins.scss";
+
+.task-card {
+  height: 240px;
+  width: 200px;
+  padding: 1em;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 24px 36px 60px 20px auto;
+  grid-template-areas:
+    "category"
+    "title"
+    "description"
+    "subtasks"
+    "contacts";
+  border: rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.08);
+  background-color: $white;
+  cursor: pointer;
+}
+
+.task-card-header-wrapper {
+  width: 100%;
+  grid-area: category;
+  @include flex-container();
+  //   border: green 1px solid;
+  .task-card-category-wrapper {
+    padding: 0.3em 0.5em;
+    border-radius: 8px;
+    font-size: 0.8rem;
+  }
+  .task-card-context-menu-wrapper {
+    padding: 0.25em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: var(--accent-color-gray) 0.5px solid;
+    border-radius: 50%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    &:hover {
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    img {
+      transform: rotate(90deg);
+      filter: invert(81%) sepia(19%) saturate(1%) hue-rotate(341deg)
+        brightness(100%) contrast(98%);
+    }
+  }
+}
+
+h3 {
+  grid-area: title;
+  width: 100%;
+  align-self: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.description-wrapper {
+  grid-area: description;
+  width: 100%;
+  padding: 0.5em 0 0;
+  color: $fontcolorgray;
+  font-size: 0.8rem;
+}
+
+.subtasks-progress-wrapper {
+  width: 100%;
+  grid-area: subtasks;
+  align-self: center;
+  @include flex-container($gap: 8px);
+  label {
+    width: 40%;
+    font-size: 0.6rem;
+  }
+  progress {
+    width: 60%;
+    height: 10px;
+    border-radius: 8px;
+    appearance: none;
+  }
+  progress::-webkit-progress-value {
+    background-color: $progressblue;
+    border-radius: 8px;
+  }
+  progress::-webkit-progress-bar {
+    background-color: $progressgray; 
+    border-radius: 8px;
+  }
+  progress::-moz-progress-bar {
+    background-color: $progressblue; 
+    border-radius: 8px;
+  }
+}
+
+.empty-box-info {
+  width: 100%;
+  font-size: 0.6rem;
+  align-self: center;
+}
+
+.contacts-and-priority-wrapper {
+  width: 100%;
+  grid-area: contacts;
+  @include flex-container();
+  .contacts-wrapper {
+    width: 130px;
+    height: 28px;
+    @include flex-container($justify: flex-start);
+  }
+  .contact-initial-icon {
+    font-size: 0.8rem;
+    height: 24px;
+    width: 24px;
+    @include flex-container($justify: center);
+    border: $darkgray 1px solid;
+    border-radius: 50%;
+  }
+}
+
+
+@media (min-width: 50em) {
+    .task-card {
+        width: 100%;
+    }
+}

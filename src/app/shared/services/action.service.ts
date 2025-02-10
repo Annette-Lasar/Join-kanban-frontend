@@ -2,7 +2,6 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { ContactStatusService } from './contact-status.service';
 import { ButtonPropertyService } from './button-propertys.service';
 import { BoardStatusService } from './board-status.service';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +14,6 @@ export class ActionService {
     private contactStatusService: ContactStatusService,
     private buttonPropertyService: ButtonPropertyService,
     private boardStatusService: BoardStatusService,
-    private authService: AuthService
   ) {}
 
   private actionMap = new Map<string, (message?: string) => void>([
@@ -42,7 +40,7 @@ export class ActionService {
     ['deleteContact', () => this.deleteContact()],
     ['onToggleShowLogin', () => this.showSignUp()],
     ['guestLogin', () => this.triggerGuestLogin()],
-    // add further actions here if necessary
+    // add further actions here if necessary.
   ]);
 
   executeAction(actionType: string, message?: string) {
@@ -78,10 +76,6 @@ export class ActionService {
   showSignUp(): void {
     this.buttonPropertyService.toggleLoginStatus();
   }
-
-  /*   guestLogin(): void {
-    this.authService.guestLogin();
-  } */
 
   triggerGuestLogin(): void {
     this.guestLoginEvent.emit(); 

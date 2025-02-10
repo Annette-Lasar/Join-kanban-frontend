@@ -15,7 +15,7 @@
     <div class="name-wrapper">
       <div
         class="initials"
-        [style.backgroundColor]="contact.contact_color"
+        [style.backgroundColor]="contact.color"
         [style.color]="contact.color_brightness ? '#000000' : '#ffffff'"
       >
         {{ contact.name.charAt(0)
@@ -30,12 +30,12 @@
     </div>
     <div class="phone-wrapper">
       <div class="keyword bold_600">Phone</div>
-      <div class="phone">{{ contact.phone }}</div>
+      <div class="phone">{{ contact.phone_number }}</div>
     </div>
   </div>
   } @else {
   <div class="name-wrapper">
-    <div class="initials" [style.backgroundColor]="contact.contact_color">
+    <div class="initials" [style.backgroundColor]="contact.color">
       {{ contact.name.charAt(0) }}{{ contact.name.split(" ").pop()?.charAt(0) }}
     </div>
     <div class="name bold_600">{{ contact.name }}</div>
@@ -56,7 +56,7 @@
     </div>
     <div class="phone-wrapper">
       <div class="keyword bold_600">Phone</div>
-      <div class="phone">{{ contact.phone }}</div>
+      <div class="phone">{{ contact.phone_number }}</div>
     </div>
   </div>
   } }

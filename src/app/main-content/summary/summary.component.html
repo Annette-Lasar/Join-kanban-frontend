@@ -6,57 +6,62 @@
       <div class="blue-separator"></div>
     </div>
     <div class="outer-summary-wrapper">
+      @if(summaries.length > 0) {
       <div class="inner-summary-wrapper">
         <div class="info-item todo">
           <div class="info-icon">
             <img src="assets/icons/edit_white.svg" alt="edit icon" />
           </div>
-          <div class="number info-number">1</div>
+          <div class="number info-number">{{summaries[0].todo_count}}</div>
           <div class="task-caption info-caption">To-do</div>
         </div>
         <div class="info-item done">
           <div class="info-icon edit">
             <img src="assets/icons/check_white.svg" alt="edit icon" />
           </div>
-          <div class="number info-number">1</div>
+          <div class="number info-number">{{summaries[0].done_count}}</div>
           <div class="task-caption info-caption">Done</div>
         </div>
         <div class="info-item urgent-overview">
           <div class="urgent">
             <div class="info-icon red">
-              <img src="assets/icons/prio_urgent_white.svg" alt="priority icon" />
+              <img
+                src="assets/icons/prio_urgent_white.svg"
+                alt="priority icon"
+              />
             </div>
-            <div class="number info-number">1</div>
+            <div class="number info-number">{{summaries[0].urgent_count}}</div>
             <div class="task-caption info-caption">Urgent</div>
           </div>
           <div class="separator-line"></div>
           <div class="date-box">
-            <div class="date">October 16, 2022</div>
+            <div class="date">{{summaries[0].next_due_date}}</div>
             <div class="task-caption">Upcoming Deadline</div>
           </div>
         </div>
         <div class="info-item tasks-in-board">
-          <div class="number">5</div>
+          <div class="number">{{summaries[0].total_tasks}}</div>
           <div class="task-caption flex-box">
             Tasks in <br />
             Board
           </div>
         </div>
         <div class="info-item tasks-in-progress">
-          <div class="number">2</div>
+          <div class="number">{{summaries[0].in_progress_count}}</div>
           <div class="task-caption flex-box">
             Tasks In <br />
             Progress
           </div>
         </div>
         <div class="info-item tasks-awaiting-feedback">
-          <div class="number">2</div>
+          <div class="number">{{summaries[0].await_feedback_count}}</div>
           <div class="task-caption flex-box">
             Awaiting <br />
             feedback
           </div>
         </div>
       </div>
+      }
       <join-user-greeting />
     </div>
   </div>

@@ -31,7 +31,7 @@
           >
             <div
               class="list-item-icon"
-              [style.backgroundColor]="contact.contact_color"
+              [style.backgroundColor]="contact.color"
               [style.color]="contact.color_brightness ? '#000000' : '#ffffff'"
             >
               {{ contact.name ? contact.name.charAt(0) : ""
@@ -94,7 +94,7 @@
   > -->
 </div>
 <join-contact-form
-  [contacts]="dummyContacts"
+  [contacts]="contacts"
   [currentContact]="currentContact" 
 />
 <join-info

@@ -30,7 +30,8 @@ import { ButtonPropertyService } from '../../shared/services/button-propertys.se
   styleUrl: './contacts.component.scss',
 })
 export class ContactsComponent implements OnInit {
-  dummyContacts: Contact[] | null = contacts;
+  contacts: Contact[] = [];
+  // dummyContacts: Contact[] | null = contacts;
   groupedContacts: { key: string; value: Contact[] }[] = [];
 
   isMobile: boolean = true;
@@ -57,15 +58,16 @@ export class ContactsComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkViewport();
-    this.initializeContactsValue();
-    this.updateContactsList();
-    this.groupContacts();
+    // this.initializeContactsValue();
+    // this.updateContactsList();
+    this.loadContacts();
+    // this.groupContacts();
     this.getGroupedContacts();
     this.updateShowDetails();
     this.getUpdatedShowDetailsStatus();
     this.getUpdatedContactFormStatus();
     this.getUpdatedIsAddContactModeStatus();
-    this.getUpdatedDeleteContactStatus();
+    // this.getUpdatedDeleteContactStatus();
     this.getUpdatedDetailFormStatus();
     this.getUpdatedButtonPropertyStatus();
     this.getUpdatedSuccessStatus();
@@ -87,15 +89,32 @@ export class ContactsComponent implements OnInit {
     this.isMobile = window.innerWidth < 800;
   }
 
-  initializeContactsValue(): void {
+  /*   initializeContactsValue(): void {
     if (this.dummyContacts) {
       this.contactService.initializeContacts(this.dummyContacts);
     }
-  }
+  } */
 
-  updateContactsList(): void {
+  /*   updateContactsList(): void {
     this.contactService.contacts$.subscribe((updatedContacts) => {
       this.dummyContacts = [...updatedContacts];
+    });
+  } */
+
+  loadContacts(): void {
+    this.contactService.fetchData().subscribe({
+      next: () => {
+        this.contactService.contacts$.subscribe({
+          next: (contacts) => {
+            this.contacts = contacts;
+            console.log('Kontakte in Contacts:', this.contacts);
+            this.groupContacts();
+          },
+          error: (err) =>
+            console.error('Fehler beim Abrufen der Kontakte:', err),
+        });
+      },
+      error: (err) => console.error('Fehler beim Laden der Kontakte:', err),
     });
   }
 
@@ -152,7 +171,7 @@ export class ContactsComponent implements OnInit {
     this.contactStatusService.setIsAddContactModeStatus(newStatus);
   }
 
-  getUpdatedDeleteContactStatus() {
+  /*   getUpdatedDeleteContactStatus() {
     this.contactStatusService.deleteContactStatus$.subscribe((status) => {
       if (!this.isInitialLoad && status) {
         this.deleteContactStatus = status;
@@ -160,21 +179,15 @@ export class ContactsComponent implements OnInit {
       }
       this.isInitialLoad = false;
     });
-  }
-
-  /*   getUpdatedDeleteContactStatus() {
-    this.contactStatusService.deleteContactStatus$.subscribe((status) => {
-      this.deleteContactStatus = status;
-      this.deleteContactFromList();
-    });
   } */
 
   groupContacts() {
-    this.groupContactsService.groupContactsAlphabetically(this.dummyContacts);
+    this.groupContactsService.groupContactsAlphabetically(this.contacts);
   }
 
   getGroupedContacts() {
     this.groupContactsService.groupContactsSubject$.subscribe((groups) => {
+      console.log('Gruppierte Kontakte: ', this.groupedContacts);
       this.groupedContacts = this.sortLetters(groups);
     });
   }
@@ -210,7 +223,7 @@ export class ContactsComponent implements OnInit {
     this.contactStatusService.setContactDetailFormStatus(false);
   }
 
-  deleteContactFromList() {
+  /* deleteContactFromList() {
     console.log('Kontakte: ', this.dummyContacts);
     let currentContactIndex = this.dummyContacts?.findIndex((oneContact) => {
       return this.currentContact
@@ -226,7 +239,7 @@ export class ContactsComponent implements OnInit {
     }
     this.updateContactsList();
     this.updateShowDetails();
-  }
+  } */
 
   setSuccessStatus(newStatus: boolean) {
     this.successStatus = newStatus;

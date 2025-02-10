@@ -19,13 +19,19 @@
           </div>
           <div class="password-wrapper">
             <input
-              type="text"
+              [type]="passwordVisible ? 'text': 'password'"
               name="password"
               id="password"
               placeholder="Password"
               [(ngModel)]="password"
+              (focus)="onPasswordFocus()"
+              (blur)="onPasswordBlur()"
             />
-            <img src="assets/icons/lock.svg" alt="" />
+            <img 
+            [src]="passwordIcon" 
+            alt="Toggle password visibility" 
+            (click)="togglePasswordVisibility()"
+            />
           </div>
           <div class="incorrect-data">
             Check your email and password. Please try again.

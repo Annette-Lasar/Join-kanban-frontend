@@ -34,8 +34,6 @@ export class AuthService {
     response: Partial<LoginResponse>,
     userType: 'User' | 'Guest'
   ): void {
-    console.log('response: ', response);
-    console.log('response-id: ', response.id);
     localStorage.setItem('authToken', response.token || '');
     localStorage.setItem('userId', response.id?.toString() || '');
     localStorage.setItem('userName', response.username || '');

@@ -116,20 +116,20 @@ join-info {
 }
 
 .outer-board-wrapper {
-  height: calc(100vh - $header-height - $mobile-navbar-height - 92px - 16px);
   display: grid;
   grid-template-columns: 1fr;
-  grid-auto-rows: 200px;
+  grid-auto-rows: 280px;
   grid-template-areas:
-    "todo"
+    "toDo"
     "inProgress"
     "awaitFeedback"
     "done";
   gap: 1em;
-  overflow-y: auto;
   border: green 1px solid;
   .list {
+    width: 100%;
     border: orange 1px solid;
+    overflow-y: auto;
   }
   .board-list-headline-wrapper {
     height: 26px;
@@ -146,15 +146,15 @@ join-info {
   }
 }
 
-.todo {
-  grid-area: todo;
+.toDo {
+  grid-area: toDo;
 }
 
-.in-progress {
+.inProgress {
   grid-area: inProgress;
 }
 
-.await-feedback {
+.awaitFeedback {
   grid-area: awaitFeedback;
 }
 
@@ -163,9 +163,7 @@ join-info {
 }
 
 .board-list-headline-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @include flex-container();
 }
 
 .add-task-overlay {
@@ -173,6 +171,17 @@ join-info {
   inset: 0;
   background-color: white;
 }
+
+.task-card-wrapper {
+  height: calc(100% - 26px);
+  width: 100%;
+  padding-inline: 0.5em;
+  overflow-x: auto;
+  @include flex-container($justify: flex-start, $gap: 1em);
+  border: royalblue 2px solid;
+}
+
+
 
 @media (min-width: 50em) {
   .inner-content-header {
@@ -187,7 +196,7 @@ join-info {
     height: calc(100vh - $header-height - 60px - 24px);
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto;
-    grid-template-areas: "todo inProgress awaitFeedback done";
+    grid-template-areas: "toDo inProgress awaitFeedback done";
     overflow-y: auto;
   }
 

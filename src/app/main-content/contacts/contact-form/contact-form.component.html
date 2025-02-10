@@ -64,7 +64,7 @@
             <input
               type="tel"
               placeholder="Phone"
-              [(ngModel)]="newContact.phone"
+              [(ngModel)]="newContact.phone_number"
               (ngModelChange)="validatePhone($event)"
               name="phone"
               #phone="ngModel"
@@ -156,7 +156,7 @@
       } @else {
       <div
         class="inner-icon-wrapper"
-        [style.backgroundColor]="newContact.contact_color"
+        [style.backgroundColor]="newContact.color"
         [style.color]="newContact.color_brightness ? '#000000' : '#ffffff'"
       >
         {{ newContact.name ? newContact.name.charAt(0) : ""

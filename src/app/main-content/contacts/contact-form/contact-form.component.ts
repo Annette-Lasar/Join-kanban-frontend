@@ -242,8 +242,8 @@ export class ContactFormComponent implements OnInit {
     id: '',
     name: '',
     email: '',
-    phone: '',
-    contact_color: '',
+    phone_number: '',
+    color: '',
     color_brightness: false,
   };
 
@@ -363,7 +363,7 @@ export class ContactFormComponent implements OnInit {
   onSubmit(): void {
     if (this.nameIsValid && this.emailIsValid && this.phoneIsValid) {
       this.setRandomColorForContact();
-      this.addNewContactToList();
+      // this.addNewContactToList();
       this.groupContactsService.groupContactsAlphabetically(this.contacts);
       this.clearInputFields();
       this.contactStatusService.setContactFormStatus(false);
@@ -372,25 +372,25 @@ export class ContactFormComponent implements OnInit {
   }
 
   setRandomColorForContact() {
-    this.newContact.contact_color = this.randomColorService.getRandomColor();
+    this.newContact.color = this.randomColorService.getRandomColor();
     this.newContact.color_brightness =
-      this.colorBrightnessService.isColorBright(this.newContact.contact_color);
+      this.colorBrightnessService.isColorBright(this.newContact.color);
   }
 
-  addNewContactToList() {
+/*   addNewContactToList() {
     this.contactService.addContact(this.newContact);
     this.contactService.contacts$.subscribe((contacts) => {
       this.contacts = contacts;
     });
-  }
+  } */
 
   resetForm() {
     this.newContact = {
       id: '',
       name: '',
       email: '',
-      phone: '',
-      contact_color: '',
+      phone_number: '',
+      color: '',
       color_brightness: false,
     };
   }
