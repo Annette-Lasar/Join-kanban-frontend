@@ -1,12 +1,6 @@
 @import "../../../../scss_files/variables.scss";
 @import "../../../../scss_files/mixins.scss";
 
-/* .inner_add_task_main_wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-} */
-
 .add-task-grid {
   height: calc(100vh - $header-height - $mobile-navbar-height - 80px - 48px);
   max-width: 600px;

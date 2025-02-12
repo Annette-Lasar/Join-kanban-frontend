@@ -25,7 +25,6 @@
   width: 100%;
   grid-area: category;
   @include flex-container();
-  //   border: green 1px solid;
   .task-card-category-wrapper {
     padding: 0.3em 0.5em;
     border-radius: 8px;
@@ -33,9 +32,7 @@
   }
   .task-card-context-menu-wrapper {
     padding: 0.25em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-container($justify: center);
     border: var(--accent-color-gray) 0.5px solid;
     border-radius: 50%;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -116,7 +113,7 @@ h3 {
     height: 24px;
     width: 24px;
     @include flex-container($justify: center);
-    border: $darkgray 1px solid;
+    // border: $darkgray 1px solid;
     border-radius: 50%;
   }
 }

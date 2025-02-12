@@ -1,4 +1,4 @@
-<div>
+<div class="board-wrapper">
   @if(boards.length > 0) {
   <div class="content">
     <div class="inner-content-header">
@@ -126,4 +126,7 @@
     </div>
   </div>
   }
+  <join-card-detail
+  [task]="selectedTask"
+  />
 </div>

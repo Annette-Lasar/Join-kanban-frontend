@@ -25,6 +25,10 @@ export class TaskCardComponent implements OnInit {
     }
   }
 
+  showObject(obj:any){
+    console.log(typeof obj);
+  }
+
     getTruncatedText(text: string) {
       return this.textFormatterService.truncateSentence(text);
     }

@@ -98,9 +98,7 @@ h1 {
 }
 
 .todo .info-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-container($justify: center);
   border: $white 1px solid;
 }
 
@@ -115,9 +113,7 @@ h1 {
 
 .urgent-overview {
   grid-area: overview;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @include flex-container();
 }
 
 .urgent,
@@ -135,10 +131,7 @@ h1 {
 }
 
 .date-box {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
+  @include flex-container($justify: center, $gap: 8px);
 }
 
 .tasks-in-board {
@@ -156,10 +149,7 @@ h1 {
 .tasks-in-board,
 .tasks-in-progress,
 .tasks-awaiting-feedback {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  @include flex-container($direction: column, $justify: center);
 }
 
 .number {

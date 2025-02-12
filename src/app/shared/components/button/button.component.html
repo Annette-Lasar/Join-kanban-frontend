@@ -36,7 +36,7 @@
     class="inner-caption-image-wrapper"
     (click)="actionFunction($event, actionType, infoMessage)"
   >
-    <img [src]="imgSrc" [alt]="alt" /> <span>{{ caption }}</span>
+    <img [src]="imgSrc" [class]="imgClass" [alt]="alt" /> <span>{{ caption }}</span>
   </div>
   } @case (buttonIcon) {
   <img

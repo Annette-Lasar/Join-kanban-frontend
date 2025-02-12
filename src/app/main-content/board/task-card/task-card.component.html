@@ -1,17 +1,14 @@
 @if(task) {
 <div class="task-card">
   <div class="task-card-header-wrapper">
-    <!-- <div class="task-card-category-wrapper" [style.backgroundColor]="'#ab3498'">
-      {{ category.name }}
-    </div> -->
     <div
       class="task-card-category-wrapper"
       [ngStyle]="{
-        backgroundColor: '#4d8898',
+        'background-color': task.category.color,
         color: task.category.color_brightness ? '#000000' : '#ffffff'
       }"
     >
-      {{ category.name }}
+      {{ task.category.name }}
     </div>
     <div class="task-card-context-menu-wrapper">
       <img src="assets/icons/three_dots.svg" />
@@ -48,7 +45,8 @@
         class="contact-initial-icon"
         [ngStyle]="{
           backgroundColor: oneContact.color,
-          color: oneContact.color_brightness ? '#000000' : '#ffffff'
+          color: oneContact.color_brightness ? '#000000' : '#ffffff',
+          border: '1px solid ' + oneContact.color
         }"
       >
         {{ oneContact.first_name?.charAt(0)

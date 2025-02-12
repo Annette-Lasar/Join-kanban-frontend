@@ -1,4 +1,5 @@
-@import "../../scss_files/variables.scss";
+@import '../../scss_files/variables.scss';
+@import '../../scss_files/mixins.scss';
 
 h2 {
   padding: 1.5em 0 1em;
@@ -18,9 +19,7 @@ h2:last-of-type {
 .title-wrapper {
   height: 80px;
   padding-inline: 0.5em;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @include flex-container();
   a {
     cursor: pointer;
   }

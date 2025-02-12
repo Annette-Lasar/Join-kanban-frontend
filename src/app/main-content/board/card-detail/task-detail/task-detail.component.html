@@ -1,0 +1,104 @@
+@if(task) {
+<div class="task-detail-wrapper">
+  <div class="task-detail-content-wrapper">
+    <div class="task-detail-header-wrapper">
+      <div
+        class="category-wrapper"
+        [ngStyle]="{
+          backgroundColor: task.category.color,
+          color: task.category.color_brightness ? '#000000' : '#ffffff'
+        }"
+      >
+        {{ task.category.name }}
+      </div>
+      <join-button
+        [buttonIcon]="true"
+        [imgSrc]="'assets/icons/close.svg'"
+        [buttonClass]="'dark-close-button'"
+        [padding]="'0'"
+        [width]="'20px'"
+        [height]="'20px'"
+        [actionType]="'closeTaskDetail'"
+      />
+    </div>
+    <h1>
+      {{ task.title }}
+    </h1>
+    <div class="task-description">
+      {{ task.description }}
+    </div>
+    <div class="task-due-date">
+      <span class="meta-label"> Due date: </span>
+      <span>{{ task.due_date | date : "dd/MM/yyyy" }}</span>
+    </div>
+    <div class="priority-status">
+      <span class="meta-label"> Priority: </span
+      ><span>{{ formatPriorityStatus(task.priority) }}</span>
+      <img [src]="pathPrefix + task.priority + '.svg'" alt="" />
+    </div>
+    <div class="contacts-wrapper">
+      <div class="assigned-to">Assigned to:</div>
+      <ul class="contact-list">
+        @for (contact of task.contacts; track contact) {
+        <li class="contact-item">
+          <div
+            class="contact-icon"
+            [ngStyle]="{
+              backgroundColor: contact.color,
+              color: contact.color_brightness ? '#000000' : '#ffffff'
+            }"
+          >
+            {{ contact.first_name?.charAt(0)
+            }}{{ contact.last_name?.charAt(0) }}
+          </div>
+          <div class="contact-full-name">
+            <span>
+              {{ contact.name }}
+            </span>
+          </div>
+        </li>
+        }
+      </ul>
+    </div>
+    <div class="subtasks-wrapper">
+      <div class="subtasks">Subtasks:</div>
+      <ul class="subtasks-list">
+        @for (subtask of task.subtasks; track subtask) {
+        <label [for]="subtask.id">
+          <li class="subtask-item">
+            <input [id]="subtask.id" type="checkbox" />
+            <span>{{ subtask.title }}</span>
+            <!-- <label [for]="subtask.id">{{ subtask.title }}</label> -->
+          </li>
+        </label>
+        }
+      </ul>
+    </div>
+  </div>
+  <div class="task-detail-button-wrapper">
+    <join-button
+      [caption]="'Delete'"
+      [buttonIcon]="true"
+      [buttonCaptionSecond]="true"
+      [buttonClass]="'light-button-with-icon'"
+      [padding]="'0'"
+      [imgSrc]="'assets/icons/delete.svg'"
+      [imgClass]="'bin'"
+      [width]="'80px'"
+      [height]="'24px'"
+    />
+    <div class="separator"></div>
+    <join-button
+      [caption]="'Edit'"
+      [buttonIcon]="true"
+      [buttonCaptionSecond]="true"
+      [buttonClass]="'light-button-with-icon'"
+      [padding]="'0'"
+      [imgSrc]="'assets/icons/edit_dark.svg'"
+      [imgClass]="'pen'"
+      [width]="'70px'"
+      [height]="'24px'"
+    />
+  </div>
+</div>
+}

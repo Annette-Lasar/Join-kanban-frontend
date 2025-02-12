@@ -1,0 +1,11 @@
+<div class="card-detail-wrapper">
+  
+    @if (detailMode) {
+
+    <join-task-detail [task]="task" />
+
+    } @else {
+
+    <join-task-edit [task]="task" />
+    }
+</div>

@@ -1,0 +1,107 @@
+@import "../../../../../scss_files/variables.scss";
+@import "../../../../../scss_files/mixins.scss";
+
+.task-detail-wrapper {
+  height: 100%;
+  padding: 1em;
+  @include flex-container($direction: column, $align: flex-start);
+  border-radius: 20px;
+  //   border: rebeccapurple 2px solid;
+}
+
+.task-detail-content-wrapper {
+  height: 100%;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  //   border: red 2px solid;
+}
+
+.task-detail-header-wrapper {
+  width: 100%;
+  @include flex-container();
+  .category-wrapper {
+    padding: 0.25em 0.75em;
+    font-size: 0.9rem;
+    border-radius: 8px;
+  }
+}
+
+h1 {
+  margin: 1em 0 0.5em;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.task-description,
+.task-due-date,
+.priority-status,
+.assigned-to,
+.contact-list {
+  margin: 0 0 0.5rem;
+}
+
+.task-due-date {
+  @include flex-container($justify: flex-start, $gap: 12px);
+}
+
+.priority-status {
+  @include flex-container($justify: flex-start, $gap: 12px);
+  img {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.meta-label {
+  width: 70px;
+}
+
+.contacts-wrapper {
+  .contact-list {
+    padding: 0;
+    li {
+      padding: 0 0.5em 0.5em;
+      @include flex-container($justify: flex-start, $gap: 24px);
+      list-style-type: none;
+      .contact-icon {
+        width: 28px;
+        height: 28px;
+        @include flex-container($justify: center);
+        font-size: 0.6rem;
+        border-radius: 50%;
+      }
+    }
+  }
+}
+
+.subtasks-wrapper {
+  .subtasks-list {
+    padding: 0;
+  }
+
+  .subtask-item {
+    height: 28px;
+    margin: 0 0 0.5em;
+    padding: 0 0.25em;
+    @include flex-container($justify: flex-start, $gap: 12px);
+    list-style-type: none;
+    border-radius: 8px;
+    background-color: $extremelightgray;
+    transition: background 0.2s ease-in-out;
+    cursor: pointer;
+    &:hover {
+        background-color: $verylightgray;
+    }
+  }
+}
+
+.task-detail-button-wrapper {
+  margin: 0.25em 0 0;
+  width: 100%;
+  @include flex-container($justify: flex-end, $gap: 4px);
+  .separator {
+    width: 1px;
+    background-color: $bordergray;
+    height: 90%;
+  }
+}

@@ -1,10 +1,10 @@
-@import "../../../scss_files/variables.scss";
+@import '../../../scss_files/variables.scss';
+@import '../../../scss_files/mixins.scss';
 
 .inner-content-header {
   height: 80px;
   padding: 0 0.5em;
-  display: flex;
-  align-items: center;
+  @include flex-container($justify: flex-start);
 }
 
 .content {
@@ -17,13 +17,10 @@
 
 .add-task-button-wrapper {
   height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @include flex-container();
   border: orchid 1px solid;
   .button-wrapper {
-    display: flex;
-    align-items: center;
+    @include flex-container($justify: flex-start);
     gap: 8px;
   }
 }

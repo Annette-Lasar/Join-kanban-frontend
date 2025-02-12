@@ -1,6 +1,11 @@
 @import "../../../scss_files/variables.scss";
 @import "../../../scss_files/mixins.scss";
 
+
+.board-wrapper {
+  position: relative;
+}
+
 .content {
   min-height: calc(
     100vh - $header-height - $mobile-navbar-height - 52px - 16px - 100px
@@ -33,9 +38,7 @@ h1 {
 }
 
 .inner-task-button-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  @include flex-container($justify: flex-start, $gap: 4px);
 }
 
 .search-wrapper {
@@ -100,9 +103,7 @@ join-info {
 }
 
 .info-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-container($justify: center);
 }
 
 .plus-button-dark {
@@ -203,9 +204,7 @@ join-info {
   .desktop-add-task {
     min-width: 100px;
     min-height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-container($justify: center);
     color: white;
     font-weight: 600;
   }
@@ -216,9 +215,7 @@ join-info {
 
   .button-content-wrapper {
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+    @include flex-container($justify: space-around);
   }
 
   h2 {

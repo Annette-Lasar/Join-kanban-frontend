@@ -1,10 +1,9 @@
-@import "../scss_files/variables.scss";
+@import '../scss_files/variables.scss';
+@import '../scss_files/mixins.scss';
 
 #page {
     height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-container($justify: center);
 }
 
 .outer-login-wrapper {
@@ -13,9 +12,8 @@
     height: 100%;
     max-height: 800px;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-container($justify: center);
+
 }
 
 

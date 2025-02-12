@@ -37,6 +37,19 @@ export class TextFormatterService {
     }
   }
 
+  formatPriorityName(rawName: string): string {
+    switch (rawName) {
+      case 'urgent':
+        return 'Urgent';
+      case 'medium': 
+        return 'Medium';
+      case 'low':
+        return 'Low';
+      default: 
+        return rawName;
+    }
+  }
+
   truncateSentence(
     sentence: string,
     maxLength: number = this.maxTextLength
