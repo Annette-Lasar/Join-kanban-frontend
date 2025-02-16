@@ -1,11 +1,11 @@
 <div class="card-detail-wrapper">
-  
-    @if (detailMode) {
+  @if (detailMode) {
 
-    <join-task-detail [task]="task" />
+  <join-task-detail [task]="task" />
 
-    } @else {
+  } @else {
 
-    <join-task-edit [task]="task" />
-    }
+  <join-task-edit [task]="task" [contacts]="contacts"
+  [categories]="categories" />
+  }
 </div>

@@ -20,11 +20,11 @@ export class ContactStatusService {
   private deleteContactStatus = new BehaviorSubject<boolean>(false);
   deleteContactStatus$ = this.deleteContactStatus.asObservable();
 
-  private successStatus = new BehaviorSubject<boolean>(false);
-  successStatus$ = this.successStatus.asObservable();
+/*   private successStatus = new BehaviorSubject<boolean>(false);
+  successStatus$ = this.successStatus.asObservable(); */
 
-  private infoBoxStatus = new BehaviorSubject<boolean>(false);
-  infoBoxStatus$ = this.infoBoxStatus.asObservable();
+/*   private infoBoxStatus = new BehaviorSubject<boolean>(false);
+  infoBoxStatus$ = this.infoBoxStatus.asObservable(); */
 
   /* =============================================================
   
@@ -56,12 +56,12 @@ export class ContactStatusService {
     this.deleteContactStatus.next(status);
   }
 
-  setSuccessStatus(status: boolean): void {
+/*   setSuccessStatus(status: boolean): void {
     this.successStatus.next(status);
-  }
+  } */
 
 
-  setInfoBoxStatus(status: boolean): void {
+/*   setInfoBoxStatus(status: boolean): void {
     this.infoBoxStatus.next(status);
-  }
+  } */
 }

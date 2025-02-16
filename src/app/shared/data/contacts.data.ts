@@ -2,7 +2,7 @@ import { Contact } from '../interfaces/contact.interface';
 
 export const contacts: Contact[] = [
   {
-    id: '1',
+    id: 1,
     name: 'Elizabeth Bennet',
     email: 'pemberley@derbyshire.com',
     phone_number: '07453-1249743',
@@ -10,7 +10,7 @@ export const contacts: Contact[] = [
     color_brightness: true,
   },
   {
-    id: '2',
+    id: 1,
     name: 'Effi Briest',
     email: 'von_innstetten@kessin.com',
     phone_number: '125084-1947304',
@@ -18,7 +18,7 @@ export const contacts: Contact[] = [
     color_brightness: false,
   },
   {
-    id: '3',
+    id: 3,
     name: 'Jay Gatsby',
     email: 'gatsby@westegg.com',
     phone_number: '04523-7820345',
@@ -26,7 +26,7 @@ export const contacts: Contact[] = [
     color_brightness: true,
   },
   {
-    id: '4',
+    id: 4,
     name: 'Anna Karenina',
     email: 'anna.karenina@moscow.com',
     phone_number: '01784-2049356',
@@ -34,7 +34,7 @@ export const contacts: Contact[] = [
     color_brightness: false,
   },
   {
-    id: '5',
+    id: 5,
     name: 'Humbert Humbert',
     email: 'hh@ladylolita.com',
     phone_number: '03457-9812534',
@@ -42,7 +42,7 @@ export const contacts: Contact[] = [
     color_brightness: false,
   },
   {
-    id: '6',
+    id: 6,
     name: 'Emma Woodhouse',
     email: 'emma@hartfield.com',
     phone_number: '05592-6738294',
@@ -50,7 +50,7 @@ export const contacts: Contact[] = [
     color_brightness: true,
   },
   {
-    id: '7',
+    id: 7,
     name: 'Fanny Price',
     email: 'mansfield@mansfieldpark.com',
     phone_number: '04875-3382914',
@@ -58,7 +58,7 @@ export const contacts: Contact[] = [
     color_brightness: true,
   },
   {
-    id: '8',
+    id: 8,
     name: 'Dorian Gray',
     email: 'dorian@pictureofgray.com',
     phone_number: '05674-9823347',
@@ -66,7 +66,7 @@ export const contacts: Contact[] = [
     color_brightness: true,
   },
   {
-    id: '9',
+    id: 9,
     name: 'Charles Bovary',
     email: 'cbovary@normandy.com',
     phone_number: '04297-5628304',
@@ -74,7 +74,7 @@ export const contacts: Contact[] = [
     color_brightness: true,
   },
   {
-    id: '10',
+    id: 10,
     name: "Scarlett O'Hara",
     email: 'scarlett@tara.com',
     phone_number: '06348-7328472',
@@ -82,7 +82,7 @@ export const contacts: Contact[] = [
     color_brightness: false,
   },
   {
-    id: '11',
+    id: 11,
     name: 'Rhett Butler',
     email: 'rhett@notgivingadam.com',
     phone_number: '05384-9817643',
@@ -90,7 +90,7 @@ export const contacts: Contact[] = [
     color_brightness: true,
   },
   {
-    id: '12',
+    id: 12,
     name: 'Hester Prynne',
     email: 'hester@thescarletletter.com',
     phone_number: '03184-5629874',
@@ -98,7 +98,7 @@ export const contacts: Contact[] = [
     color_brightness: false,
   },
   {
-    id: '13',
+    id: 13,
     name: 'Jean Valjean',
     email: 'jvaljean@lesmis.com',
     phone_number: '02483-9847653',
@@ -106,7 +106,7 @@ export const contacts: Contact[] = [
     color_brightness: true,
   },
   {
-    id: '14',
+    id: 14,
     name: 'Elizabeth Lavenza',
     email: 'elizabeth@frankenstein.com',
     phone_number: '03984-8756349',
@@ -114,7 +114,7 @@ export const contacts: Contact[] = [
     color_brightness: false,
   },
   {
-    id: '15',
+    id: 15,
     name: 'Antonie Buddenbrook',
     email: 'dominus@providebit.com',
     phone_number: '06475-7839201',
@@ -122,7 +122,7 @@ export const contacts: Contact[] = [
     color_brightness: true,
   },
   {
-    id: '16',
+    id: 16,
     name: 'Catherine Earnshaw',
     email: 'catherine@wutheringheights.com',
     phone_number: '04267-3947528',
@@ -130,7 +130,7 @@ export const contacts: Contact[] = [
     color_brightness: false,
   },
   {
-    id: '17',
+    id: 17,
     name: 'Gregory Samsa',
     email: 'gsamsa@themetamorphosis.com',
     phone_number: '02756-8236459',
@@ -138,7 +138,7 @@ export const contacts: Contact[] = [
     color_brightness: true,
   },
   {
-    id: '18',
+    id: 18,
     name: 'Clarissa Dalloway',
     email: 'clarissa@dalloway.com',
     phone_number: '05923-8723654',
@@ -146,7 +146,7 @@ export const contacts: Contact[] = [
     color_brightness: false,
   },
   {
-    id: '19',
+    id: 19,
     name: 'Pip Pirrip',
     email: 'pip@greatexpectations.com',
     phone_number: '03568-8723456',
@@ -154,7 +154,7 @@ export const contacts: Contact[] = [
     color_brightness: true,
   },
   {
-    id: '20',
+    id: 20,
     name: 'Atticus Finch',
     email: 'atticus@maycomb.com',
     phone_number: '04756-9837456',
@@ -165,7 +165,7 @@ export const contacts: Contact[] = [
 
 /* export const contacts: Contact[] = [
   {
-    id: '1',
+    id: 1,
     name: 'Elizabeth Bennet',
     email: 'pemberley@derbyshire.com',
     phone_number: '07453-1249743',
@@ -173,7 +173,7 @@ export const contacts: Contact[] = [
     color_brightness: true,
   },
   {
-    id: '2',
+    id: 2,
     name: 'Effi Briest',
     email: 'von_innstetten@kessin.com',
     phone_number: '125084-1947304',

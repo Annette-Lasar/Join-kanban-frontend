@@ -13,6 +13,7 @@ import { GroupContactsService } from '../../shared/services/group-contacts.servi
 import { InfoComponent } from '../../shared/components/info/info.component';
 import { ContactStatusService } from '../../shared/services/contact-status.service';
 import { ButtonPropertyService } from '../../shared/services/button-propertys.service';
+import { InfoBoxService } from '../../shared/services/info-box.service';
 
 @Component({
   selector: 'join-contacts',
@@ -53,7 +54,8 @@ export class ContactsComponent implements OnInit {
     private contactService: ContactService,
     private groupContactsService: GroupContactsService,
     private contactStatusService: ContactStatusService,
-    private buttonPropertyService: ButtonPropertyService
+    private buttonPropertyService: ButtonPropertyService,
+    private infoBoxService: InfoBoxService
   ) {}
 
   ngOnInit(): void {
@@ -89,17 +91,6 @@ export class ContactsComponent implements OnInit {
     this.isMobile = window.innerWidth < 800;
   }
 
-  /*   initializeContactsValue(): void {
-    if (this.dummyContacts) {
-      this.contactService.initializeContacts(this.dummyContacts);
-    }
-  } */
-
-  /*   updateContactsList(): void {
-    this.contactService.contacts$.subscribe((updatedContacts) => {
-      this.dummyContacts = [...updatedContacts];
-    });
-  } */
 
   loadContacts(): void {
     this.contactService.fetchData().subscribe({
@@ -156,13 +147,13 @@ export class ContactsComponent implements OnInit {
   }
 
   getUpdatedSuccessStatus() {
-    this.contactStatusService.successStatus$.subscribe((status) => {
+    this.infoBoxService.successStatus$.subscribe((status) => {
       this.successStatus = status;
     });
   }
 
   getUpdatedInfoBoxStatus() {
-    this.contactStatusService.infoBoxStatus$.subscribe((status) => {
+    this.infoBoxService.infoBoxStatus$.subscribe((status) => {
       this.infoBoxStatus = status;
     });
   }

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+/* import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
 import { ContactStatusService } from '../../services/contact-status.service';
@@ -22,6 +22,7 @@ export class InfoComponent implements OnInit {
   @Input() infoMessageClass: string = '';
   @Input() imageSrc: string = '';
   @Input() imageSrc2: string = '';
+  @Input() actionType!: string; 
 
   constructor(private contactStatusService: ContactStatusService) {}
 
@@ -37,5 +38,38 @@ export class InfoComponent implements OnInit {
 
   closeInfoBox(): void {
     this.contactStatusService.setInfoBoxStatus(false);
+  }
+} */
+
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { ButtonComponent } from '../button/button.component';
+import { ContactStatusService } from '../../services/contact-status.service';
+
+@Component({
+  selector: 'join-info',
+  standalone: true,
+  imports: [CommonModule, ButtonComponent],
+  templateUrl: './info.component.html',
+  styleUrl: './info.component.scss',
+})
+export class InfoComponent {
+  @Input() securityQuestion: boolean = false;
+  @Input() textAndIcon: boolean = false;
+  @Input() alertTitle: string = '';
+  @Input() infoQuestion: string = '';
+  @Input() infoText: string = '';
+  @Input() infoMessageClass: string = '';
+  @Input() imageSrc: string = '';
+  @Input() imageSrc2: string = '';
+  @Input() actionType!: string;
+  @Input() caption1: string = '';
+  @Input() caption2: string = '';
+  @Input() categoryId?: number;
+
+  @Output() close = new EventEmitter<void>();
+
+  closeInfoBox(): void {
+    this.close.emit();
   }
 }

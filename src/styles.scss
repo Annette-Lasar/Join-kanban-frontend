@@ -52,6 +52,10 @@ join-header-content {
   @include flex-container($align: center);
 }
 
+join-categories-dropdown {
+  width: 80%;
+}
+
 .blue {
   color: $lightblue;
 }

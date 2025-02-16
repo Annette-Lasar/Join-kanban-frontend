@@ -10,6 +10,7 @@ import { ContactService } from '../../../shared/services/contact.service';
 import { Subscription } from 'rxjs';
 import { InfoComponent } from '../../../shared/components/info/info.component';
 import { ContactStatusService } from '../../../shared/services/contact-status.service';
+import { InfoBoxService } from '../../../shared/services/info-box.service';
 
 @Component({
   selector: 'join-contact-details',
@@ -27,7 +28,8 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private contactService: ContactService,
-    private contactStatusService: ContactStatusService
+    private contactStatusService: ContactStatusService,
+    private infoBoxService: InfoBoxService
   ) {}
 
   ngOnInit(): void {
@@ -71,7 +73,7 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
   }
 
   showWarningMessage() {
-    this.contactStatusService.setInfoBoxStatus(true);
+    this.infoBoxService.setInfoBoxStatus(true);
   }
 
   ngOnDestroy(): void {

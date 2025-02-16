@@ -37,7 +37,7 @@ import { CardDetailComponent } from './card-detail/card-detail.component';
     InfoComponent,
     OutsideClickDirective,
     TaskCardComponent,
-    CardDetailComponent
+    CardDetailComponent,
   ],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
@@ -55,60 +55,64 @@ export class BoardComponent implements OnInit {
   // selectedTask: Task | null = null;
   selectedTask: Task | null = {
     id: 1,
-    title: "Test Task",
-    description: "This is a test task to style the detail view.",
-    priority: "low",
-    due_date: "2025-02-12",
+    title: 'Test Task',
+    description:
+      'This is a test task to style the detail view. Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi quam impedit ab nulla omnis distinctio iure hic atque excepturi mollitia at molestiae velit, maxime ex possimus sapiente repellat dignissimos qui.',
+    priority: 'low',
+    due_date: '2025-02-12',
     contacts: [
       {
-        id: '1',
-        name: "Bilbo Beutlin",
-        first_name: "Bilbo",
-        last_name: "Beutlin",
-        email: "beutlin@hobbingen.com",
-        phone_number: "12345538384",
-        color: "#AE3294",
-        created_by: 3
+        id: 1,
+        name: 'Bilbo Beutlin',
+        first_name: 'Bilbo',
+        last_name: 'Beutlin',
+        email: 'beutlin@hobbingen.com',
+        phone_number: '12345538384',
+        color: '#AE3294',
+        color_brightness: false,
+        created_by: 3,
       },
       {
-        id: '2',
-        name: "Ronald Weasley",
-        first_name: "Ronald",
-        last_name: "Weasley",
-        email: "ronald-weasley@hogwarts.com",
-        phone_number: "39938294992",
-        color: "#482d10",
-        created_by: 3
+        id: 2,
+        name: 'Ronald Weasley',
+        first_name: 'Ronald',
+        last_name: 'Weasley',
+        email: 'ronald-weasley@hogwarts.com',
+        phone_number: '39938294992',
+        color: '#482d10',
+        color_brightness: false,
+        created_by: 3,
       },
       {
-        id: '3',
-        name: "Albus Dumbledore",
-        first_name: "Albus",
-        last_name: "Dumbledore",
-        email: "albus-brian-dumbledore@hogwarts.com",
-        phone_number: "04827849273",
-        color: "#a4835d",
-        created_by: 3
-      }
+        id: 3,
+        name: 'Albus Dumbledore',
+        first_name: 'Albus',
+        last_name: 'Dumbledore',
+        email: 'albus-brian-dumbledore@hogwarts.com',
+        phone_number: '04827849273',
+        color: '#a4835d',
+        color_brightness: true,
+        created_by: 3,
+      },
     ],
     category: {
       id: 1,
-      name: "Technical Task",
-      color: "#1FD7C9",
+      name: 'Technical Task',
+      color: '#1FD7C9',
       color_brightness: true,
-      created_by: null
+      created_by: null,
     },
     subtasks: [
-      { id: 1, title: "Subtask 1", checked_status: false },
-      { id: 2, title: "Subtask 2", checked_status: true }
+      { id: 1, title: 'Subtask 1', checked_status: false },
+      { id: 2, title: 'Subtask 2', checked_status: true },
     ],
-    status: "inProgress",
+    status: 'inProgress',
     board: 1,
     created_by: 3,
     board_list: {
       id: 1,
-      name: "toDo"
-    }
+      name: 'toDo',
+    },
   };
 
   @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;

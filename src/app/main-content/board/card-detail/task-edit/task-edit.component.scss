@@ -1,0 +1,125 @@
+@import "../../../../../scss_files/variables.scss";
+@import "../../../../../scss_files/mixins.scss";
+
+.task-detail-wrapper {
+  height: 100%;
+  padding: 1em;
+  @include flex-container($direction: column, $align: flex-start);
+  border-radius: 20px;
+}
+
+.task-detail-content-wrapper {
+  width: 100%;
+  height: 90%;
+  font-size: 0.85rem;
+}
+
+.task-detail-header-wrapper {
+  width: 100%;
+  height: 24px;
+  @include flex-container();
+  .category-wrapper {
+    padding: 0.25em 0.75em;
+    font-size: 0.9rem;
+    border-radius: 8px;
+  }
+}
+
+.task-detail-text-wrapper {
+  width: 100%;
+  height: calc(100% - 24px - 12px);
+  margin: 12px 0 0 0;
+  overflow-y: auto;
+  border: orchid 1px solid;
+}
+
+.title-input-wrapper,
+.task-description-input-wrapper,
+.task-due-date-input-wrapper {
+  width: 100%;
+  @include flex-container(
+    $direction: column,
+    $align: flex-start,
+    $justify: flex-start,
+    $gap: 4px
+  );
+}
+
+.task-description-input-wrapper {
+  textarea {
+    resize: none;
+    overflow-y: auto;
+  }
+}
+
+.plain-input {
+  width: 100%;
+  border: $bordergray 1px solid;
+  border-radius: 4px;
+  outline: none;
+  &:focus {
+    outline: $lightblue 1px solid;
+  }
+}
+
+.prio-button-wrapper {
+  @include flex-container($gap: 4px);
+}
+
+.title-input-wrapper,
+.task-description-input-wrapper,
+.prio-button-wrapper,
+.task-due-date-input-wrapper {
+  margin: 0 0 1em;
+}
+
+.contacts-wrapper {
+  .contact-list {
+    padding: 0;
+    li {
+      padding: 0 0.5em 0.5em;
+      @include flex-container($justify: flex-start, $gap: 24px);
+      list-style-type: none;
+      .contact-icon {
+        width: 28px;
+        height: 28px;
+        @include flex-container($justify: center);
+        font-size: 0.6rem;
+        border-radius: 50%;
+      }
+    }
+  }
+}
+
+.subtasks-wrapper {
+  .subtasks-list {
+    padding: 0;
+  }
+
+  .subtask-item {
+    height: 28px;
+    margin: 0 0 0.5em;
+    padding: 0 0.25em;
+    @include flex-container($justify: flex-start, $gap: 12px);
+    list-style-type: none;
+    border-radius: 8px;
+    background-color: $extremelightgray;
+    transition: background 0.2s ease-in-out;
+    cursor: pointer;
+    &:hover {
+      background-color: $verylightgray;
+    }
+  }
+}
+
+.task-detail-button-wrapper {
+  width: 100%;
+  height: 28px;
+  margin: 0.25em 0 0;
+  @include flex-container($justify: flex-end, $gap: 4px);
+  .separator {
+    width: 1px;
+    background-color: $bordergray;
+    height: 90%;
+  }
+}

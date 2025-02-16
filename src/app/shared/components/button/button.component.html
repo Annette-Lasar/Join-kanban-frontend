@@ -13,7 +13,7 @@
   [title]="tooltip"
 >
   @switch (true) { @case (buttonCaptionFirst && buttonIcon && isPrioButton) {
-  <div class="caption-image-wrapper">
+  <div class="caption-image-wrapper prio-button">
     <span class="bold_600">{{ caption }}</span>
     <img
       [class]="imgClass"
@@ -24,7 +24,7 @@
   } @case (buttonCaptionFirst && buttonIcon) {
   <div
     class="caption-image-wrapper"
-    (click)="actionFunction($event, actionType, infoMessage)"
+    (click)="actionFunction($event, actionType, infoMessage, id)"
   >
     <div class="inner-caption-image-wrapper">
       <span class="bold_600">{{ caption }}</span>
@@ -34,7 +34,7 @@
   } @case (buttonCaptionSecond && buttonIcon) {
   <div
     class="inner-caption-image-wrapper"
-    (click)="actionFunction($event, actionType, infoMessage)"
+    (click)="actionFunction($event, actionType, infoMessage, id)"
   >
     <img [src]="imgSrc" [class]="imgClass" [alt]="alt" /> <span>{{ caption }}</span>
   </div>
@@ -43,10 +43,10 @@
     class="button-icon"
     [src]="imgSrc"
     [alt]="alt"
-    (click)="actionFunction($event, actionType, infoMessage)"
+    (click)="actionFunction($event, actionType, infoMessage, id)"
   />
   } @default {
-    <span (click)="actionFunction($event, actionType, infoMessage)">{{ caption }}</span>
+    <span (click)="actionFunction($event, actionType, infoMessage, id)">{{ caption }}</span>
   
   } }
 </button>

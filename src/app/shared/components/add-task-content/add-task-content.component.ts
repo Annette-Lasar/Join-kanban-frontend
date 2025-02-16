@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
 import { CommonModule } from '@angular/common';
+import { Task } from '../../interfaces/task.interface';
 
 @Component({
   selector: 'join-add-task-content',
@@ -10,6 +11,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './add-task-content.component.scss',
 })
 export class AddTaskContentComponent {
+  @Input() task: Task | null = null;
   prioStatus: string = 'medium';
   isCategoryListVisible = false;
   isContactsListVisible = false;

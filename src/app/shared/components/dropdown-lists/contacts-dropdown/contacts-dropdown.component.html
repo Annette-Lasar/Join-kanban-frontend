@@ -1,0 +1,76 @@
+@if(task) {
+<div class="contacts-dropdown-wrapper">
+  <div class="meta-label">Assigned to</div>
+  <div
+    class="contacts-wrapper"
+    [ngStyle]="{
+      border: isContactsListVisible
+        ? '#29abe2 1px solid'
+        : '#d1d1d1d1 1px solid'
+    }"
+  >
+    @if(!isContactsListVisible) {
+    <div class="contact-text-wrapper" (click)="toggleContactsList($event)">
+      <div class="contacts-text">Select contacts to assign</div>
+      <div class="contacts-dropdown-image">
+        <img
+          src="assets/icons/arrow_drop_down.svg"
+          class="dropdown-arrow"
+          [ngStyle]="{
+            transform: isContactsListVisible ? 'rotate(180deg)' : 'rotate(0deg)'
+          }"
+        />
+      </div>
+    </div>
+
+    } @else {
+    <input
+      type="text"
+      class="search-contact-input"
+      placeholder="Search contacts ..."
+      [(ngModel)]="searchTerm"
+      (input)="filterContacts()"
+    />
+    }
+  </div>
+
+  @if (isContactsListVisible) {
+  <ul class="contacts-list">
+    <!--     <li class="contact-list-item">
+      <label for="select_all_contacts">
+        <div class="select-all-contacts-wrapper">
+          Select or unselect all contacts
+        </div>
+        <div id="select_all_contacts_checkbox-wrapper">
+          <input type="checkbox" name="select_all" id="select_all_contacts" />
+        </div>
+      </label>
+    </li> -->
+    @for(contact of filteredContacts; track contact) {
+    <li class="contact-list-item">
+      <label [for]="'contact_checkbox_' + contact.id" class="contact-label">
+        <div class="contact-initials-and-text-wrapper">
+          <div
+            class="initials-icon"
+            [ngStyle]="{
+              backgroundColor: contact.color,
+              color: contact.color_brightness ? '#000000' : '#ffffff'
+            }"
+          >
+            {{ contact.first_name?.charAt(0)
+            }}{{ contact.last_name?.charAt(0) }}
+          </div>
+          <div>
+            {{ contact.name }}
+          </div>
+        </div>
+        <div>
+          <input [id]="'contact_checkbox_' + contact.id" type="checkbox" />
+        </div>
+      </label>
+    </li>
+    }
+  </ul>
+  }
+</div>
+}

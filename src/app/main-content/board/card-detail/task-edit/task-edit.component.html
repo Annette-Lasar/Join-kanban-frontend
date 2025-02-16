@@ -1,1 +1,155 @@
-<p>task-edit works!</p>
+@if(task) {
+<div class="task-detail-wrapper">
+  <div class="task-detail-content-wrapper">
+    <div class="task-detail-header-wrapper">
+      <join-categories-dropdown
+      [task]="task"
+      [categories]="categories"
+      />
+      <!-- <div
+        class="category-wrapper"
+        [ngStyle]="{
+          backgroundColor: task.category.color,
+          color: task.category.color_brightness ? '#000000' : '#ffffff'
+        }"
+      >
+        {{ task.category.name }}
+      </div> -->
+      <join-button
+        [buttonIcon]="true"
+        [imgSrc]="'assets/icons/close.svg'"
+        [buttonClass]="'dark-close-button'"
+        [padding]="'0'"
+        [width]="'20px'"
+        [height]="'20px'"
+        [actionType]="'closeTaskDetail'"
+      />
+    </div>
+    <div class="task-detail-text-wrapper">
+      <div class="title-input-wrapper">
+        <label [for]="'title_' + task.id">Title</label>
+        <input
+          [id]="'title_' + task.id"
+          type="text"
+          [value]="task.title"
+          class="plain-input"
+        />
+      </div>
+
+      <div class="task-description-input-wrapper">
+        <label [for]="'description_' + task.id">Description</label>
+        <textarea
+          name="task_description"
+          [id]="'description_' + task.id"
+          [value]="task.description"
+          class="plain-input"
+          rows="3"
+        ></textarea>
+      </div>
+      <div class="task-due-date-input-wrapper">
+        <label [for]="'due_date_' + task.id">Due date</label>
+        <input
+          [id]="'due_date_' + task.id"
+          type="date"
+          [value]="task.due_date"
+          [min]="today"
+          class="plain-input"
+        />
+      </div>
+      <div class="prio-button-wrapper">
+        <join-button
+          (click)="setPrioStatus('urgent')"
+          [type]="'button'"
+          [buttonCaptionFirst]="true"
+          [buttonIcon]="true"
+          [isPrioButton]="true"
+          [prioStatus]="prioStatus"
+          [caption]="'Urgent'"
+          [defaultSrc]="'assets/icons/prio_urgent.svg'"
+          [activeSrc]="'assets/icons/prio_urgent_white.svg'"
+          [buttonClass]="'light-square-button'"
+          [buttonColor]="'#FF3D00'"
+          [prioClass]="'urgent'"
+          [width]="'80px'"
+          [height]="'32px'"
+          [padding]="'0'"
+        />
+        <join-button
+          (click)="setPrioStatus('medium')"
+          [type]="'button'"
+          [buttonCaptionFirst]="true"
+          [buttonIcon]="true"
+          [isPrioButton]="true"
+          [prioStatus]="prioStatus"
+          [caption]="'Medium'"
+          [defaultSrc]="'assets/icons/prio_medium.svg'"
+          [activeSrc]="'assets/icons/prio_medium_white.svg'"
+          [buttonClass]="'light-square-button'"
+          [buttonColor]="'#FFA800'"
+          [prioClass]="'medium'"
+          [width]="'90px'"
+          [height]="'32px'"
+          [padding]="'0'"
+        />
+        <join-button
+          (click)="setPrioStatus('low')"
+          [type]="'button'"
+          [buttonCaptionFirst]="true"
+          [buttonIcon]="true"
+          [isPrioButton]="true"
+          [prioStatus]="prioStatus"
+          [caption]="'Low'"
+          [defaultSrc]="'assets/icons/prio_low.svg'"
+          [activeSrc]="'assets/icons/prio_low_white.svg'"
+          [buttonClass]="'light-square-button'"
+          [buttonColor]="'#7AE229'"
+          [prioClass]="'low'"
+          [width]="'80px'"
+          [height]="'32px'"
+          [padding]="'0'"
+        />
+      </div>
+      <join-contacts-dropdown [task]="task" [contacts]="contacts"/>
+
+      <div class="subtasks-wrapper">
+        <div class="subtasks">Subtasks:</div>
+        <ul class="subtasks-list">
+          @for (subtask of task.subtasks; track subtask) {
+          <label [for]="subtask.id">
+            <li class="subtask-item">
+              <input [id]="subtask.id" type="checkbox" />
+              <span>{{ subtask.title }}</span>
+            </li>
+          </label>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="task-detail-button-wrapper">
+    <join-button
+      [caption]="'Delete'"
+      [buttonIcon]="true"
+      [buttonCaptionSecond]="true"
+      [buttonClass]="'light-button-with-icon'"
+      [padding]="'0'"
+      [imgSrc]="'assets/icons/delete.svg'"
+      [imgClass]="'bin'"
+      [width]="'80px'"
+      [height]="'24px'"
+    />
+    <div class="separator"></div>
+    <join-button
+      [caption]="'Edit'"
+      [buttonIcon]="true"
+      [buttonCaptionSecond]="true"
+      [buttonClass]="'light-button-with-icon'"
+      [padding]="'0'"
+      [imgSrc]="'assets/icons/edit_dark.svg'"
+      [imgClass]="'pen'"
+      [width]="'70px'"
+      [height]="'24px'"
+    />
+  </div>
+</div>
+}

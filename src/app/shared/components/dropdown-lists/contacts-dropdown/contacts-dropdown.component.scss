@@ -1,0 +1,61 @@
+@import "../../../../../scss_files/variables.scss";
+@import "../../../../../scss_files/mixins.scss";
+
+.meta-label {
+  margin: 0 0 0.5em;
+}
+
+.contacts-dropdown-wrapper {
+    margin: 0 0 1em; 
+}
+
+.contacts-wrapper {
+  width: 100%;
+  border: $bordergray 1px solid;
+  border-radius: 4px;
+  outline: none;
+}
+
+.contact-text-wrapper {
+  width: 100%;
+  height: 24px;
+  padding-inline: 0.3em;
+  @include flex-container();
+}
+.search-contact-input {
+  width: 100%;
+  height: 24px;
+  padding-inline: 0.3em;
+  font-size: 0.75rem;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  &::placeholder {
+    font-size: 0.6rem;
+  }
+}
+
+.contacts-list {
+  margin: 0.25em 0 0.5em;
+  padding: 0;
+  .contact-list-item {
+    width: 100%;
+    margin: 0 0 0.5em;
+    padding: 0 0 0 0.5em;
+    border: blue 1px solid;
+    label {
+      height: 28px;
+      @include flex-container();
+      .contact-initials-and-text-wrapper {
+        @include flex-container($justify: flex-start, $gap: 8px);
+        .initials-icon {
+          width: 24px;
+          height: 24px;
+          @include flex-container($justify: center);
+          font-size: 0.6rem;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+}

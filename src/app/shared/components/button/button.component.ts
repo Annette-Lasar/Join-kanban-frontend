@@ -150,14 +150,28 @@ export class ButtonComponent {
   @Input() type: 'button' | 'submit' = 'button';
   @Input() prioStatus: string = '';
   @Input() actionType: string = '';
+  @Input() id?: number;
+/*   @Input() actionFunction: (
+    event: Event,
+    actionType?: string,
+    message?: string,
+    id?: number
+  ) => void = (event, actionType, message, id) => {
+    event.stopPropagation();
+    this.actionService.executeAction(actionType!, message, id);
+  }; */
+
+
   @Input() actionFunction: (
     event: Event,
     actionType?: string,
-    message?: string
-  ) => void = (event, actionType, message) => {
+    message?: string,
+    id?: number
+  ) => void = (event, actionType, message, id) => {
     event.stopPropagation();
-    this.actionService.executeAction(actionType!, message);
+    this.actionService.executeAction(actionType!, id, message);
   };
+
 
   @Output() toggleContainer = new EventEmitter<string>();
   @Output() isAddContactButtonClicked = new EventEmitter<void>();

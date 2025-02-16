@@ -1,4 +1,4 @@
-<div
+<!-- <div
   [ngClass]="[
     infoMessageClass,
     isSuccessMessageVisible ? 'visible' : '',
@@ -20,7 +20,7 @@
 
       <div class="button-wrapper">
         <join-button
-          [actionType]="'deleteContact'"
+          [actionType]="'actionType'"
           [buttonClass]="'dark-square-button'"
           [caption]="'Yes, proceed'"
           [width]="'100px'"
@@ -48,5 +48,69 @@
     <p class="infoMessageClass">{{ infoText }}</p>
   </div>
 
+  } }
+</div> -->
+
+<div class="outer-info-wrapper">
+  @switch (true) { @case (securityQuestion) {
+  <div class="info-box-wrapper">
+    <div class="info-title-wrapper">
+      <img class="logo" [src]="imageSrc" alt="" />
+      <div class="bold_700">{{ alertTitle }}</div>
+      <join-button
+        [buttonIcon]="true"
+        [buttonClass]="'white-button'"
+        [imgSrc]="'assets/icons/close_white.svg'"
+        [actionType]="'closeSecurityInfo'"
+        [width]="'20px'"
+        [height]="'20px'"
+        [padding]="'0'"
+      />
+      <!--       <img
+        class="close-button"
+        [src]="imageSrc2"
+        alt="Close dialog"
+        (click)="closeInfoBox()"
+      /> -->
+    </div>
+
+    <div class="info-body-wrapper">
+      <div class="body-text-wrapper">
+        <span>{{ infoQuestion }}</span>
+        <span>{{ infoText }}</span>
+      </div>
+
+      <div class="button-wrapper">
+        <join-button
+          [caption]="caption1"
+          [actionType]="actionType"
+          [buttonClass]="'dark-square-button'"
+          [width]="'110px'"
+          [height]="'32px'"
+          [padding]="'0.5em'"
+          [id]="categoryId"
+          
+        />
+
+        <join-button
+          [actionType]="'closeSecurityInfo'"
+          [buttonClass]="'dark-square-button'"
+          [caption]="caption2"
+          [width]="'110px'"
+          [height]="'32px'"
+          [padding]="'0.5em'"
+        />
+      </div>
+    </div>
+  </div>
+  } @case (textAndIcon) {
+  <div class="text-and-icon-wrapper">
+    <p>{{ infoText }}</p>
+    <img [src]="imageSrc" alt="" />
+  </div>
+  } @default {
+  <div class="inner-success-message-wrapper">
+    <p class="infoMessageClass">{{ infoText }}</p>
+  </div>
   } }
 </div>

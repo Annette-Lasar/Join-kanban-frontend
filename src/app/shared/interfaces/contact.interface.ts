@@ -1,5 +1,5 @@
 export interface Contact {
-    id?: string;
+    id?: number;
     name: string;
     first_name?: string;
     last_name?: string;
@@ -7,7 +7,7 @@ export interface Contact {
     phone_number?: string;
     color: string;
     color_brightness?: boolean; 
-    created_by?: number;
+    created_by?: number | null;
 }
 
 

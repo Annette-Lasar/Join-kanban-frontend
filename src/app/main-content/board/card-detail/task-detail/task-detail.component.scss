@@ -6,24 +6,28 @@
   padding: 1em;
   @include flex-container($direction: column, $align: flex-start);
   border-radius: 20px;
-  //   border: rebeccapurple 2px solid;
 }
 
 .task-detail-content-wrapper {
-  height: 100%;
-  overflow-y: auto;
+  height: 90%;
   font-size: 0.85rem;
-  //   border: red 2px solid;
 }
 
 .task-detail-header-wrapper {
   width: 100%;
+  height: 24px;
   @include flex-container();
   .category-wrapper {
     padding: 0.25em 0.75em;
     font-size: 0.9rem;
     border-radius: 8px;
   }
+}
+
+.task-detail-text-wrapper {
+  height: calc(100% - 24px - 12px);
+  margin: 12px 0 0 0;
+  overflow-y: auto;
 }
 
 h1 {
@@ -90,14 +94,15 @@ h1 {
     transition: background 0.2s ease-in-out;
     cursor: pointer;
     &:hover {
-        background-color: $verylightgray;
+      background-color: $verylightgray;
     }
   }
 }
 
 .task-detail-button-wrapper {
-  margin: 0.25em 0 0;
   width: 100%;
+  height: 28px;
+  margin: 0.25em 0 0;
   @include flex-container($justify: flex-end, $gap: 4px);
   .separator {
     width: 1px;

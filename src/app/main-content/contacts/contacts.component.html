@@ -93,12 +93,8 @@
     >addContactMode: {{ isAddContactMode }}</span
   > -->
 </div>
-<join-contact-form
-  [contacts]="contacts"
-  [currentContact]="currentContact" 
-/>
+<join-contact-form [contacts]="contacts" [currentContact]="currentContact" />
 <join-info
   [infoText]="'Contact successfully created'"
   [infoMessageClass]="'success-message'"
-  [isSuccessMessageVisible]="successStatus"
 />

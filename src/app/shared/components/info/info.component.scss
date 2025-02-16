@@ -1,4 +1,106 @@
-@import "../../../../scss_files/variables.scss";
+/* @import "../../../../scss_files/variables.scss";
+@import "../../../../scss_files/mixins.scss";
+
+.outer-info-wrapper {
+  width: 300px;
+  @include flex-container($align: center, $justify: center);
+  color: $white;
+  text-align: center;
+  background-color: $darkblue;
+  border: $darkblue 2px solid;
+  border-radius: 12px;
+}
+
+.success-message {
+  padding: 0.5em 1em;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: -1;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+}
+
+.success-message.visible {
+  animation: showAndHideSuccessMessage 3s forwards;
+}
+
+@keyframes showAndHideSuccessMessage {
+  0% {
+    z-index: -1;
+    opacity: 0;
+  }
+
+  10% {
+    z-index: 20;
+    opacity: 0.8;
+  }
+
+  80% {
+    z-index: 20;
+    opacity: 1;
+  }
+
+  100% {
+    z-index: -1;
+    opacity: 0;
+  }
+}
+
+.inner-success-message-wrapper {
+  padding: 1em;
+}
+
+.security-info-box {
+  position: fixed;
+  left: 50%;
+  z-index: 20;
+  transform: translate(-50%, 100%);
+  transition: transform 0.5s ease-in-out;
+}
+
+.security-info-box.present {
+  transform: translate(-50%, -150%);
+  transition: transform 0.5s ease-in-out;
+}
+
+
+
+.info-box-wrapper {
+  width: 100%;
+}
+.info-title-wrapper {
+  width: 100%;
+  padding: 0.5em;
+  @include flex-container();
+  border-radius: 12px;
+  .logo {
+    width: 32px;
+    height: 32px;
+  }
+  .close-button {
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+  }
+}
+
+.info-body-wrapper {
+  padding: 2em 1em;
+  @include flex-container($direction: column, $gap: 2em);
+  font-size: 0.9rem;
+  line-height: 1.2;
+  color: $anthracite;
+  background-color: $white;
+  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 12px;
+  .button-wrapper {
+    @include flex-container($justify: center, $gap: 1em);
+  }
+}
+ */
+
+ @import "../../../../scss_files/variables.scss";
 @import "../../../../scss_files/mixins.scss";
 
 .outer-info-wrapper {

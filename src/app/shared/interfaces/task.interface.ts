@@ -13,7 +13,7 @@ export interface Task {
   completed_subtasks?: number;
   status: string;
   board: number;
-  created_by?: number;
+  created_by?: number | null;
   board_list?: BoardList;
 }
 

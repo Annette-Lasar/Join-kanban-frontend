@@ -21,58 +21,60 @@
         [actionType]="'closeTaskDetail'"
       />
     </div>
-    <h1>
-      {{ task.title }}
-    </h1>
-    <div class="task-description">
-      {{ task.description }}
-    </div>
-    <div class="task-due-date">
-      <span class="meta-label"> Due date: </span>
-      <span>{{ task.due_date | date : "dd/MM/yyyy" }}</span>
-    </div>
-    <div class="priority-status">
-      <span class="meta-label"> Priority: </span
-      ><span>{{ formatPriorityStatus(task.priority) }}</span>
-      <img [src]="pathPrefix + task.priority + '.svg'" alt="" />
-    </div>
-    <div class="contacts-wrapper">
-      <div class="assigned-to">Assigned to:</div>
-      <ul class="contact-list">
-        @for (contact of task.contacts; track contact) {
-        <li class="contact-item">
-          <div
-            class="contact-icon"
-            [ngStyle]="{
-              backgroundColor: contact.color,
-              color: contact.color_brightness ? '#000000' : '#ffffff'
-            }"
-          >
-            {{ contact.first_name?.charAt(0)
-            }}{{ contact.last_name?.charAt(0) }}
-          </div>
-          <div class="contact-full-name">
-            <span>
-              {{ contact.name }}
-            </span>
-          </div>
-        </li>
-        }
-      </ul>
-    </div>
-    <div class="subtasks-wrapper">
-      <div class="subtasks">Subtasks:</div>
-      <ul class="subtasks-list">
-        @for (subtask of task.subtasks; track subtask) {
-        <label [for]="subtask.id">
-          <li class="subtask-item">
-            <input [id]="subtask.id" type="checkbox" />
-            <span>{{ subtask.title }}</span>
-            <!-- <label [for]="subtask.id">{{ subtask.title }}</label> -->
+    <div class="task-detail-text-wrapper">
+      <h1>
+        {{ task.title }}
+      </h1>
+      <div class="task-description">
+        {{ task.description }}
+      </div>
+      <div class="task-due-date">
+        <span class="meta-label"> Due date: </span>
+        <span>{{ task.due_date | date : "dd/MM/yyyy" }}</span>
+      </div>
+      <div class="priority-status">
+        <span class="meta-label"> Priority: </span
+        ><span>{{ formatPriorityStatus(task.priority) }}</span>
+        <img [src]="pathPrefix + task.priority + '.svg'" alt="" />
+      </div>
+      <div class="contacts-wrapper">
+        <div class="assigned-to">Assigned to:</div>
+        <ul class="contact-list">
+          @for (contact of task.contacts; track contact) {
+          <li class="contact-item">
+            <div
+              class="contact-icon"
+              [ngStyle]="{
+                backgroundColor: contact.color,
+                color: contact.color_brightness ? '#000000' : '#ffffff'
+              }"
+            >
+              {{ contact.first_name?.charAt(0)
+              }}{{ contact.last_name?.charAt(0) }}
+            </div>
+            <div class="contact-full-name">
+              <span>
+                {{ contact.name }}
+              </span>
+            </div>
           </li>
-        </label>
-        }
-      </ul>
+          }
+        </ul>
+      </div>
+      <div class="subtasks-wrapper">
+        <div class="subtasks">Subtasks:</div>
+        <ul class="subtasks-list">
+          @for (subtask of task.subtasks; track subtask) {
+          <label [for]="subtask.id">
+            <li class="subtask-item">
+              <input [id]="subtask.id" type="checkbox" />
+              <span>{{ subtask.title }}</span>
+              <!-- <label [for]="subtask.id">{{ subtask.title }}</label> -->
+            </li>
+          </label>
+          }
+        </ul>
+      </div>
     </div>
   </div>
   <div class="task-detail-button-wrapper">
