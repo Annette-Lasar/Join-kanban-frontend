@@ -16,6 +16,7 @@
   height: 20px;
   padding-inline: 0.25em;
   @include flex-container();
+  cursor: pointer;
   .category-text {
     @include flex-container($justify: flex-start, $gap: 8px);
     flex: 1 1 0;

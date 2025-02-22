@@ -3,7 +3,7 @@ import {
   ViewChild,
   ElementRef,
   OnInit,
-  NgModule,
+  OnDestroy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -11,10 +11,11 @@ import { ButtonComponent } from '../../shared/components/button/button.component
 import { RouterLink } from '@angular/router';
 import { InfoComponent } from '../../shared/components/info/info.component';
 import { OutsideClickDirective } from '../../shared/directives/outside-click.directive';
-import { ContactStatusService } from '../../shared/services/contact-status.service';
 import { ButtonPropertyService } from '../../shared/services/button-propertys.service';
 import { BoardStatusService } from '../../shared/services/board-status.service';
+import { ActionService } from '../../shared/services/action.service';
 import { TaskService } from '../../shared/services/task.service';
+import { TaskStatusService } from '../../shared/services/task-status.service';
 import { CategoryService } from '../../shared/services/category.service';
 import { ContactService } from '../../shared/services/contact.service';
 import { BoardService } from '../../shared/services/board.service';
@@ -25,6 +26,7 @@ import { Contact } from '../../shared/interfaces/contact.interface';
 import { Board } from '../../shared/interfaces/board.interface';
 import { TaskCardComponent } from './task-card/task-card.component';
 import { CardDetailComponent } from './card-detail/card-detail.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'join-board',
@@ -42,7 +44,7 @@ import { CardDetailComponent } from './card-detail/card-detail.component';
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, OnDestroy {
   tasks: Task[] = [];
   filteredTasks: Task[] = [];
   categories: Category[] = [];
@@ -52,89 +54,35 @@ export class BoardComponent implements OnInit {
   isContainerVisible = false;
   searchTerm: string = '';
   message: string = '';
-  // selectedTask: Task | null = null;
-  selectedTask: Task | null = {
-    id: 1,
-    title: 'Test Task',
-    description:
-      'This is a test task to style the detail view. Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi quam impedit ab nulla omnis distinctio iure hic atque excepturi mollitia at molestiae velit, maxime ex possimus sapiente repellat dignissimos qui.',
-    priority: 'low',
-    due_date: '2025-02-12',
-    contacts: [
-      {
-        id: 1,
-        name: 'Bilbo Beutlin',
-        first_name: 'Bilbo',
-        last_name: 'Beutlin',
-        email: 'beutlin@hobbingen.com',
-        phone_number: '12345538384',
-        color: '#AE3294',
-        color_brightness: false,
-        created_by: 3,
-      },
-      {
-        id: 2,
-        name: 'Ronald Weasley',
-        first_name: 'Ronald',
-        last_name: 'Weasley',
-        email: 'ronald-weasley@hogwarts.com',
-        phone_number: '39938294992',
-        color: '#482d10',
-        color_brightness: false,
-        created_by: 3,
-      },
-      {
-        id: 3,
-        name: 'Albus Dumbledore',
-        first_name: 'Albus',
-        last_name: 'Dumbledore',
-        email: 'albus-brian-dumbledore@hogwarts.com',
-        phone_number: '04827849273',
-        color: '#a4835d',
-        color_brightness: true,
-        created_by: 3,
-      },
-    ],
-    category: {
-      id: 1,
-      name: 'Technical Task',
-      color: '#1FD7C9',
-      color_brightness: true,
-      created_by: null,
-    },
-    subtasks: [
-      { id: 1, title: 'Subtask 1', checked_status: false },
-      { id: 2, title: 'Subtask 2', checked_status: true },
-    ],
-    status: 'inProgress',
-    board: 1,
-    created_by: 3,
-    board_list: {
-      id: 1,
-      name: 'toDo',
-    },
-  };
+  isTaskDetailVisible: boolean = false;
+  selectedTask: Task | null = null;
+
+  private subscriptions = new Subscription();
 
   @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
 
   constructor(
-    private contactStatusService: ContactStatusService,
     private buttonPropertyService: ButtonPropertyService,
     private boardStatusService: BoardStatusService,
     private taskService: TaskService,
     private categoryService: CategoryService,
     private contactService: ContactService,
     private boardService: BoardService,
-    private textFormatterService: TextFormatterService
+    private textFormatterService: TextFormatterService,
+    private actionService: ActionService,
+    private taskStatusService: TaskStatusService
   ) {}
 
   ngOnInit(): void {
     this.getUpdatedBoardSuccessStatus();
     this.getUpdatedMessage();
+    this.loadBoards();
     this.loadTasks();
     this.loadCategories();
     this.loadContacts();
-    this.loadBoards();
+    this.getUpdatedTasksSubject();
+    this.getUpdatedIsTaskDetailVisibleStatus();
+    this.subscribeToTaskDetailEventAndResetSelectedTask();
   }
 
   getUpdatedBoardSuccessStatus(): void {
@@ -149,6 +97,23 @@ export class BoardComponent implements OnInit {
         this.message = message;
       }
     });
+  }
+
+  getUpdatedIsTaskDetailVisibleStatus(): void {
+    this.buttonPropertyService.isTaskDetailVisibleStatusSubject$.subscribe(
+      (status) => {
+        this.isTaskDetailVisible = status;
+      }
+    );
+  }
+
+  getUpdatedTasksSubject(): void {
+    const subscription = this.taskService.tasks$.subscribe((tasks) => {
+      this.tasks = tasks;
+      this.filteredTasks = [...tasks];
+      this.filterTasks();
+    });
+    this.subscriptions.add(subscription);
   }
 
   loadBoards(): void {
@@ -273,5 +238,47 @@ export class BoardComponent implements OnInit {
     } else {
       return boardListName;
     }
+  }
+
+  openCardDetailView(id: number): void {
+    this.selectedTask =
+      this.tasks.find((currentTask) => currentTask.id === id) || null;
+    if (this.selectedTask) {
+      this.buttonPropertyService.setIsTaskDetailVisibleStatusSubject(true);
+    }
+  }
+
+  subscribeToTaskDetailEventAndResetSelectedTask(): void {
+    const subscription = this.actionService.taskDetailEvent.subscribe(() => {
+      this.selectedTask = null;
+    });
+    this.subscriptions.add(subscription);
+  }
+
+/*   listenToOriginalTaskState(): void {
+    const subscription =
+      this.taskStatusService.originalTaskStateSubject$.subscribe(
+        (originalTask) => {
+          if (!this.selectedTask) return;
+          console.log('Orginialzustand einer Aufgabe geladen: ', originalTask);
+        }
+      );
+    this.subscriptions.add(subscription);
+  } */
+
+/*   cancelEdit(): void {
+    const subscription = this.actionService.closeEditModeEvent.subscribe(() => {
+      const originalTask = this.taskStatusService.getOriginalTaskStatus();
+      if (originalTask) {
+        this.selectedTask = JSON.parse(JSON.stringify(originalTask));
+        console.log('Alte Aufgabe: ', this.selectedTask);
+        console.log('Änderungen verworfen, O-Zustand wiederhergestellt.');
+      }
+    });
+    this.subscriptions.add(subscription);
+  } */
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

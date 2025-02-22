@@ -1,20 +1,11 @@
 @if(task) {
 <div class="task-detail-wrapper">
   <div class="task-detail-content-wrapper">
+    <div class="meta-label">
+      <span class="bold_700">Category</span><span class="red">*</span>
+    </div>
     <div class="task-detail-header-wrapper">
-      <join-categories-dropdown
-      [task]="task"
-      [categories]="categories"
-      />
-      <!-- <div
-        class="category-wrapper"
-        [ngStyle]="{
-          backgroundColor: task.category.color,
-          color: task.category.color_brightness ? '#000000' : '#ffffff'
-        }"
-      >
-        {{ task.category.name }}
-      </div> -->
+      <join-categories-dropdown [task]="task" [categories]="categories" />
       <join-button
         [buttonIcon]="true"
         [imgSrc]="'assets/icons/close.svg'"
@@ -22,12 +13,14 @@
         [padding]="'0'"
         [width]="'20px'"
         [height]="'20px'"
-        [actionType]="'closeTaskDetail'"
+        [actionType]="'closeTaskEditMode'"
       />
     </div>
     <div class="task-detail-text-wrapper">
       <div class="title-input-wrapper">
-        <label [for]="'title_' + task.id">Title</label>
+        <label [for]="'title_' + task.id"
+          ><span class="bold_700">Title</span><span class="red">*</span></label
+        >
         <input
           [id]="'title_' + task.id"
           type="text"
@@ -37,7 +30,9 @@
       </div>
 
       <div class="task-description-input-wrapper">
-        <label [for]="'description_' + task.id">Description</label>
+        <label [for]="'description_' + task.id" class="bold_700"
+          >Description</label
+        >
         <textarea
           name="task_description"
           [id]="'description_' + task.id"
@@ -47,7 +42,10 @@
         ></textarea>
       </div>
       <div class="task-due-date-input-wrapper">
-        <label [for]="'due_date_' + task.id">Due date</label>
+        <label [for]="'due_date_' + task.id"
+          ><span class="bold_700">Due date</span
+          ><span class="red">*</span></label
+        >
         <input
           [id]="'due_date_' + task.id"
           type="date"
@@ -109,46 +107,31 @@
           [padding]="'0'"
         />
       </div>
-      <join-contacts-dropdown [task]="task" [contacts]="contacts"/>
+      <div class="meta-label bold_700">Assigned to</div>
+      <join-contacts-dropdown [task]="task" [contacts]="contacts" />
 
       <div class="subtasks-wrapper">
-        <div class="subtasks">Subtasks:</div>
-        <ul class="subtasks-list">
-          @for (subtask of task.subtasks; track subtask) {
-          <label [for]="subtask.id">
-            <li class="subtask-item">
-              <input [id]="subtask.id" type="checkbox" />
-              <span>{{ subtask.title }}</span>
-            </li>
-          </label>
-          }
-        </ul>
+        <div class="subtasks bold_700">Subtasks:</div>
+        <join-subtasks
+        [task]="task"
+        />
+
       </div>
     </div>
   </div>
   <div class="task-detail-button-wrapper">
     <join-button
-      [caption]="'Delete'"
+      [caption]="'Ok'"
       [buttonIcon]="true"
-      [buttonCaptionSecond]="true"
-      [buttonClass]="'light-button-with-icon'"
+      [buttonCaptionFirst]="true"
+      [actionType]="'saveEditedTask'"
+      [buttonClass]="'dark-square-button'"
       [padding]="'0'"
-      [imgSrc]="'assets/icons/delete.svg'"
-      [imgClass]="'bin'"
-      [width]="'80px'"
+      [imgSrc]="'assets/icons/check_white.svg'"
+      [imgClass]="'check'"
+      [width]="'60px'"
       [height]="'24px'"
-    />
-    <div class="separator"></div>
-    <join-button
-      [caption]="'Edit'"
-      [buttonIcon]="true"
-      [buttonCaptionSecond]="true"
-      [buttonClass]="'light-button-with-icon'"
-      [padding]="'0'"
-      [imgSrc]="'assets/icons/edit_dark.svg'"
-      [imgClass]="'pen'"
-      [width]="'70px'"
-      [height]="'24px'"
+      [id]="task.id"
     />
   </div>
 </div>

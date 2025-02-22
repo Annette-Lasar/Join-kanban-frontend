@@ -10,22 +10,27 @@
   >
     @if(!isCategoriesListVisible) {
     <div class="category-text-wrapper" (click)="toggleCategoriesList($event)">
+      @if (selectedCategory) {
       <div class="category-text">
         <svg class="colored-dot" width="16" height="16">
           <circle
             cx="8"
             cy="8"
             r="6"
-            [attr.fill]="selectedCategory?.color"
-            [attr.stroke]="selectedCategory?.color"
+            [attr.fill]="selectedCategory.color"
+            [attr.stroke]="selectedCategory.color"
             stroke-width="1"
           ></circle>
         </svg>
 
         <span>
-          {{ selectedCategory?.name }}
+          {{ selectedCategory.name }}
         </span>
       </div>
+      } @else {
+      <div class="category-text">Select a category</div>
+      }
+
       <div class="categories-dropdown-image">
         <img
           src="assets/icons/arrow_drop_down.svg"
@@ -154,7 +159,7 @@
         <div class="separator"></div>
         <join-button
           [buttonIcon]="true"
-          [buttonClass]="'light-square-button'"
+          [buttonClass]="'gray-button'"
           [imgSrc]="'assets/icons/delete.svg'"
           [actionType]="'openSecurityInfo'"
           [alt]="'Delete category.'"

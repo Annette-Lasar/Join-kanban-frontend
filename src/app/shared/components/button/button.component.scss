@@ -28,6 +28,9 @@
   color: $white;
   border: $darkblue 1px solid;
   border-radius: 4px;
+  .check {
+    height: 10px;
+  }
 }
 
 .urgent.active {
@@ -89,7 +92,19 @@
   .button-icon {
     width: 16px;
     height: 16px;
+    // border-radius: 50%;
+    // border: gray 1px solid;
+   /*  &:hover {
+      background-color: $lightgray;
+    } */
   }
+}
+
+.gray-button {
+  background-color: $white;
+  color: $anthracite;
+  border: none;
+  border-radius: 4px;
 }
 
 .dark-round-button {

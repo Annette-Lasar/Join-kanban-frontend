@@ -64,7 +64,7 @@
         />
         }
       </div>
-      <div class="match-box" [ngClass]="{ 'd-none': !isSearchActive()}">
+      <div class="match-box" [ngClass]="{ 'd-none': !isSearchActive() }">
         <span>{{ getMatchText() }} </span>found
       </div>
     </div>
@@ -111,7 +111,9 @@
         <div class="task-card-wrapper">
           @for(task of filteredTasks; track task) { @if(board_list ===
           task.board_list?.name) {
-          <join-task-card [task]="task" />
+          <join-task-card [task]="task" 
+          (click)="openCardDetailView(task.id!)"
+          />
           } } @empty {
 
           <div class="list-content">
@@ -125,10 +127,11 @@
       }
     </div>
   </div>
-  }
+  } @if(isTaskDetailVisible) {
   <join-card-detail
-  [task]="selectedTask"
-  [contacts]="contacts"
-  [categories]="categories"
+    [task]="selectedTask"
+    [contacts]="contacts"
+    [categories]="categories"
   />
+  }
 </div>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { BASE_URL } from '../data/global-variables.data';
+import { BASE_URL } from '../constants/global-constants.data';
 
 @Injectable({
   providedIn: 'root',

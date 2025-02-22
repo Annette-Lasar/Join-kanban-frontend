@@ -1,12 +1,8 @@
 @import "../../../../../scss_files/variables.scss";
 @import "../../../../../scss_files/mixins.scss";
 
-.meta-label {
-  margin: 0 0 0.5em;
-}
-
 .contacts-dropdown-wrapper {
-    margin: 0 0 1em; 
+  margin: 0 0 1em;
 }
 
 .contacts-wrapper {
@@ -14,6 +10,7 @@
   border: $bordergray 1px solid;
   border-radius: 4px;
   outline: none;
+  cursor: pointer;
 }
 
 .contact-text-wrapper {
@@ -57,5 +54,18 @@
         }
       }
     }
+  }
+}
+
+.contact-icons-wrapper {
+  padding: 0.5em 0.25em;
+  @include flex-container($justify: flex-start, $gap: 4px);
+  .contact-icon {
+    width: 24px;
+    height: 24px;
+    @include flex-container($justify: center);
+    font-size: 0.7rem;
+    border: black 1px solid;
+    border-radius: 50%;
   }
 }

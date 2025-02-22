@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { maxTextLength } from '../data/global-variables.data';
+import { maxTextLength } from '../constants/global-constants.data';
 
 @Injectable({
   providedIn: 'root',

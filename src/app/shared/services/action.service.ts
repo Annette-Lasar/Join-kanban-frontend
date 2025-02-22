@@ -4,12 +4,9 @@ import { ButtonPropertyService } from './button-propertys.service';
 import { BoardStatusService } from './board-status.service';
 import { InfoBoxService } from './info-box.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-
-enum DeleteAction {
-  CATEGORY = 'category',
-  TASK = 'task',
-  CONTACT = 'contact',
-}
+import { PrepareDeleteAction } from '../constants/enum';
+import { DeleteAction } from '../constants/enum';
+import { createActionMap } from '../mappings/action-map';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +16,12 @@ export class ActionService {
   guestLoginEvent = new EventEmitter<void>();
   deleteTaskEvent = new EventEmitter<number>();
   deleteCategoryEvent = new EventEmitter<void>();
+  saveEditedTaskEvent = new EventEmitter<void>();
   deleteContactEvent = new EventEmitter<number>();
+  taskDetailEvent = new EventEmitter<number>();
+  keepOriginalTaskStatusEvent = new EventEmitter<void>();
+  closeEditModeEvent = new EventEmitter<void>();
+  addSubtaskEvent = new EventEmitter<string>();
 
   private setItemToDeleteSubject = new BehaviorSubject<number | null>(null);
   setItemToDelete$: Observable<number | null> =
@@ -33,67 +35,30 @@ export class ActionService {
   private deleteContactSubject = new BehaviorSubject<number | null>(null);
   deleteContactSubject$: Observable<number | null> =
     this.deleteContactSubject.asObservable();
+  private taskDetailSubject = new BehaviorSubject<number | null>(null);
+  taskDetailSubject$: Observable<number | null> =
+    this.taskDetailSubject.asObservable();
 
   constructor(
     private contactStatusService: ContactStatusService,
     private buttonPropertyService: ButtonPropertyService,
     private boardStatusService: BoardStatusService,
     private infoBoxService: InfoBoxService
-  ) {}
+  ) {
+    this.actionMap = createActionMap(
+      this,
+      this.contactStatusService,
+      this.buttonPropertyService,
+      this.boardStatusService,
+      this.infoBoxService
+    );
+  }
 
-  private actionMap = new Map<string, (message?: string, id?: number) => void>([
-    ['toggle', (message) => this.toggleInfoContainer(message)],
-    [
-      'showAddContactForm',
-      () => this.buttonPropertyService.setIsAddContactButtonStatus(true),
-    ],
-    [
-      'showContactDetailOptions',
-      () => this.contactStatusService.setContactDetailFormStatus(true),
-    ],
-    [
-      'showEditContactForm',
-      () => this.contactStatusService.setContactFormStatus(true),
-    ],
-    ['createNewContact', () => this.onCreateContactClick()],
-    [
-      'clearInputFields',
-      () => this.buttonPropertyService.setClearInputStatus(true),
-    ],
-    [
-      'openSecurityInfo',
-      (message, id) => this.organizeSecurityQuestion(id!, 'setItemToDelete'),
-    ],
-    ['closeSecurityInfo', () => this.showOrHideInfoBox(false)],
-    ['onToggleShowLogin', () => this.showSignUp()],
-    ['guestLogin', () => this.triggerGuestLogin()],
-    [
-      'setTaskToDelete',
-      (message, id) => this.prepareDeleteAction(id!, 'setTaskToDelete'),
-    ],
-    [
-      'deleteTask',
-      (message, id) => this.prepareDeleteAction(id!, 'deleteTask'),
-    ],
-    [
-      'deleteCategory',
-      (message, id) => this.prepareDeleteAction(id!, 'deleteCategory'),
-    ],
-    [
-      'setContactToDelete',
-      (message, id) => this.prepareDeleteAction(id!, 'setContactToDelete'),
-    ],
-    [
-      'deleteContact',
-      (message, id) => this.prepareDeleteAction(id!, 'deleteContact'),
-    ],
-    // add further actions here if necessary.
-  ]);
+  private actionMap: Map<string, (message?: string, id?: number) => void>;
 
   executeAction(actionType: string, id?: number, message?: string) {
     const action = this.actionMap.get(actionType);
     if (action) {
-      console.log(`executeAction aufgerufen mit:`, { actionType, id, message });
       action(message, id);
     } else {
       console.warn(`Action ${actionType} is not defined.`);
@@ -130,6 +95,32 @@ export class ActionService {
     this.guestLoginEvent.emit();
   }
 
+  toggleEditTaskMode(status: string): void {
+    if (status === 'show') {
+      this.keepOriginalTaskStatusEvent.emit();
+      this.buttonPropertyService.setTaskEditMode(true);
+    } else if (status === 'hide') {
+      this.closeEditModeEvent.emit();
+      this.buttonPropertyService.setTaskEditMode(false);
+    } else {
+      console.log(`Unknown status ${status}`);
+    }
+  }
+
+  toggleAddSubtaskBox(message: string) {
+    this.addSubtaskEvent.emit(message);
+  }
+
+  saveEditedTask(id: number): void {
+    console.log('%c TaskID: ', 'color: red;', id);
+    this.saveEditedTaskEvent.emit();
+  }
+
+  closeTaskDetail(id: number): void {
+    this.buttonPropertyService.setIsTaskDetailVisibleStatusSubject(false);
+    this.taskDetailEvent.emit();
+  }
+
   prepareDeleteAction(id: number, actionType: string): void {
     if (!id) {
       console.warn('Keine Kategorie-ID angegeben.');
@@ -137,16 +128,16 @@ export class ActionService {
     }
 
     switch (actionType) {
-      case 'deleteTask':
+      case PrepareDeleteAction.TASK:
         this.deleteItem(id, DeleteAction.TASK);
         break;
-      case 'setItemToDelete':
+      case PrepareDeleteAction.ITEM:
         this.setItemToDelete(id);
         break;
-      case 'deleteCategory':
+      case PrepareDeleteAction.CATEGORY:
         this.deleteItem(id, DeleteAction.CATEGORY);
         break;
-      case 'deleteContact':
+      case PrepareDeleteAction.CONTACT:
         this.deleteItem(id, DeleteAction.CONTACT);
         break;
       default:

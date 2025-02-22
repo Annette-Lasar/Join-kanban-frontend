@@ -1,4 +1,10 @@
-import { Component, Input, HostListener, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  HostListener,
+  OnInit,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Task } from '../../../interfaces/task.interface';
 import { Category } from '../../../interfaces/category.interface';
@@ -9,6 +15,7 @@ import { ButtonComponent } from '../../button/button.component';
 import { InfoComponent } from '../../info/info.component';
 import { InfoBoxService } from '../../../services/info-box.service';
 import { ActionService } from '../../../services/action.service';
+import { ButtonPropertyService } from '../../../services/button-propertys.service';
 import { Subscription } from 'rxjs';
 
 type CategoryField = 'color' | 'name';
@@ -25,6 +32,7 @@ export class CategoriesDropdownComponent implements OnInit {
   @Input() task: Task | null = null;
   @Input() categories: Category[] = [];
   filteredCategories: Category[] = [];
+  deletedCategoryIds: number[] = [];
   isCategoriesListVisible: boolean = false;
   selectedCategory: Category | null = null;
   isEditingCategoryId: number | null = null;
@@ -41,14 +49,22 @@ export class CategoriesDropdownComponent implements OnInit {
     private categoryService: CategoryService,
     private randomColorService: RandomColorService,
     private infoBoxService: InfoBoxService,
-    private actionService: ActionService
+    private actionService: ActionService,
+    private buttonPropertyService: ButtonPropertyService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+    console.log('selectedCategory (beim Start):', this.selectedCategory);
     this.initializeSelectedCategory();
     this.getPrepareDeleteCategorySubjectFromService();
     this.subscribeToDeleteCategorySubject();
     this.getUpdatedWarningBoxStatus();
+    this.subscribeToSaveEditedTaskEvent();
+    console.log(
+      'selectedCategory (am Ende von ngOnInit):',
+      this.selectedCategory
+    );
   }
 
   initializeSelectedCategory(): void {
@@ -85,21 +101,19 @@ export class CategoriesDropdownComponent implements OnInit {
 
     this.toggleNewCategoryButtons('hide', event);
     this.saveNewCategory(newCategory);
-}
+  }
 
-
-saveNewCategory(newCategory: Omit<Category, 'id'>): void {
-  this.categoryService.addData(newCategory).subscribe({
-    next: (savedCategory) => {
-      this.categories.push(savedCategory);
-      this.filteredCategories = [...this.categories];
-      this.newCategoryName = '';
-      this.randomCategoryColor = this.createRandomColor();
-    },
-    error: (err) => console.error('Fehler beim Speichern der Kategorie', err),
-  });
-}
-
+  saveNewCategory(newCategory: Omit<Category, 'id'>): void {
+    this.categoryService.addData(newCategory).subscribe({
+      next: (savedCategory) => {
+        this.categories.push(savedCategory);
+        this.filteredCategories = [...this.categories];
+        this.newCategoryName = '';
+        this.randomCategoryColor = this.createRandomColor();
+      },
+      error: (err) => console.error('Fehler beim Speichern der Kategorie', err),
+    });
+  }
 
   toggleEditCategory(category: Category, event: Event): void {
     event.stopPropagation();
@@ -173,49 +187,26 @@ saveNewCategory(newCategory: Omit<Category, 'id'>): void {
       (categoryId) => {
         if (categoryId !== null) {
           this.selectedCategoryToDelete = categoryId;
-          console.log(
-            'Zum Zweiten: selectedCategoryToDelete: ',
-            this.selectedCategoryToDelete
-          );
         }
       }
     );
     this.subscriptions.add(subscription);
   }
 
-  /*   subscribeToDeleteCategorySubject(): void {
-    const subscription = this.actionService.deleteCategorySubject$.subscribe(
-      (categoryId) => {
-        console.log('Empfange: CategoryId: ', categoryId);
-        if (categoryId !== null) {
-          console.log('Rufe removeCategoryFromList auf mit ID: ', categoryId)
-          this.removeCategoryFromList(categoryId);
-        }
-      }
-    );
-    this.subscriptions.add(subscription);
-  } */
-
   subscribeToDeleteCategorySubject(): void {
-    // Erst wenn der Button geklickt wird, starten wir das Abo!
     const subscription = this.actionService.deleteCategoryEvent.subscribe(
       () => {
         console.log('Button wurde geklickt. Jetzt lauschen wir auf die ID...');
 
-        // Jetzt erst wird deleteCategorySubject$ abonniert
         const categorySubscription =
           this.actionService.deleteCategorySubject$.subscribe((categoryId) => {
             console.log('Empfange: CategoryId: ', categoryId);
             if (categoryId !== null) {
-              console.log(
-                'Rufe removeCategoryFromList auf mit ID: ',
-                categoryId
-              );
-              this.removeCategoryFromList(categoryId);
+              // this.removeCategoryFromList(categoryId);
+              this.markCategoryForDeletion(categoryId);
             }
           });
 
-        // Beide Subscriptions verwalten
         this.subscriptions.add(categorySubscription);
       }
     );
@@ -223,24 +214,100 @@ saveNewCategory(newCategory: Omit<Category, 'id'>): void {
     this.subscriptions.add(subscription);
   }
 
-  removeCategoryFromList(categoryId: number): void {
+  /*   removeCategoryFromList(categoryId: number): void {
     const index = this.categories.findIndex(
       (category) => category.id === categoryId
     );
     if (index !== -1) {
       this.categories.splice(index, 1);
       this.filteredCategories.splice(index, 1);
+      if (this.selectedCategory?.id === categoryId) {
+        this.selectedCategory = null;
+      }
+
       this.deleteCategoryOnServer(categoryId);
+    }
+  } */
+
+  markCategoryForDeletion(categoryId: number): void {
+    const index = this.categories.findIndex(
+      (category) => category.id === categoryId
+    );
+    if (index !== -1) {
+      this.categories.splice(index, 1);
+      this.filteredCategories.splice(index, 1);
+      this.deletedCategoryIds.push(categoryId);
+      console.log('gelöschte Kategorien-IDs: ', this.deletedCategoryIds);
+      this.infoBoxService.setInfoBoxStatus(false);
+      if (this.selectedCategory?.id === categoryId) {
+        this.selectedCategory = null;
+      }
     }
   }
 
-  deleteCategoryOnServer(categoryId: number): void {
+  /*   deleteCategoryOnServer(categoryId: number): void {
     this.categoryService.deleteData(categoryId).subscribe({
       next: () => {
         console.log(`Kategorie mit ID ${categoryId} erfolgreich gelöscht.`);
         this.infoBoxService.setInfoBoxStatus(false);
       },
       error: (err) => console.error('Fehler beim Löschen der Kategorie:', err),
+    });
+  } */
+
+  /*   subscribeToSaveEditedTaskEvent() {
+    const deletedCategorySubscription =
+      this.actionService.saveEditedTaskEvent.subscribe(() => {
+        console.log('OK-Button wurde geklickt.');
+        this.deleteMarkedCategories();
+      });
+    // Hier später Code einfügen, um editierte Task-Daten an den Server zu schicken.
+
+    setTimeout(() => {
+      this.buttonPropertyService.setTaskEditMode(false);
+    }, 100);
+
+    this.subscriptions.add(deletedCategorySubscription);
+  } */
+
+  subscribeToSaveEditedTaskEvent() {
+    const deletedCategorySubscription =
+      this.actionService.saveEditedTaskEvent.subscribe((event: Event) => {
+        if (event instanceof PointerEvent && event.type === 'pointerup') {
+          console.log('OK-Button wurde geklickt.');
+          this.deleteMarkedCategories();
+          this.buttonPropertyService.setTaskEditMode(false);
+        } else {
+          console.log('Event ignoriert, weil kein pointerup');
+          // Hier später Code einfügen, um editierte Task-Daten an den Server zu schicken.
+        }
+      });
+
+    this.subscriptions.add(deletedCategorySubscription);
+  }
+
+  deleteMarkedCategories(): void {
+    const failedDeletes: number[] = [];
+
+    this.deletedCategoryIds.forEach((categoryId) => {
+      this.categoryService.deleteData(categoryId).subscribe({
+        next: () => {
+          console.log(`Kategorie mit Id ${categoryId} erfolgreich gelöscht.`);
+          this.infoBoxService.setInfoBoxStatus(false);
+        },
+        error: (err) => {
+          console.error(
+            `Fehler beim Löschen der Kategorie ${categoryId}: `,
+            err
+          );
+          failedDeletes.push(categoryId);
+        },
+        complete: () => {
+          this.deletedCategoryIds = this.deletedCategoryIds.filter(
+            (id) => !failedDeletes.includes(id)
+          );
+        },
+      });
     });
   }
 

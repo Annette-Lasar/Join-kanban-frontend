@@ -109,11 +109,10 @@ h3 {
     @include flex-container($justify: flex-start);
   }
   .contact-initial-icon {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     height: 24px;
     width: 24px;
     @include flex-container($justify: center);
-    // border: $darkgray 1px solid;
     border-radius: 50%;
   }
 }

@@ -1,0 +1,77 @@
+@if (task) {
+<div class="add-subtask-wrapper">
+  <input type="text" placeholder="Add subtask" />
+  @if (!isCancelAddSubtaskVisible) {
+  <join-button
+    [buttonIcon]="true"
+    [buttonClass]="'white-button'"
+    [imgSrc]="'assets/icons/plus.svg'"
+    [actionType]="'openAddSubtaskBox'"
+    [alt]="'Add subtask'"
+    [padding]="'0'"
+    [height]="'20px'"
+    [width]="'20px'"
+  />
+  } @else {
+  <div class="cancel-and-add-subtask-wrapper">
+    <join-button
+      [buttonIcon]="true"
+      [buttonClass]="'white-button'"
+      [imgSrc]="'assets/icons/close.svg'"
+      [actionType]="'cancelAddSubtask'"
+      [alt]="'Cancel add subtask'"
+      [padding]="'0'"
+      [height]="'20px'"
+      [width]="'20px'"
+    />
+    <div class="separator"></div>
+    <join-button
+      [buttonIcon]="true"
+      [buttonClass]="'white-button'"
+      [imgSrc]="'assets/icons/check.svg'"
+      [actionType]="'saveAddedSubtask'"
+      [alt]="'Save subtask'"
+      [padding]="'0'"
+      [height]="'20px'"
+      [width]="'20px'"
+    />
+  </div>
+  }
+</div>
+
+<ul class="subtasks-list">
+  @for (subtask of task.subtasks; track subtask) {
+  <label [for]="subtask.id">
+    <li class="subtask-item">
+      <div class="subtask-checkbox-title-wrapper">
+        <input [id]="subtask.id" type="checkbox" />
+        <span>{{ subtask.title }}</span>
+      </div>
+      <div class="subtask-edit-delete-wrapper">
+        <join-button
+          [buttonIcon]="true"
+          [buttonClass]="'white-button'"
+          [imgSrc]="'assets/icons/edit_dark.svg'"
+          [actionType]="'editSubtask'"
+          [alt]="'Edit subtask'"
+          [padding]="'0'"
+          [height]="'20px'"
+          [width]="'20px'"
+        />
+        <div class="separator"></div>
+        <join-button
+          [buttonIcon]="true"
+          [buttonClass]="'white-button'"
+          [imgSrc]="'assets/icons/delete.svg'"
+          [actionType]="'deleteSubtask'"
+          [alt]="'Delete subtask'"
+          [padding]="'0'"
+          [height]="'24px'"
+          [width]="'24px'"
+        />
+      </div>
+    </li>
+  </label>
+  }
+</ul>
+}

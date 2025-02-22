@@ -27,7 +27,7 @@
 
 .task-detail-text-wrapper {
   width: 100%;
-  height: calc(100% - 24px - 12px);
+  height: calc(100% - 24px - 24px);
   margin: 12px 0 0 0;
   overflow-y: auto;
   border: orchid 1px solid;
@@ -73,6 +73,10 @@
   margin: 0 0 1em;
 }
 
+.meta-label {
+  margin: 0 0 0.3em;
+}
+
 .contacts-wrapper {
   .contact-list {
     padding: 0;
@@ -92,23 +96,8 @@
 }
 
 .subtasks-wrapper {
-  .subtasks-list {
-    padding: 0;
-  }
-
-  .subtask-item {
-    height: 28px;
+  .subtasks {
     margin: 0 0 0.5em;
-    padding: 0 0.25em;
-    @include flex-container($justify: flex-start, $gap: 12px);
-    list-style-type: none;
-    border-radius: 8px;
-    background-color: $extremelightgray;
-    transition: background 0.2s ease-in-out;
-    cursor: pointer;
-    &:hover {
-      background-color: $verylightgray;
-    }
   }
 }
 

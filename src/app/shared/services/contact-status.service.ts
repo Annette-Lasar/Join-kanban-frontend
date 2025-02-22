@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ContactStatusService {
   private isAddContactModeStatus = new BehaviorSubject<boolean>(true);
-  isAddContactModeStatus$ = this.isAddContactModeStatus.asObservable();
+  isAddContactModeStatus$: Observable<boolean> = this.isAddContactModeStatus.asObservable();
 
   private contactFormStatus = new BehaviorSubject<boolean>(false);
-  contactFormStatus$ = this.contactFormStatus.asObservable();
+  contactFormStatus$: Observable<boolean> = this.contactFormStatus.asObservable();
 
   private showDetailsStatus = new BehaviorSubject<boolean>(false);
-  showDetailsStatus$ = this.showDetailsStatus.asObservable();
+  showDetailsStatus$: Observable<boolean> = this.showDetailsStatus.asObservable();
 
   private contactDetailFormStatus = new BehaviorSubject<boolean>(false);
-  contactDetailFormStatus$ = this.contactDetailFormStatus.asObservable();
+  contactDetailFormStatus$: Observable<boolean> = this.contactDetailFormStatus.asObservable();
 
   private deleteContactStatus = new BehaviorSubject<boolean>(false);
-  deleteContactStatus$ = this.deleteContactStatus.asObservable();
+  deleteContactStatus$: Observable<boolean> = this.deleteContactStatus.asObservable();
 
 /*   private successStatus = new BehaviorSubject<boolean>(false);
   successStatus$ = this.successStatus.asObservable(); */

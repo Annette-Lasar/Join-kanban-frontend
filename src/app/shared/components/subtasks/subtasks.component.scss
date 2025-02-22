@@ -1,0 +1,59 @@
+@import "../../../../scss_files/variables.scss";
+@import "../../../../scss_files/mixins.scss";
+
+.add-subtask-wrapper {
+  height: 24px;
+  padding: 0 0.3em;
+  @include flex-container();
+  border: $bordergray 1px solid;
+  border-radius: 4px;
+  input[type="text"] {
+    padding: 0.25em;
+    flex: 1 1 0;
+    border: none;
+    outline: none;
+  }
+  &:focus-within {
+    border: $lightblue 1px solid;
+  }
+  .cancel-and-add-subtask-wrapper {
+    @include flex-container();
+    border: red 1px solid;
+    .separator {
+      width: 1px;
+      background-color: $bordergray;
+      height: 16px;
+    }
+  }
+}
+
+.subtasks-list {
+  padding: 0;
+}
+
+.subtask-item {
+  height: 28px;
+  margin: 0 0 0.5em;
+  padding: 0 0.25em;
+  @include flex-container($gap: 4px);
+  list-style-type: none;
+  border-radius: 8px;
+  background-color: $extremelightgray;
+  transition: background 0.2s ease-in-out;
+  cursor: pointer;
+  &:hover {
+    background-color: $verylightgray;
+  }
+  .subtask-edit-delete-wrapper {
+    width: 60px;
+    height: 100%;
+    padding: 0 0.25em 0 0;
+    @include flex-container();
+    border: blue 1px solid;
+    .separator {
+      width: 1px;
+      height: 16px;
+      background-color: $bordergray;
+    }
+  }
+}

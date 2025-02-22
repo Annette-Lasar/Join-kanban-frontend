@@ -1,33 +1,55 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ButtonPropertyService {
   private toggleContainerSubject = new BehaviorSubject<string | null>(null);
-  toggleContainer$ = this.toggleContainerSubject.asObservable();
+  toggleContainer$: Observable<string | null> =
+    this.toggleContainerSubject.asObservable();
 
   private isAddContactButtonClickedSubject = new BehaviorSubject<boolean>(
     false
   );
-  isAddContactButtonClicked$ =
+  isAddContactButtonClicked$: Observable<boolean> =
     this.isAddContactButtonClickedSubject.asObservable();
 
   private createNewContactClicked = new BehaviorSubject<boolean>(false);
-  createNewContactClicked$ = this.createNewContactClicked.asObservable();
+  createNewContactClicked$: Observable<boolean> =
+    this.createNewContactClicked.asObservable();
 
   private clearInputButtonClickedSubject = new BehaviorSubject<boolean>(false);
-  clearInputButtonClicked$ = this.clearInputButtonClickedSubject.asObservable();
+  clearInputButtonClicked$: Observable<boolean> =
+    this.clearInputButtonClickedSubject.asObservable();
 
   private deleteContactButtonClicked = new BehaviorSubject<boolean>(false);
-  deleteContactButtonClicked$ = this.deleteContactButtonClicked.asObservable();
+  deleteContactButtonClicked$: Observable<boolean> =
+    this.deleteContactButtonClicked.asObservable();
 
+  // AUSLAGERN IN INFOSERVICE??
   private successMessage = new BehaviorSubject<string | undefined>('');
-  successMessage$ = this.successMessage.asObservable();
+  successMessage$: Observable<string | undefined> =
+    this.successMessage.asObservable();
 
   private loginStatusSubject = new BehaviorSubject<boolean>(true);
   loginStatus$ = this.loginStatusSubject.asObservable();
+
+  private isTaskDetailVisibleStatusSubject = new BehaviorSubject<boolean>(
+    false
+  );
+  isTaskDetailVisibleStatusSubject$: Observable<boolean> =
+    this.isTaskDetailVisibleStatusSubject.asObservable();
+
+  private taskEditModeSubject = new BehaviorSubject<boolean>(false);
+  taskEditModeSubject$: Observable<boolean> =
+    this.taskEditModeSubject.asObservable();
+
+  private isCancelAddSubtaskVisibleSubject = new BehaviorSubject<boolean>(
+    false
+  );
+  isCancelAddSubtaskVisibleSubject$: Observable<boolean> =
+    this.isCancelAddSubtaskVisibleSubject.asObservable();
 
   /* =============================================================
   
@@ -59,9 +81,21 @@ export class ButtonPropertyService {
     this.successMessage.next(message);
   }
 
-
   toggleLoginStatus(): void {
-    const currentStatus = this.loginStatusSubject.value; 
+    const currentStatus = this.loginStatusSubject.value;
     this.loginStatusSubject.next(!currentStatus);
+  }
+
+  setIsTaskDetailVisibleStatusSubject(status: boolean): void {
+    this.isTaskDetailVisibleStatusSubject.next(status);
+  }
+
+  setTaskEditMode(status: boolean): void {
+    this.taskEditModeSubject.next(status);
+  }
+
+  toggleCancelAddSubtaskVisible(): void {
+    const currentStatus = this.isCancelAddSubtaskVisibleSubject.value;
+    this.isCancelAddSubtaskVisibleSubject.next(!currentStatus);
   }
 }

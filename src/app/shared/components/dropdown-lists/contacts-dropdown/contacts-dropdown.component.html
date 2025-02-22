@@ -1,6 +1,5 @@
 @if(task) {
 <div class="contacts-dropdown-wrapper">
-  <div class="meta-label">Assigned to</div>
   <div
     class="contacts-wrapper"
     [ngStyle]="{
@@ -36,16 +35,6 @@
 
   @if (isContactsListVisible) {
   <ul class="contacts-list">
-    <!--     <li class="contact-list-item">
-      <label for="select_all_contacts">
-        <div class="select-all-contacts-wrapper">
-          Select or unselect all contacts
-        </div>
-        <div id="select_all_contacts_checkbox-wrapper">
-          <input type="checkbox" name="select_all" id="select_all_contacts" />
-        </div>
-      </label>
-    </li> -->
     @for(contact of filteredContacts; track contact) {
     <li class="contact-list-item">
       <label [for]="'contact_checkbox_' + contact.id" class="contact-label">
@@ -65,12 +54,33 @@
           </div>
         </div>
         <div>
-          <input [id]="'contact_checkbox_' + contact.id" type="checkbox" />
+          <input 
+          [id]="'contact_checkbox_' + contact.id"
+          [checked]="isContactAssigned(contact.id)"
+          (change)="toggleContactAssignment(contact)"
+          type="checkbox" 
+          />
         </div>
       </label>
     </li>
     }
   </ul>
   }
+  <div class="contact-icons-wrapper">
+    @if (assignedContacts.length > 0) { @for (assignedContact of
+    assignedContacts; track assignedContact) {
+    <div
+      class="contact-icon"
+      [ngStyle]="{
+        backgroundColor: assignedContact.color,
+        color: assignedContact.color_brightness ? '#000000' : '#ffffff',
+        border: '1px solid' + assignedContact.color
+      }"
+    >
+      {{ assignedContact.first_name?.charAt(0)
+      }}{{ assignedContact.last_name?.charAt(0) }}
+    </div>
+    } }
+  </div>
 </div>
 }

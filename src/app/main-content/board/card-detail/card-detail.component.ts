@@ -1,10 +1,20 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { Task } from '../../../shared/interfaces/task.interface';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
 import { TaskEditComponent } from './task-edit/task-edit.component';
 import { Contact } from '../../../shared/interfaces/contact.interface';
 import { Category } from '../../../shared/interfaces/category.interface';
-
+import { Subscription } from 'rxjs';
+import { ButtonPropertyService } from '../../../shared/services/button-propertys.service';
+import { ActionService } from '../../../shared/services/action.service';
+import { TaskStatusService } from '../../../shared/services/task-status.service';
+import { TaskService } from '../../../shared/services/task.service';
 
 @Component({
   selector: 'join-card-detail',
@@ -13,13 +23,66 @@ import { Category } from '../../../shared/interfaces/category.interface';
   templateUrl: './card-detail.component.html',
   styleUrl: './card-detail.component.scss',
 })
-export class CardDetailComponent {
+export class CardDetailComponent implements OnInit, OnDestroy {
   @Input() task: Task | null = null;
   @Input() contacts: Contact[] = [];
   @Input() categories: Category[] = [];
-  detailMode: boolean = false;
+  editMode: boolean = false;
+  private subscriptions = new Subscription();
 
-  toggleEditMode(): void {
-    this.detailMode = !this.detailMode;
+  constructor(
+    private buttonPropertyService: ButtonPropertyService,
+    private actionService: ActionService,
+    private taskStatusService: TaskStatusService,
+    private taskService: TaskService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.getUpdatedEditMode();
+    this.listenToOriginalTaskState();
+    this.cancelEdit();
+    this.cdr.detectChanges();
+  }
+
+  getUpdatedEditMode() {
+    const getUpdatedDetailMode =
+      this.buttonPropertyService.taskEditModeSubject$.subscribe((status) => {
+        this.editMode = status;
+      });
+    this.subscriptions.add(getUpdatedDetailMode);
+  }
+
+  listenToOriginalTaskState(): void {
+    const subscription =
+      this.taskStatusService.originalTaskStateSubject$.subscribe(
+        (originalTask) => {
+          if (!this.task) return;
+          console.log('Orginialzustand einer Aufgabe geladen: ', originalTask);
+        }
+      );
+    this.subscriptions.add(subscription);
+  }
+
+  cancelEdit(): void {
+    const subscription = this.actionService.closeEditModeEvent.subscribe(() => {
+      const originalTask = this.taskStatusService.getOriginalTaskStatus();
+      console.log('Lade Originalzustand: ', originalTask);
+      if (originalTask) {
+        this.task = null;
+        setTimeout(() => {
+          this.task = JSON.parse(JSON.stringify(originalTask));
+          console.log('Task nach Wiederherstellung: ', this.task);
+          if (this.task) {
+            this.taskService.restoreOriginalTask(this.task);
+          }
+        }, 0);
+      }
+    });
+    this.subscriptions.add(subscription);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }
