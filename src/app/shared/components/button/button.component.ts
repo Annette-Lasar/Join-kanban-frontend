@@ -41,7 +41,7 @@ export class ButtonComponent {
     id?: number
   ) => void = (event, actionType, message, id) => {
     event.stopPropagation();
-    this.actionService.executeAction(actionType!, id, message);
+    this.actionService.executeAction(actionType!, id, message, event);
   };
 
 

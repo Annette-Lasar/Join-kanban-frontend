@@ -21,7 +21,8 @@ export class ActionService {
   taskDetailEvent = new EventEmitter<number>();
   keepOriginalTaskStatusEvent = new EventEmitter<void>();
   closeEditModeEvent = new EventEmitter<void>();
-  addSubtaskEvent = new EventEmitter<string>();
+  // addSubtaskEvent = new EventEmitter<string>();
+  addSubtaskEvent = new EventEmitter<{ message?: string; id?: number; event?: Event }>();
 
   private setItemToDeleteSubject = new BehaviorSubject<number | null>(null);
   setItemToDelete$: Observable<number | null> =
@@ -54,12 +55,12 @@ export class ActionService {
     );
   }
 
-  private actionMap: Map<string, (message?: string, id?: number) => void>;
+  private actionMap: Map<string, (message?: string, id?: number, event?: Event) => void>;
 
-  executeAction(actionType: string, id?: number, message?: string) {
+  executeAction(actionType: string, id?: number, message?: string, event?: Event) {
     const action = this.actionMap.get(actionType);
     if (action) {
-      action(message, id);
+      action(message, id, event);
     } else {
       console.warn(`Action ${actionType} is not defined.`);
     }
@@ -107,9 +108,13 @@ export class ActionService {
     }
   }
 
-  toggleAddSubtaskBox(message: string) {
-    this.addSubtaskEvent.emit(message);
+  toggleAddSubtaskBox(message?: string, id?: number, event?: Event) {
+    this.addSubtaskEvent.emit({message, id, event});
   }
+
+/*     toggleAddSubtaskBox(message?: string, id?: number, event?: Event): void {
+      this.addSubtaskEvent.emit(message);
+    } */
 
   saveEditedTask(id: number): void {
     console.log('%c TaskID: ', 'color: red;', id);

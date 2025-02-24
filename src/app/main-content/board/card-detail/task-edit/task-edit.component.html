@@ -112,10 +112,9 @@
 
       <div class="subtasks-wrapper">
         <div class="subtasks bold_700">Subtasks:</div>
-        <join-subtasks
-        [task]="task"
-        />
-
+        @if(task) {
+        <join-subtasks [task]="task" />
+        }
       </div>
     </div>
   </div>

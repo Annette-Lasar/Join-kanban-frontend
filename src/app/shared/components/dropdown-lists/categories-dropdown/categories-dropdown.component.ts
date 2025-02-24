@@ -55,7 +55,6 @@ export class CategoriesDropdownComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('selectedCategory (beim Start):', this.selectedCategory);
     this.initializeSelectedCategory();
     this.getPrepareDeleteCategorySubjectFromService();
     this.subscribeToDeleteCategorySubject();

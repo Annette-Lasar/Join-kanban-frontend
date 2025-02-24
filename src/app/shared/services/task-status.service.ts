@@ -1,27 +1,3 @@
-/* import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Task } from '../interfaces/task.interface';
-
-@Injectable({
-  providedIn: 'root',
-})
-export class TaskStatusService {
-  private originalTaskStateSubject = new BehaviorSubject<Task | null>(null);
-  originalTaskStateSubject$: Observable<Task | null> =
-    this.originalTaskStateSubject.asObservable();
-
- setOriginalTaskStatus(task: Task | null) {
-    this.originalTaskStateSubject.next(
-      task ? JSON.parse(JSON.stringify(task)) : null
-    );
-  }
-
-  getOriginalTaskStatus(): Task | null {
-    return this.originalTaskStateSubject.getValue();
-  }
-} */
-
-
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Task } from '../interfaces/task.interface';

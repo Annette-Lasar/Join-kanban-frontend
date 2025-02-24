@@ -45,6 +45,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.add(subscription);
   }
 
+  // Methode noch notwendig???
   listenForOriginalTaskStatusEvent(): void {
     const subscription =
       this.actionService.keepOriginalTaskStatusEvent.subscribe(() => {

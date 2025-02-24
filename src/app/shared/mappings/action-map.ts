@@ -11,7 +11,7 @@ export function createActionMap(
     boardStatusService: BoardStatusService,
     infoBoxService: InfoBoxService
 ) {
-    return new Map<string, (message?: string, id?: number) => void>([
+    return new Map<string, (message?: string, id?: number, event?: Event) => void>([
         ['toggle', (message) => actionService.toggleInfoContainer(message)],
         [
           'showAddContactForm',
@@ -61,9 +61,10 @@ export function createActionMap(
         ['closeTaskEditMode', () => actionService.toggleEditTaskMode('hide')],
         ['closeTaskDetail', (message, id) => actionService.closeTaskDetail(id!)],
         ['saveEditedTask', (message, id) => actionService.saveEditedTask(id!)],
-        ['openAddSubtaskBox', () => actionService.toggleAddSubtaskBox('open')],
-        ['cancelAddSubtask', () => actionService.toggleAddSubtaskBox('cancel')],
-        ['saveAddedSubtask', () => actionService.toggleAddSubtaskBox('save')],
+        ['openAddSubtaskBox', (message, id, event) => actionService.toggleAddSubtaskBox(message, id, event)],
+        ['cancelAddSubtask', (message, id, event) => actionService.toggleAddSubtaskBox(message, id, event)],
+        ['saveAddedSubtask', (message, id, event) => actionService.toggleAddSubtaskBox(message, id, event)],
         // add further actions here if necessary.
     ]);
 }
+

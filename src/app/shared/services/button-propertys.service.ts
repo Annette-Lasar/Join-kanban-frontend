@@ -94,8 +94,7 @@ export class ButtonPropertyService {
     this.taskEditModeSubject.next(status);
   }
 
-  toggleCancelAddSubtaskVisible(): void {
-    const currentStatus = this.isCancelAddSubtaskVisibleSubject.value;
-    this.isCancelAddSubtaskVisibleSubject.next(!currentStatus);
+  setCancelAddSubtaskvisible(status: boolean): void {
+    this.isCancelAddSubtaskVisibleSubject.next(status);
   }
 }
