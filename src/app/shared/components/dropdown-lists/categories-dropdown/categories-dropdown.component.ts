@@ -3,7 +3,8 @@ import {
   Input,
   HostListener,
   OnInit,
-  ChangeDetectorRef,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Task } from '../../../interfaces/task.interface';
@@ -15,7 +16,8 @@ import { ButtonComponent } from '../../button/button.component';
 import { InfoComponent } from '../../info/info.component';
 import { InfoBoxService } from '../../../services/info-box.service';
 import { ActionService } from '../../../services/action.service';
-import { ButtonPropertyService } from '../../../services/button-propertys.service';
+import { TaskService } from '../../../services/task.service';
+import { ColorBrightnessService } from '../../../services/color-brightness.service';
 import { Subscription } from 'rxjs';
 
 type CategoryField = 'color' | 'name';
@@ -31,6 +33,7 @@ type NewCategoryAction = 'show' | 'hide';
 export class CategoriesDropdownComponent implements OnInit {
   @Input() task: Task | null = null;
   @Input() categories: Category[] = [];
+  @Input() isNewTask: boolean = false;
   filteredCategories: Category[] = [];
   deletedCategoryIds: number[] = [];
   isCategoriesListVisible: boolean = false;
@@ -50,8 +53,8 @@ export class CategoriesDropdownComponent implements OnInit {
     private randomColorService: RandomColorService,
     private infoBoxService: InfoBoxService,
     private actionService: ActionService,
-    private buttonPropertyService: ButtonPropertyService,
-    private cdr: ChangeDetectorRef
+    private taskService: TaskService,
+    private colorBrightnessService: ColorBrightnessService
   ) {}
 
   ngOnInit(): void {
@@ -59,17 +62,17 @@ export class CategoriesDropdownComponent implements OnInit {
     this.getPrepareDeleteCategorySubjectFromService();
     this.subscribeToDeleteCategorySubject();
     this.getUpdatedWarningBoxStatus();
-    this.subscribeToSaveEditedTaskEvent();
-    console.log(
-      'selectedCategory (am Ende von ngOnInit):',
-      this.selectedCategory
-    );
+    this.filteredCategories = [...this.categories];
   }
 
   initializeSelectedCategory(): void {
-    if (this.task?.category) {
-      this.selectedCategory = this.task.category;
-    }
+    const subscription = this.taskService.selectedCategorySubject$.subscribe(
+      (category) => {
+        this.selectedCategory = category;
+      }
+    );
+
+    this.subscriptions.add(subscription);
   }
 
   toggleCategoriesList(event: Event) {
@@ -78,8 +81,10 @@ export class CategoriesDropdownComponent implements OnInit {
     this.filterCategories();
   }
 
+  // Hier wird die ausgewählte Kategorie an den TaskService geschickt!!
   setSelectedCategory(newCategory: Category): void {
     this.selectedCategory = newCategory;
+    this.taskService.setSelectedCategory(newCategory);
     this.isCategoriesListVisible = false;
   }
 
@@ -173,6 +178,9 @@ export class CategoriesDropdownComponent implements OnInit {
       this.filteredCategories = [...this.categories];
     }
 
+    updatedCategory.color_brightness = this.colorBrightnessService.isColorBright(updatedCategory.color);
+    this.taskService.updateCategoryInTasks(updatedCategory);
+
     this.resetEditMode();
   }
 
@@ -201,7 +209,6 @@ export class CategoriesDropdownComponent implements OnInit {
           this.actionService.deleteCategorySubject$.subscribe((categoryId) => {
             console.log('Empfange: CategoryId: ', categoryId);
             if (categoryId !== null) {
-              // this.removeCategoryFromList(categoryId);
               this.markCategoryForDeletion(categoryId);
             }
           });
@@ -212,21 +219,6 @@ export class CategoriesDropdownComponent implements OnInit {
 
     this.subscriptions.add(subscription);
   }
-
-  /*   removeCategoryFromList(categoryId: number): void {
-    const index = this.categories.findIndex(
-      (category) => category.id === categoryId
-    );
-    if (index !== -1) {
-      this.categories.splice(index, 1);
-      this.filteredCategories.splice(index, 1);
-      if (this.selectedCategory?.id === categoryId) {
-        this.selectedCategory = null;
-      }
-
-      this.deleteCategoryOnServer(categoryId);
-    }
-  } */
 
   markCategoryForDeletion(categoryId: number): void {
     const index = this.categories.findIndex(
@@ -244,49 +236,9 @@ export class CategoriesDropdownComponent implements OnInit {
     }
   }
 
-  /*   deleteCategoryOnServer(categoryId: number): void {
-    this.categoryService.deleteData(categoryId).subscribe({
-      next: () => {
-        console.log(`Kategorie mit ID ${categoryId} erfolgreich gelöscht.`);
-        this.infoBoxService.setInfoBoxStatus(false);
-      },
-      error: (err) => console.error('Fehler beim Löschen der Kategorie:', err),
-    });
-  } */
-
-  /*   subscribeToSaveEditedTaskEvent() {
-    const deletedCategorySubscription =
-      this.actionService.saveEditedTaskEvent.subscribe(() => {
-        console.log('OK-Button wurde geklickt.');
-        this.deleteMarkedCategories();
-      });
-    // Hier später Code einfügen, um editierte Task-Daten an den Server zu schicken.
-
-    setTimeout(() => {
-      this.buttonPropertyService.setTaskEditMode(false);
-    }, 100);
-
-    this.subscriptions.add(deletedCategorySubscription);
-  } */
-
-  subscribeToSaveEditedTaskEvent() {
-    const deletedCategorySubscription =
-      this.actionService.saveEditedTaskEvent.subscribe((event: Event) => {
-        if (event instanceof PointerEvent && event.type === 'pointerup') {
-          console.log('OK-Button wurde geklickt.');
-          this.deleteMarkedCategories();
-          this.buttonPropertyService.setTaskEditMode(false);
-        } else {
-          console.log('Event ignoriert, weil kein pointerup');
-          // Hier später Code einfügen, um editierte Task-Daten an den Server zu schicken.
-        }
-      });
-
-    this.subscriptions.add(deletedCategorySubscription);
-  }
-
   deleteMarkedCategories(): void {
     const failedDeletes: number[] = [];
+    console.log('failedDeletes: ', failedDeletes);
 
     this.deletedCategoryIds.forEach((categoryId) => {
       this.categoryService.deleteData(categoryId).subscribe({

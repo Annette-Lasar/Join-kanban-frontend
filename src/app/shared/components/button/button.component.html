@@ -1,4 +1,4 @@
-@if (!routerLink) {
+<!-- @if (!routerLink) {
 <button
   [type]="type"
   [ngClass]="[
@@ -11,6 +11,8 @@
   [style.height]="height"
   [style.padding]="padding"
   [title]="tooltip"
+  [disabled]="disabled"
+  (click)="onClick($event)"
 >
   @switch (true) { @case (buttonCaptionFirst && buttonIcon && isPrioButton) {
   <div class="caption-image-wrapper prio-button">
@@ -36,7 +38,8 @@
     class="inner-caption-image-wrapper"
     (click)="actionFunction($event, actionType, infoMessage, id)"
   >
-    <img [src]="imgSrc" [class]="imgClass" [alt]="alt" /> <span>{{ caption }}</span>
+    <img [src]="imgSrc" [class]="imgClass" [alt]="alt" />
+    <span>{{ caption }}</span>
   </div>
   } @case (buttonIcon) {
   <img
@@ -46,8 +49,10 @@
     (click)="actionFunction($event, actionType, infoMessage, id)"
   />
   } @default {
-    <span (click)="actionFunction($event, actionType, infoMessage, id)">{{ caption }}</span>
-  
+  <span (click)="actionFunction($event, actionType, infoMessage, id)">{{
+    caption
+  }}</span>
+
   } }
 </button>
 } @else {
@@ -69,4 +74,80 @@
   {{ caption }}
   } }
 </button>
-}
+} -->
+
+@if (!routerLink) {
+  <button
+    [type]="type"
+    [ngClass]="[
+      'button',
+      buttonClass,
+      prioClass,
+      isPrioButton && isPrioActive ? 'active' : ''
+    ]"
+    [style.width]="width"
+    [style.height]="height"
+    [style.padding]="padding"
+    [title]="tooltip"
+    [disabled]="disabled"
+    (click)="onClick($event)"
+  >
+    @switch (true) { @case (buttonCaptionFirst && buttonIcon && isPrioButton) {
+    <div class="caption-image-wrapper prio-button">
+      <span class="bold_600">{{ caption }}</span>
+      <img
+        [class]="imgClass"
+        [src]="isPrioActive ? activeSrc : defaultSrc"
+        [alt]="alt"
+      />
+    </div>
+    } @case (buttonCaptionFirst && buttonIcon) {
+    <div
+      class="caption-image-wrapper"
+      
+    >
+      <div class="inner-caption-image-wrapper">
+        <span class="bold_600">{{ caption }}</span>
+        <img [class]="imgClass" [src]="imgSrc" [alt]="alt" />
+      </div>
+    </div>
+    } @case (buttonCaptionSecond && buttonIcon) {
+    <div
+      class="inner-caption-image-wrapper"
+    >
+      <img [src]="imgSrc" [class]="imgClass" [alt]="alt" />
+      <span>{{ caption }}</span>
+    </div>
+    } @case (buttonIcon) {
+    <img
+      class="button-icon"
+      [src]="imgSrc"
+      [alt]="alt"
+    />
+    } @default {
+    <span>{{
+      caption
+    }}</span>
+  
+    } }
+  </button>
+  } @else {
+  <button
+    [routerLink]="routerLink"
+    [ngClass]="['button', buttonClass]"
+    [style.width]="width"
+    [style.height]="height"
+    [style.padding]="padding"
+    [title]="tooltip"
+  >
+    @switch (true) { @case (buttonCaptionFirst && buttonIcon) {
+    {{ caption }} <img [src]="imgSrc" [alt]="alt" />
+    } @case (buttonCaptionSecond && buttonIcon) {
+    <img [src]="imgSrc" [alt]="alt" /> {{ caption }}
+    } @case (buttonIcon) {
+    <img [src]="imgSrc" [alt]="alt" />
+    } @default {
+    {{ caption }}
+    } }
+  </button>
+  }

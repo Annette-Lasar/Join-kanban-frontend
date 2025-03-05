@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class InfoBoxService {
   private successStatus = new BehaviorSubject<boolean>(false);
-  successStatus$ = this.successStatus.asObservable();
+  successStatus$: Observable<boolean> = this.successStatus.asObservable();
 
-  // ÄNDERN AUF FALSE!!
   private infoBoxStatus = new BehaviorSubject<boolean>(false);
-  infoBoxStatus$ = this.infoBoxStatus.asObservable();
+  infoBoxStatus$: Observable<boolean> = this.infoBoxStatus.asObservable();
+
+  private confirmDeleteSubject = new Subject<void>();
+  confirmDelete$: Observable<void> =
+    this.confirmDeleteSubject.asObservable();
 
   /* =============================================================
   
@@ -24,5 +27,9 @@ export class InfoBoxService {
 
   setInfoBoxStatus(status: boolean): void {
     this.infoBoxStatus.next(status);
+  }
+
+  triggerDelete(): void {
+    this.confirmDeleteSubject.next();
   }
 }

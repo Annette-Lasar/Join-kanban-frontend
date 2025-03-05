@@ -51,6 +51,10 @@ export class ButtonPropertyService {
   isCancelAddSubtaskVisibleSubject$: Observable<boolean> =
     this.isCancelAddSubtaskVisibleSubject.asObservable();
 
+  private editSubtaskSubject = new BehaviorSubject<boolean>(false);
+  editSubtaskSubject$: Observable<boolean> =
+    this.editSubtaskSubject.asObservable();
+
   /* =============================================================
   
   METHODS
@@ -96,5 +100,9 @@ export class ButtonPropertyService {
 
   setCancelAddSubtaskvisible(status: boolean): void {
     this.isCancelAddSubtaskVisibleSubject.next(status);
+  }
+
+  setEditSubtaskSubject(status: boolean) {
+    this.editSubtaskSubject.next(status);
   }
 }

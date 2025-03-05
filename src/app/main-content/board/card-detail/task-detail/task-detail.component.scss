@@ -120,3 +120,12 @@ h1 {
   font-size: 0.8rem;
   color: $gray;
 }
+
+
+join-info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 20;
+  transform: translate(-50%, -50%);
+}

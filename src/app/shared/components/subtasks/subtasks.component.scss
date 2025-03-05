@@ -49,11 +49,24 @@
     height: 100%;
     padding: 0 0.25em 0 0;
     @include flex-container();
-    border: blue 1px solid;
     .separator {
       width: 1px;
       height: 16px;
       background-color: $bordergray;
+    }
+  }
+  .subtask-edit-wrapper {
+    width: 100%;
+    @include flex-container($gap: 12px);
+    input[type='text'] {
+      flex: 1 1 0;
+      outline: none;
+      border: none;
+      background-color: $extremelightgray;
+      &:focus {
+        border: $lightblue 1px solid;
+        border-radius: 8px;
+      }
     }
   }
 }

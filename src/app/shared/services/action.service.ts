@@ -16,13 +16,19 @@ export class ActionService {
   guestLoginEvent = new EventEmitter<void>();
   deleteTaskEvent = new EventEmitter<number>();
   deleteCategoryEvent = new EventEmitter<void>();
-  saveEditedTaskEvent = new EventEmitter<void>();
+  saveEditedTaskEvent = new EventEmitter<number>();
   deleteContactEvent = new EventEmitter<number>();
   taskDetailEvent = new EventEmitter<number>();
   keepOriginalTaskStatusEvent = new EventEmitter<void>();
   closeEditModeEvent = new EventEmitter<void>();
-  // addSubtaskEvent = new EventEmitter<string>();
-  addSubtaskEvent = new EventEmitter<{ message?: string; id?: number; event?: Event }>();
+  addSubtaskEvent = new EventEmitter<{
+    message?: string;
+    id?: number;
+    event?: Event;
+  }>();
+  deleteSubtaskEvent = new EventEmitter<number>();
+  saveEditedSubtaskEvent = new EventEmitter<number>();
+  openEditSubtaskBoxEvent = new EventEmitter<number>();
 
   private setItemToDeleteSubject = new BehaviorSubject<number | null>(null);
   setItemToDelete$: Observable<number | null> =
@@ -55,9 +61,17 @@ export class ActionService {
     );
   }
 
-  private actionMap: Map<string, (message?: string, id?: number, event?: Event) => void>;
+  private actionMap: Map<
+    string,
+    (message?: string, id?: number, event?: Event) => void
+  >;
 
-  executeAction(actionType: string, id?: number, message?: string, event?: Event) {
+  executeAction(
+    actionType: string,
+    id?: number,
+    message?: string,
+    event?: Event
+  ) {
     const action = this.actionMap.get(actionType);
     if (action) {
       action(message, id, event);
@@ -76,8 +90,10 @@ export class ActionService {
   }
 
   organizeSecurityQuestion(id: number, actionType: string): void {
-    this.prepareDeleteAction(id, actionType);
     this.showOrHideInfoBox(true);
+    if (actionType === 'setItemToDelete') {
+      this.prepareDeleteAction(id, actionType);
+    }
   }
 
   showOrHideInfoBox(statusValue: boolean): void {
@@ -109,16 +125,24 @@ export class ActionService {
   }
 
   toggleAddSubtaskBox(message?: string, id?: number, event?: Event) {
-    this.addSubtaskEvent.emit({message, id, event});
+    this.addSubtaskEvent.emit({ message, id, event });
   }
 
-/*     toggleAddSubtaskBox(message?: string, id?: number, event?: Event): void {
-      this.addSubtaskEvent.emit(message);
-    } */
+  deleteSubtask(id?: number): void {
+    this.deleteSubtaskEvent.emit(id);
+  }
 
-  saveEditedTask(id: number): void {
+  openEditSubtaskBox(id?: number): void {
+    this.openEditSubtaskBoxEvent.emit(id);
+  }
+
+  saveEditedSubtask(id?: number): void {
+    this.saveEditedSubtaskEvent.emit(id);
+  }
+
+  saveEditedTask(id?: number): void {
     console.log('%c TaskID: ', 'color: red;', id);
-    this.saveEditedTaskEvent.emit();
+    this.saveEditedTaskEvent.emit(id);
   }
 
   closeTaskDetail(id: number): void {
@@ -127,6 +151,7 @@ export class ActionService {
   }
 
   prepareDeleteAction(id: number, actionType: string): void {
+    console.log('aktueller ActionType: ', id, actionType);
     if (!id) {
       console.warn('Keine Kategorie-ID angegeben.');
       return;
@@ -134,6 +159,7 @@ export class ActionService {
 
     switch (actionType) {
       case PrepareDeleteAction.TASK:
+        console.log('Löschen der Aufgabe vorbereitet.');
         this.deleteItem(id, DeleteAction.TASK);
         break;
       case PrepareDeleteAction.ITEM:
@@ -150,8 +176,8 @@ export class ActionService {
     }
   }
 
-  setItemToDelete(categoryId: number): void {
-    this.setItemToDeleteSubject.next(categoryId);
+  setItemToDelete(id: number): void {
+    this.setItemToDeleteSubject.next(id);
   }
 
   deleteItem(id: number, action: DeleteAction): void {

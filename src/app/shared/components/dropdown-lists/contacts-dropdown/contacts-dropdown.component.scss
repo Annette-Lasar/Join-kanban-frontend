@@ -39,10 +39,11 @@
     width: 100%;
     margin: 0 0 0.5em;
     padding: 0 0 0 0.5em;
-    border: blue 1px solid;
+    cursor: pointer;
     label {
       height: 28px;
       @include flex-container();
+      cursor: pointer;
       .contact-initials-and-text-wrapper {
         @include flex-container($justify: flex-start, $gap: 8px);
         .initials-icon {

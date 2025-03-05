@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ActionService } from '../../services/action.service';
+import { InfoBoxService } from '../../services/info-box.service';
 
 @Component({
   selector: 'join-button',
@@ -11,29 +12,31 @@ import { ActionService } from '../../services/action.service';
   styleUrl: './button.component.scss',
 })
 export class ButtonComponent {
-  @Input() caption: string = '';
-  @Input() buttonClass: string = '';
-  @Input() padding: string = '1em 1.5em';
-  @Input() width: string = '75px';
-  @Input() height: string = '75px';
-  @Input() imgSrc: string = '';
-  @Input() imgClass: string = '';
-  @Input() buttonIcon: boolean = false;
+  @Input() actionType: string = '';
+  @Input() activeSrc: string = '';
+  @Input() alt: string = '';
   @Input() buttonCaptionFirst: boolean = false;
   @Input() buttonCaptionSecond: boolean = false;
-  @Input() prioClass: string = '';
-  @Input() isPrioButton: boolean = false;
+  @Input() buttonClass: string = '';
   @Input() buttonColor: string = '';
-  @Input() alt: string = '';
+  @Input() buttonIcon: boolean = false;
+  @Input() caption: string = '';
+  @Input() defaultSrc: string = '';
+  @Input() disabled: boolean = false;
+  @Input() height: string = '75px';
+  @Input() id?: number;
+  @Input() imgClass: string = '';
+  @Input() imgSrc: string = '';
+  @Input() infoMessage: string = '';
+  @Input() isPrioButton: boolean = false;
+  @Input() padding: string = '1em 1.5em';
+  @Input() prioClass: string = '';
+  @Input() prioStatus: string = '';
   @Input() routerLink: string | null = null;
   @Input() tooltip: string = '';
-  @Input() infoMessage: string = '';
-  @Input() defaultSrc: string = '';
-  @Input() activeSrc: string = '';
   @Input() type: 'button' | 'submit' = 'button';
-  @Input() prioStatus: string = '';
-  @Input() actionType: string = '';
-  @Input() id?: number;
+  @Input() width: string = '75px';
+
   @Input() actionFunction: (
     event: Event,
     actionType?: string,
@@ -44,7 +47,6 @@ export class ButtonComponent {
     this.actionService.executeAction(actionType!, id, message, event);
   };
 
-
   @Output() toggleContainer = new EventEmitter<string>();
   @Output() isAddContactButtonClicked = new EventEmitter<void>();
   @Output() isContactDetailOptionsButtonClicked = new EventEmitter<void>();
@@ -53,13 +55,28 @@ export class ButtonComponent {
   @Output() clearInputButtonClicked = new EventEmitter<void>();
   @Output() deleteContactButtonClicked = new EventEmitter<void>();
   @Output() successMessage = new EventEmitter<void>();
+  @Output() clicked = new EventEmitter<void>();
 
   constructor(
-    private actionService: ActionService
+    private actionService: ActionService,
+    private infoBoxService: InfoBoxService
   ) {}
 
   setPrioStatus(newStatus: string) {
     this.prioStatus = newStatus;
+  }
+
+  onClick(event: Event): void {
+    if (!this.actionType) {
+      console.warn('Kein actionType definiert!');
+      return;
+    }
+
+    if (this.actionType === 'deleteTask') {
+      this.infoBoxService.triggerDelete();
+    }
+
+    this.actionFunction(event, this.actionType, this.infoMessage, this.id);
   }
 
   get isPrioActive(): boolean {

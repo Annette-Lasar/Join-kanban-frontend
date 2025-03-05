@@ -31,7 +31,7 @@
     width: 100%;
     padding: 0.5em;
     outline: none;
-    border: $anthracite 1px solid;
+    border: $bordergray 1px solid;
     border-radius: 4px;
   }
   textarea {
@@ -73,65 +73,11 @@
   grid-area: due-date;
 }
 
-.category {
+join-categories-dropdown {
+  min-height: 48px;
+  width: 100%;
   position: relative;
   grid-area: category;
-  .category-wrapper {
-    padding: 0.5em;
-    @include flex-container();
-    background-color: $white;
-    border: $anthracite 1px solid;
-    border-radius: 4px;
-    cursor: pointer;
-    .dropdown-arrow {
-      height: 10px;
-      transform: rotate(180deg);
-    }
-  }
-  .category-list {
-    position: absolute;
-    top: 52px;
-    left: 0;
-    width: 100%;
-    padding: 0;
-    background-color: $white;
-    border: $anthracite 1px solid;
-    li:first-of-type {
-      margin: 0.3em auto;
-    }
-    li {
-      width: 98%;
-      margin: 0 auto 0.3em;
-      padding: 0.5em;
-      list-style-type: none;
-      @include flex-container();
-      border: green 1px solid;
-      border-radius: 4px;
-      background-color: $white;
-      .category-color-name-wrapper {
-        @include flex-container($gap: 8px);
-      }
-      .category-icons-wrapper {
-        @include flex-container($gap: 8px);
-        .edit-icon {
-          height: 20px;
-          cursor: pointer;
-        }
-        .small-separator-line {
-          width: 2px;
-          height: 16px;
-          background-color: $gray;
-        }
-        .delete-icon {
-          height: 16px;
-          cursor: pointer;
-        }
-      }
-      .plus-icon {
-        cursor: pointer;
-      }
-    }
-  }
 }
 
 .assigned-to {
@@ -220,7 +166,7 @@
     column-gap: 12px;
   }
 
-/*   .assigned-to,
+  /*   .assigned-to,
   .subtasks {
     margin: 0 0 100px 0;
   } */

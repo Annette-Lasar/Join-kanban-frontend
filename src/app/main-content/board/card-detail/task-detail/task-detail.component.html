@@ -92,12 +92,14 @@
       [caption]="'Delete'"
       [buttonIcon]="true"
       [buttonCaptionSecond]="true"
+      [actionType]="'openDeleteTaskSecurityInfo'"
       [buttonClass]="'light-button-with-icon'"
       [padding]="'0'"
       [imgSrc]="'assets/icons/delete.svg'"
       [imgClass]="'bin'"
       [width]="'80px'"
       [height]="'24px'"
+      [id]="task.id"
     />
     <div class="separator"></div>
     <join-button
@@ -114,4 +116,18 @@
     />
   </div>
 </div>
+} @if(task && isWarningMessageVisible) {
+<join-info
+  [alertTitle]="'Alert'"
+  [infoQuestion]="'Are you sure you want to delete this task permanently?'"
+  [infoText]="'This process is irreversible.'"
+  [imageSrc]="'assets/icons/join_logo_white.svg'"
+  [imageSrc2]="'assets/icons/close_white.svg'"
+  [infoMessageClass]="'security-info-box'"
+  [securityQuestion]="true"
+  [actionType]="'deleteTask'"
+  [caption1]="'Yes, proceed.'"
+  [caption2]="'No, preserve.'"
+  [id]="task!.id"
+/>
 }

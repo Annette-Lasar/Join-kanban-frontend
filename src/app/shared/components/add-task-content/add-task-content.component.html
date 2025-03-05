@@ -1,239 +1,14 @@
-<!-- <div class="task-wrapper">
-  <div class="add-task-grid">
-    <div class="title add-task-item">
-      <div class="bold_600 headword">Title<span class="red">*</span></div>
-      <input type="text" placeholder="Enter a title" />
-      <div class="warning-info">Please enter a title.</div>
-    </div>
-    <div class="description add-task-item">
-      <div class="bold_600 headword">Description</div>
-      <textarea
-        name="description"
-        id="description"
-        placeholder="Enter a description"
-      ></textarea>
-    </div>
-    <div class="prio add-task-item">
-      <div class="bold_600 headword">Prio</div>
-      <div class="prio-button-wrapper">
-        <join-button
-          (click)="setPrioStatus('urgent')"
-          [type]="'button'"
-          [actionFunction]="prioChangeHandler"
-          [buttonCaptionFirst]="true"
-          [buttonIcon]="true"
-          [isPrioButton]="true"
-          [prioStatus]="prioStatus"
-          [caption]="'Urgent'"
-          [defaultSrc]="'assets/icons/prio_urgent.svg'"
-          [activeSrc]="'assets/icons/prio_urgent_white.svg'"
-          [buttonClass]="'light-square-button'"
-          [buttonColor]="'#FF3D00'"
-          [prioClass]="'urgent'"
-          [width]="'90px'"
-          [height]="'32px'"
-          [padding]="'0'"
-        />
-        <join-button
-          (click)="setPrioStatus('medium')"
-          [type]="'button'"
-          [actionFunction]="prioChangeHandler"
-          [buttonCaptionFirst]="true"
-          [buttonIcon]="true"
-          [isPrioButton]="true"
-          [prioStatus]="prioStatus"
-          [caption]="'Medium'"
-          [defaultSrc]="'assets/icons/prio_medium.svg'"
-          [activeSrc]="'assets/icons/prio_medium_white.svg'"
-          [buttonClass]="'light-square-button'"
-          [buttonColor]="'#FFA800'"
-          [prioClass]="'medium'"
-          [width]="'90px'"
-          [height]="'32px'"
-          [padding]="'0'"
-        />
-        <join-button
-          (click)="setPrioStatus('low')"
-          [type]="'button'"
-          [actionFunction]="prioChangeHandler"
-          [buttonCaptionFirst]="true"
-          [buttonIcon]="true"
-          [isPrioButton]="true"
-          [prioStatus]="prioStatus"
-          [caption]="'Low'"
-          [defaultSrc]="'assets/icons/prio_low.svg'"
-          [activeSrc]="'assets/icons/prio_low_white.svg'"
-          [buttonClass]="'light-square-button'"
-          [buttonColor]="'#7AE229'"
-          [prioClass]="'low'"
-          [width]="'90px'"
-          [height]="'32px'"
-          [padding]="'0'"
-        />
-      </div>
-    </div>
-    <div class="due-date add-task-item">
-      <div class="bold_600 headword">Due date</div>
-      <input type="date" />
-      <div class="warning-info">Please pick a date.</div>
-    </div>
-    <div class="category add-task-item">
-      <div class="bold_600 headword">Category<span class="red">*</span></div>
-      <div
-        class="category-wrapper"
-        (click)="toggleCategoryList($event)"
-        [ngStyle]="{
-          border: isCategoryListVisible
-            ? '#29abe2 1px solid'
-            : '#333333 1px solid'
-        }"
-      >
-        <div class="task-category-text">Select task category</div>
-        <div class="task-category-image">
-          <img
-            src="assets/icons/arrow_drop_down.svg"
-            class="dropdown-arrow"
-            [ngStyle]="{
-              transform: isCategoryListVisible
-                ? 'rotate(180deg)'
-                : 'rotate(0deg)'
-            }"
-          />
-        </div>
-      </div>
-      <div class="warning-info">Please choose a category.</div>
-      @if (isCategoryListVisible) {
-      <ul class="category-list">
-        <li>
-          <div class="category-color-name-wrapper">
-            <svg width="16" height="16">
-              <circle
-                cx="8"
-                cy="8"
-                r="6"
-                fill="red"
-                stroke="black"
-                stroke-width="1"
-              />
-            </svg>
-            <div>Technical Task</div>
-          </div>
-          <div class="category-icons-wrapper">
-            <img
-              src="assets/icons/edit_dark.svg"
-              alt="Edit category"
-              class="edit-icon"
-            />
-            <div class="small-separator-line"></div>
-            <img
-              src="assets/icons/delete.svg"
-              alt="Delete category"
-              class="delete-icon"
-            />
-          </div>
-        </li>
-        <li>
-          <div class="category-color-name-wrapper">
-            <svg width="16" height="16">
-              <circle
-                cx="8"
-                cy="8"
-                r="6"
-                fill="blue"
-                stroke="black"
-                stroke-width="1"
-              />
-            </svg>
-            <div>User Story</div>
-          </div>
-          <div class="category-icons-wrapper">
-            <img
-              src="assets/icons/edit_dark.svg"
-              alt="Edit category"
-              class="edit-icon"
-            />
-            <div class="small-separator-line"></div>
-            <img
-              src="assets/icons/delete.svg"
-              alt="Delete category"
-              class="delete-icon"
-            />
-          </div>
-        </li>
-        <li>
-          <span>New category</span>
-          <img
-            src="assets/icons/plus.svg"
-            alt="Add a new category"
-            class="plus-icon"
-          />
-        </li>
-      </ul>
-      }
-    </div>
-    <div class="assigned-to add-task-item">
-      <div class="bold_600 headword">Assigned to</div>
-      <div
-        class="contacts-wrapper"
-        (click)="toggleContactsList($event)"
-        [ngStyle]="{
-          border: isContactsListVisible
-            ? '#29abe2 1px solid'
-            : '#333333 1px solid'
-        }"
-      >
-        <div class="contacts-text">Select contacts to assign</div>
-        <div class="contacts-dropdown-image">
-          <img
-            src="assets/icons/arrow_drop_down.svg"
-            class="dropdown-arrow"
-            [ngStyle]="{
-              transform: isContactsListVisible
-                ? 'rotate(180deg)'
-                : 'rotate(0deg)'
-            }"
-          />
-        </div>
-      </div>
-      @if (isContactsListVisible) {
-      <ul class="contacts-list">
-        <li class="contact-list-element">
-          <label for="contact_checkbox_0" class="contact-label">
-            <div class="contact-initials-and-text-wrapper">
-              <div class="initials-icon">AB</div>
-              <div>Annabell Bertram</div>
-            </div>
-            <div><input type="checkbox" id="contact_checkbox_0" /></div>
-          </label>
-        </li>
-        <li class="contact-list-element">
-          <label for="contact_checkbox_1" class="contact-label">
-            <div class="contact-initials-and-text-wrapper">
-              <div class="initials-icon">BB</div>
-              <div>Bilbo Beutlin</div>
-            </div>
-            <div><input type="checkbox" id="contact_checkbox_1" /></div>
-          </label>
-        </li>
-      </ul>
-      }
-    </div>
-    <div class="subtasks add-task-item">
-      <div class="bold_600 headword">Subtasks</div>
-      <div class="subtask-wrapper">
-        <input type="text" placeholder="Add a new subtask" />
-        <img src="assets/icons/plus.svg" alt="Add a subtask" />
-      </div>
-    </div>
-    <div class="separator-line"></div>
-  </div>
-</div> -->
-
 <div class="task-wrapper">
   <div class="add-task-grid">
     <div class="title add-task-item">
       <div class="bold_600 headword">Title<span class="red">*</span></div>
-      <input type="text" placeholder="Enter a title" />
+      <input
+        type="text"
+        placeholder="Enter a title"
+        [(ngModel)]="title"
+        (input)="emitTaskData()"
+        required
+      />
       <div class="warning-info">Please enter a title.</div>
     </div>
     <div class="description add-task-item">
@@ -242,6 +17,8 @@
         name="description"
         id="description"
         placeholder="Enter a description"
+        [(ngModel)]="description"
+        (input)="emitTaskData()"
       ></textarea>
     </div>
     <div class="prio add-task-item">
@@ -302,157 +79,31 @@
     </div>
     <div class="due-date add-task-item">
       <div class="bold_600 headword">Due date</div>
-      <input type="date" />
+      <input type="date" [min]="today" 
+      [(ngModel)]="due_date" 
+      (change)="emitTaskData()"
+      required />
       <div class="warning-info">Please pick a date.</div>
     </div>
-    <div class="category add-task-item">
-      <div class="bold_600 headword">Category<span class="red">*</span></div>
-      <div
-        class="category-wrapper"
-        (click)="toggleCategoryList($event)"
-        [ngStyle]="{
-          border: isCategoryListVisible
-            ? '#29abe2 1px solid'
-            : '#333333 1px solid'
-        }"
-      >
-        <div class="task-category-text">Select task category</div>
-        <div class="task-category-image">
-          <img
-            src="assets/icons/arrow_drop_down.svg"
-            class="dropdown-arrow"
-            [ngStyle]="{
-              transform: isCategoryListVisible
-                ? 'rotate(180deg)'
-                : 'rotate(0deg)'
-            }"
-          />
-        </div>
-      </div>
-      <div class="warning-info">Please choose a category.</div>
-      @if (isCategoryListVisible) {
-      <ul class="category-list">
-        <li>
-          <div class="category-color-name-wrapper">
-            <svg width="16" height="16">
-              <circle
-                cx="8"
-                cy="8"
-                r="6"
-                fill="red"
-                stroke="black"
-                stroke-width="1"
-              />
-            </svg>
-            <div>Technical Task</div>
-          </div>
-          <div class="category-icons-wrapper">
-            <img
-              src="assets/icons/edit_dark.svg"
-              alt="Edit category"
-              class="edit-icon"
-            />
-            <div class="small-separator-line"></div>
-            <img
-              src="assets/icons/delete.svg"
-              alt="Delete category"
-              class="delete-icon"
-            />
-          </div>
-        </li>
-        <li>
-          <div class="category-color-name-wrapper">
-            <svg width="16" height="16">
-              <circle
-                cx="8"
-                cy="8"
-                r="6"
-                fill="blue"
-                stroke="black"
-                stroke-width="1"
-              />
-            </svg>
-            <div>User Story</div>
-          </div>
-          <div class="category-icons-wrapper">
-            <img
-              src="assets/icons/edit_dark.svg"
-              alt="Edit category"
-              class="edit-icon"
-            />
-            <div class="small-separator-line"></div>
-            <img
-              src="assets/icons/delete.svg"
-              alt="Delete category"
-              class="delete-icon"
-            />
-          </div>
-        </li>
-        <li>
-          <span>New category</span>
-          <img
-            src="assets/icons/plus.svg"
-            alt="Add a new category"
-            class="plus-icon"
-          />
-        </li>
-      </ul>
-      }
-    </div>
-    <div class="assigned-to add-task-item">
-      <div class="bold_600 headword">Assigned to</div>
-      <div
-        class="contacts-wrapper"
-        (click)="toggleContactsList($event)"
-        [ngStyle]="{
-          border: isContactsListVisible
-            ? '#29abe2 1px solid'
-            : '#333333 1px solid'
-        }"
-      >
-        <div class="contacts-text">Select contacts to assign</div>
-        <div class="contacts-dropdown-image">
-          <img
-            src="assets/icons/arrow_drop_down.svg"
-            class="dropdown-arrow"
-            [ngStyle]="{
-              transform: isContactsListVisible
-                ? 'rotate(180deg)'
-                : 'rotate(0deg)'
-            }"
-          />
-        </div>
-      </div>
-      <!-- eigene Komponente verwenden -->
-      @if (isContactsListVisible) {
-      <ul class="contacts-list">
-        <li class="contact-list-element">
-          <label for="contact_checkbox_0" class="contact-label">
-            <div class="contact-initials-and-text-wrapper">
-              <div class="initials-icon">AB</div>
-              <div>Annabell Bertram</div>
-            </div>
-            <div><input type="checkbox" id="contact_checkbox_0" /></div>
-          </label>
-        </li>
-        <li class="contact-list-element">
-          <label for="contact_checkbox_1" class="contact-label">
-            <div class="contact-initials-and-text-wrapper">
-              <div class="initials-icon">BB</div>
-              <div>Bilbo Beutlin</div>
-            </div>
-            <div><input type="checkbox" id="contact_checkbox_1" /></div>
-          </label>
-        </li>
-      </ul>
-      }
-    </div>
+    <join-categories-dropdown
+      class="add-task-item"
+      [isNewTask]="true"
+      [categories]="categories"
+    />
+    <join-contacts-dropdown
+      class="add-task-item"
+      [isNewTask]="true"
+      [contacts]="contacts"
+    />
     <div class="subtasks add-task-item">
       <div class="bold_600 headword">Subtasks</div>
-      <div class="subtask-wrapper">
+      <!-- <div class="subtask-wrapper">
         <input type="text" placeholder="Add a new subtask" />
         <img src="assets/icons/plus.svg" alt="Add a subtask" />
-      </div>
+      </div> -->
+      <join-subtasks
+        [isNewTask]="true"
+      />
     </div>
     <div class="separator-line"></div>
   </div>

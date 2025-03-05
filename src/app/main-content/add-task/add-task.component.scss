@@ -2,7 +2,7 @@
 @import '../../../scss_files/mixins.scss';
 
 .inner-content-header {
-  height: 80px;
+  height: 72px;
   padding: 0 0.5em;
   @include flex-container($justify: flex-start);
 }
@@ -16,7 +16,7 @@
 }
 
 .add-task-button-wrapper {
-  height: 48px;
+  height: 40px;
   @include flex-container();
   border: orchid 1px solid;
   .button-wrapper {

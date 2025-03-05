@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Task } from '../../../interfaces/task.interface';
 import { Contact } from '../../../interfaces/contact.interface';
+import { TaskService } from '../../../services/task.service';
 
 @Component({
   selector: 'join-contacts-dropdown',
@@ -14,10 +15,13 @@ import { Contact } from '../../../interfaces/contact.interface';
 export class ContactsDropdownComponent implements OnInit {
   @Input() task: Task | null = null;
   @Input() contacts: Contact[] = [];
+  @Input () isNewTask: boolean = false;
   filteredContacts: Contact[] | undefined = this.task?.contacts;
   assignedContacts: Contact[] = [];
   searchTerm: string = '';
   isContactsListVisible: boolean = false;
+
+  constructor(private taskService: TaskService) {}
 
   ngOnInit(): void {
     this.assignContactsToProperty();
@@ -65,8 +69,6 @@ export class ContactsDropdownComponent implements OnInit {
   }
 
   isContactAssigned(contactId?: number): boolean {
-    if (contactId) {
-    }
     return (
       this.task?.contacts.some((contact) => contact.id === contactId) ?? false
     );
@@ -78,11 +80,10 @@ export class ContactsDropdownComponent implements OnInit {
     const index = this.task.contacts.findIndex((c) => c.id === contact.id);
 
     if (index === -1) {
-      // Kontakt ist noch nicht in der Liste → Hinzufügen
       this.task.contacts.push(contact);
     } else {
-      // Kontakt existiert bereits → Entfernen
       this.task.contacts.splice(index, 1);
     }
+    this.taskService.setAssignedContacts(this.task.contacts);
   }
 }

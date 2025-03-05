@@ -89,7 +89,7 @@ export class ContactService {
     );
   }
 
-  deleteDatak(contactId: number): Observable<void> {
+  deleteData(contactId: number): Observable<void> {
     return this.dataService.deleteData<Contact>(
       'contacts',
       contactId,

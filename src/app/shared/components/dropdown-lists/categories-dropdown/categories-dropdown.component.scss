@@ -55,6 +55,7 @@
     list-style-type: none;
     border-radius: 4px;
     background-color: $extremelightgray;
+    cursor: pointer;
     &:hover {
       background-color: $verylightgray;
     }
@@ -138,7 +139,6 @@
 
     .new-category-button-wrapper {
       @include flex-container($gap: 4px);
-      border: green 1px solid;
       .abort-new-category {
         height: 16px;
         cursor: pointer;
@@ -168,6 +168,11 @@
     height: 20px;
     background-color: $bordergray;
   }
+}
+
+.category-warning {
+  margin: 2px 0 0;
+  font-size: 0.6rem;
 }
 
 join-info {

@@ -1,137 +1,165 @@
 @if(task) {
 <div class="task-detail-wrapper">
-  <div class="task-detail-content-wrapper">
-    <div class="meta-label">
-      <span class="bold_700">Category</span><span class="red">*</span>
+  <form #taskForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+    <div class="task-detail-content-wrapper">
+      <div class="meta-label">
+        <span class="bold_700">Category</span><span class="red">*</span>
+      </div>
+      <div class="task-detail-header-wrapper">
+        <join-categories-dropdown [task]="task" [categories]="categories" />
+        <join-button
+          [buttonIcon]="true"
+          [imgSrc]="'assets/icons/close.svg'"
+          [buttonClass]="'dark-close-button'"
+          [padding]="'0'"
+          [width]="'20px'"
+          [height]="'20px'"
+          [actionType]="'closeTaskEditMode'"
+        />
+      </div>
+      <div class="task-detail-text-wrapper">
+        <div class="title-input-wrapper">
+          <label [for]="'title_' + task.id"
+            ><span class="bold_700">Title</span
+            ><span class="red">*</span></label
+          >
+          <input
+            [id]="'title_' + task.id"
+            type="text"
+            name="title"
+            [(ngModel)]="editedTask.title"
+            (input)="onFieldChange()"
+            #titleInput="ngModel"
+            class="plain-input"
+            required
+          />
+
+          <div
+            class="warning-message red"
+            [style.opacity]="titleInput.invalid && titleInput.touched ? 1 : 0"
+          >
+            Please enter a title.
+          </div>
+        </div>
+
+        <div class="task-description-input-wrapper">
+          <label [for]="'description_' + task.id" class="bold_700"
+            >Description</label
+          >
+          <textarea
+            name="description"
+            [id]="'description_' + task.id"
+            [(ngModel)]="editedTask.description"
+            [value]="task.description"
+            placeholder="Enter a description for your task."
+            class="plain-input"
+            rows="3"
+          ></textarea>
+        </div>
+        <div class="task-due-date-input-wrapper">
+          <label [for]="'due_date_' + task.id"
+            ><span class="bold_700">Due date</span
+            ><span class="red">*</span></label
+          >
+          <input
+            [id]="'due_date_' + task.id"
+            type="date"
+            [(ngModel)]="editedTask.due_date"
+            (change)="onFieldChange()"
+            name="due_date"
+            [min]="today"
+            required
+            #dateInput="ngModel"
+            class="plain-input"
+          />
+
+          <div
+            class="warning-message red"
+            [style.opacity]="dateInput.invalid && dateInput.touched ? 1 : 0"
+          >
+            Enter a due date.
+          </div>
+        </div>
+        <div class="prio-button-wrapper">
+          <join-button
+            (click)="setPrioStatus('urgent')"
+            [type]="'button'"
+            [buttonCaptionFirst]="true"
+            [buttonIcon]="true"
+            [isPrioButton]="true"
+            [prioStatus]="prioStatus"
+            [caption]="'Urgent'"
+            [defaultSrc]="'assets/icons/prio_urgent.svg'"
+            [activeSrc]="'assets/icons/prio_urgent_white.svg'"
+            [buttonClass]="'light-square-button'"
+            [buttonColor]="'#FF3D00'"
+            [prioClass]="'urgent'"
+            [width]="'80px'"
+            [height]="'32px'"
+            [padding]="'0'"
+          />
+          <join-button
+            (click)="setPrioStatus('medium')"
+            [type]="'button'"
+            [buttonCaptionFirst]="true"
+            [buttonIcon]="true"
+            [isPrioButton]="true"
+            [prioStatus]="prioStatus"
+            [caption]="'Medium'"
+            [defaultSrc]="'assets/icons/prio_medium.svg'"
+            [activeSrc]="'assets/icons/prio_medium_white.svg'"
+            [buttonClass]="'light-square-button'"
+            [buttonColor]="'#FFA800'"
+            [prioClass]="'medium'"
+            [width]="'90px'"
+            [height]="'32px'"
+            [padding]="'0'"
+          />
+          <join-button
+            (click)="setPrioStatus('low')"
+            [type]="'button'"
+            [buttonCaptionFirst]="true"
+            [buttonIcon]="true"
+            [isPrioButton]="true"
+            [prioStatus]="prioStatus"
+            [caption]="'Low'"
+            [defaultSrc]="'assets/icons/prio_low.svg'"
+            [activeSrc]="'assets/icons/prio_low_white.svg'"
+            [buttonClass]="'light-square-button'"
+            [buttonColor]="'#7AE229'"
+            [prioClass]="'low'"
+            [width]="'80px'"
+            [height]="'32px'"
+            [padding]="'0'"
+          />
+        </div>
+        <div class="meta-label bold_700">Assigned to</div>
+        <join-contacts-dropdown [task]="task" [contacts]="contacts" />
+
+        <div class="subtasks-wrapper">
+          <div class="subtasks bold_700">Subtasks:</div>
+          @if(task) {
+          <join-subtasks [task]="task" />
+          }
+        </div>
+      </div>
     </div>
-    <div class="task-detail-header-wrapper">
-      <join-categories-dropdown [task]="task" [categories]="categories" />
+    <div class="task-detail-button-wrapper">
       <join-button
+        [caption]="'Ok'"
         [buttonIcon]="true"
-        [imgSrc]="'assets/icons/close.svg'"
-        [buttonClass]="'dark-close-button'"
+        [buttonCaptionFirst]="true"
+        [type]="'submit'"
+        [buttonClass]="'dark-square-button'"
         [padding]="'0'"
-        [width]="'20px'"
-        [height]="'20px'"
-        [actionType]="'closeTaskEditMode'"
+        [imgSrc]="'assets/icons/check_white.svg'"
+        [imgClass]="'check'"
+        [width]="'60px'"
+        [height]="'24px'"
+        [id]="task.id"
+        [disabled]="!isFormValid"
       />
     </div>
-    <div class="task-detail-text-wrapper">
-      <div class="title-input-wrapper">
-        <label [for]="'title_' + task.id"
-          ><span class="bold_700">Title</span><span class="red">*</span></label
-        >
-        <input
-          [id]="'title_' + task.id"
-          type="text"
-          [value]="task.title"
-          class="plain-input"
-        />
-      </div>
-
-      <div class="task-description-input-wrapper">
-        <label [for]="'description_' + task.id" class="bold_700"
-          >Description</label
-        >
-        <textarea
-          name="task_description"
-          [id]="'description_' + task.id"
-          [value]="task.description"
-          class="plain-input"
-          rows="3"
-        ></textarea>
-      </div>
-      <div class="task-due-date-input-wrapper">
-        <label [for]="'due_date_' + task.id"
-          ><span class="bold_700">Due date</span
-          ><span class="red">*</span></label
-        >
-        <input
-          [id]="'due_date_' + task.id"
-          type="date"
-          [value]="task.due_date"
-          [min]="today"
-          class="plain-input"
-        />
-      </div>
-      <div class="prio-button-wrapper">
-        <join-button
-          (click)="setPrioStatus('urgent')"
-          [type]="'button'"
-          [buttonCaptionFirst]="true"
-          [buttonIcon]="true"
-          [isPrioButton]="true"
-          [prioStatus]="prioStatus"
-          [caption]="'Urgent'"
-          [defaultSrc]="'assets/icons/prio_urgent.svg'"
-          [activeSrc]="'assets/icons/prio_urgent_white.svg'"
-          [buttonClass]="'light-square-button'"
-          [buttonColor]="'#FF3D00'"
-          [prioClass]="'urgent'"
-          [width]="'80px'"
-          [height]="'32px'"
-          [padding]="'0'"
-        />
-        <join-button
-          (click)="setPrioStatus('medium')"
-          [type]="'button'"
-          [buttonCaptionFirst]="true"
-          [buttonIcon]="true"
-          [isPrioButton]="true"
-          [prioStatus]="prioStatus"
-          [caption]="'Medium'"
-          [defaultSrc]="'assets/icons/prio_medium.svg'"
-          [activeSrc]="'assets/icons/prio_medium_white.svg'"
-          [buttonClass]="'light-square-button'"
-          [buttonColor]="'#FFA800'"
-          [prioClass]="'medium'"
-          [width]="'90px'"
-          [height]="'32px'"
-          [padding]="'0'"
-        />
-        <join-button
-          (click)="setPrioStatus('low')"
-          [type]="'button'"
-          [buttonCaptionFirst]="true"
-          [buttonIcon]="true"
-          [isPrioButton]="true"
-          [prioStatus]="prioStatus"
-          [caption]="'Low'"
-          [defaultSrc]="'assets/icons/prio_low.svg'"
-          [activeSrc]="'assets/icons/prio_low_white.svg'"
-          [buttonClass]="'light-square-button'"
-          [buttonColor]="'#7AE229'"
-          [prioClass]="'low'"
-          [width]="'80px'"
-          [height]="'32px'"
-          [padding]="'0'"
-        />
-      </div>
-      <div class="meta-label bold_700">Assigned to</div>
-      <join-contacts-dropdown [task]="task" [contacts]="contacts" />
-
-      <div class="subtasks-wrapper">
-        <div class="subtasks bold_700">Subtasks:</div>
-        @if(task) {
-        <join-subtasks [task]="task" />
-        }
-      </div>
-    </div>
-  </div>
-  <div class="task-detail-button-wrapper">
-    <join-button
-      [caption]="'Ok'"
-      [buttonIcon]="true"
-      [buttonCaptionFirst]="true"
-      [actionType]="'saveEditedTask'"
-      [buttonClass]="'dark-square-button'"
-      [padding]="'0'"
-      [imgSrc]="'assets/icons/check_white.svg'"
-      [imgClass]="'check'"
-      [width]="'60px'"
-      [height]="'24px'"
-      [id]="task.id"
-    />
-  </div>
+  </form>
 </div>
 }

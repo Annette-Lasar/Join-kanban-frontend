@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Task } from '../interfaces/task.interface';
-import { Subtask } from '../interfaces/task.interface';
+import { Task, Subtask } from '../interfaces/task.interface';
+import { BoardList } from '../interfaces/board-list.interface';
+import { Category } from '../interfaces/category.interface';
+import { Contact } from '../interfaces/contact.interface';
 import { DataService } from './data.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +15,27 @@ export class TaskService {
   tasks$: Observable<Task[]> = this.tasksSubject.asObservable();
   private subtasksSubject = new BehaviorSubject<Subtask[]>([]);
   subtasks$: Observable<Subtask[]> = this.subtasksSubject.asObservable();
+  private currentTaskSubject = new BehaviorSubject<Task | null>(null);
+  currentTask$: Observable<Task | null> =
+    this.currentTaskSubject.asObservable();
+  private selectedCategorySubject = new BehaviorSubject<Category | null>(null);
+  selectedCategorySubject$: Observable<Category | null> =
+    this.selectedCategorySubject.asObservable();
+  private assignedContactsSubject = new BehaviorSubject<Contact[]>([]);
+  assignedContactsSubject$: Observable<Contact[]> =
+    this.assignedContactsSubject.asObservable();
+  private newSubtasksSubject = new BehaviorSubject<Subtask[]>([]);
+  newSubtasksSubject$: Observable<Subtask[]> =
+    this.newSubtasksSubject.asObservable();
 
-  constructor(private dataService: DataService) {}
+  constructor(
+    private dataService: DataService,
+    private authService: AuthService
+  ) {}
+
+  /* =====================================================================
+  Communication with dataService to send data to backend
+  ========================================================================= */
 
   fetchData(): Observable<Task[]> {
     return this.dataService.fetchData<Task>('tasks', this.tasksSubject);
@@ -53,7 +75,7 @@ export class TaskService {
     );
   }
 
-  deleteDatak(taskId: number): Observable<void> {
+  deleteData(taskId: number): Observable<void> {
     return this.dataService.deleteData<Task>(
       'tasks',
       taskId,
@@ -70,8 +92,72 @@ export class TaskService {
     });
   }
 
-  private updateTaskState(taskId: number, subtask: Subtask): void {
+  /* =====================================================================
+  Getter methods for BehaviorSubjects
+  ========================================================================= */
+  getTasks(): Task[] {
+    return this.tasksSubject.getValue();
+  }
+
+  getSelectedCategory(): Category | null {
+    return this.selectedCategorySubject.getValue();
+  }
+
+  getAssignedContacts(): Contact[] {
+    return this.assignedContactsSubject.getValue();
+  }
+
+  getSubtasks(): Subtask[] {
+    return this.subtasksSubject.getValue();
+  }
+
+  getNewSubtasks(): Subtask[] {
+    return this.newSubtasksSubject.getValue();
+  }
+
+  getCurrentTask(): Task | null {
+    return this.currentTaskSubject.getValue();
+  }
+
+  /* =====================================================================
+  Setter methods for BehaviorSubjects
+  ========================================================================= */
+
+  setSelectedCategory(category: Category | null): void {
+    this.selectedCategorySubject.next(category);
+  }
+
+  setAssignedContacts(contacts: Contact[]): void {
+    this.assignedContactsSubject.next(contacts);
+  }
+
+  setSubtasks(subtasks: Subtask[]): void {
+    this.subtasksSubject.next(subtasks);
+  }
+
+  setNewSubtasks(subtasks: Subtask[]): void {
+    this.newSubtasksSubject.next(subtasks);
+    console.log('Neue Subtasks hinzugefügt: ', this.getNewSubtasks());
+  }
+
+  setCurrentTask(task: Task): void {
+    this.currentTaskSubject.next(task);
+  }
+
+  /* =====================================================================
+  Methods to interact with frontend for new or changed task data
+  ========================================================================= */
+  updateGeneralTaskState(updatedTask: Partial<Task>): void {
     const tasks = this.tasksSubject.getValue();
+    const updatedTasks = tasks.map((task) =>
+      task.id === updatedTask.id ? { ...task, ...updatedTask } : task
+    );
+
+    this.tasksSubject.next(updatedTasks);
+  }
+
+  private updateTaskState(taskId: number, subtask: Subtask): void {
+    const tasks = this.getTasks();
     const task = tasks.find((t) => t.id === taskId);
 
     if (!task) return;
@@ -90,6 +176,23 @@ export class TaskService {
     }
   }
 
+  updateCategoryInTasks(updatedCategory: Category): void {
+    const tasks = this.tasksSubject.getValue();
+    const updatedTasks = tasks.map((task) =>
+      task.category.id === updatedCategory.id
+        ? { ...task, 
+          category: { 
+            ...task.category,
+            name: updatedCategory.name,
+            color: updatedCategory.color,
+            color_brightness: updatedCategory.color_brightness,
+          } }
+        : task
+    );
+  
+    this.tasksSubject.next(updatedTasks);
+  }
+
   private handleUpdateError(subtaskId: number, error: any): void {
     console.error(`Fehler beim Aktualisieren von Subtask ${subtaskId}:`, error);
   }
@@ -98,8 +201,77 @@ export class TaskService {
     const tasks = this.tasksSubject.getValue();
     const updatedTasks = tasks.map((t) => (t.id === task.id ? { ...task } : t));
 
-    console.log('Board-Tasks nach Wiederherstellung: ', updatedTasks);
-
     this.tasksSubject.next(updatedTasks);
+  }
+
+  removeTaskFromUI(taskId: number): void {
+    const updatedTasks = this.tasksSubject
+      .getValue()
+      .filter((task) => task.id !== taskId);
+    this.tasksSubject.next(updatedTasks);
+  }
+
+  deleteTaskFromBackend(taskId: number): void {
+    this.deleteData(taskId).subscribe({
+      next: () => console.log('Task successfully deleted from Backend!'),
+      error: (err) => console.error('Issue deleting task: ', err),
+    });
+  }
+
+  generateTask(): Task {
+    const currentTask = this.getCurrentTask();
+    const selectedCategory = this.getSelectedCategory();
+    const assignedContacts = this.getAssignedContacts();
+    const subtasks = this.getSubtasks();
+    const userId = this.authService.getUserId() ?? 4;
+    if (!currentTask) throw new Error('Keine Aufgabe vorhanden!');
+
+    return {
+      ...currentTask,
+      id: currentTask?.id ?? undefined,
+      title: currentTask?.title ?? '',
+      description: currentTask?.description ?? '',
+      due_date: currentTask?.due_date ?? '',
+      priority: currentTask?.priority ?? 'medium',
+      category: selectedCategory ?? {
+        id: 1,
+        name: 'Technical Task',
+        color: '#1FD7C1',
+        color_brightness: true,
+        created_by: null,
+      },
+      category_id: selectedCategory?.id,
+      contacts: assignedContacts ?? [],
+      subtasks: subtasks ?? [],
+      completed_subtasks: subtasks?.filter((s) => s.checked_status).length ?? 0,
+      board_list: currentTask?.board_list ?? { id: 1, name: 'toDo' },
+      board: currentTask?.board ?? 1,
+      created_by: userId,
+    };
+  }
+
+  createNewTask(): Task {
+    const userId = this.authService.getUserId() ?? 4;
+
+    return {
+      id: undefined,
+      title: '',
+      description: '',
+      due_date: '',
+      priority: 'medium',
+      category: {
+        id: 1,
+        name: 'Technical Task',
+        color: '#1FD7C1',
+        color_brightness: true,
+        created_by: null,
+      },
+      contacts: [],
+      subtasks: [],
+      completed_subtasks: 0,
+      board_list: { id: 1, name: 'toDo' },
+      board: 1,
+      created_by: userId,
+    };
   }
 }

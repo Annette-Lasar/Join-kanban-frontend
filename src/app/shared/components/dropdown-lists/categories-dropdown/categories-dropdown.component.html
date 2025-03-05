@@ -1,4 +1,4 @@
-@if(task) {
+@if(task || isNewTask) {
 <div class="categories-dropdown-wrapper">
   <div
     class="categories-wrapper"
@@ -175,6 +175,7 @@
   </ul>
   }
 </div>
+<div class="category-warning red" [style.opacity]="selectedCategory ? '0' : '1'">Please select a category</div>
 } @if(isWarningMessageVisible) {
 <join-info
   [alertTitle]="'Alert'"
@@ -187,6 +188,6 @@
   [actionType]="'deleteCategory'"
   [caption1]="'Yes, proceed.'"
   [caption2]="'No, preserve.'"
-  [categoryId]="selectedCategoryToDelete!"
+  [id]="selectedCategoryToDelete!"
 />
 }

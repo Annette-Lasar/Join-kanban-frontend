@@ -53,6 +53,8 @@ export class CardDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.add(getUpdatedDetailMode);
   }
 
+
+  // Wozu brauche ich diese Methode??
   listenToOriginalTaskState(): void {
     const subscription =
       this.taskStatusService.originalTaskStateSubject$.subscribe(
@@ -67,12 +69,10 @@ export class CardDetailComponent implements OnInit, OnDestroy {
   cancelEdit(): void {
     const subscription = this.actionService.closeEditModeEvent.subscribe(() => {
       const originalTask = this.taskStatusService.getOriginalTaskStatus();
-      console.log('Lade Originalzustand: ', originalTask);
       if (originalTask) {
         this.task = null;
         setTimeout(() => {
           this.task = JSON.parse(JSON.stringify(originalTask));
-          console.log('Task nach Wiederherstellung: ', this.task);
           if (this.task) {
             this.taskService.restoreOriginalTask(this.task);
           }

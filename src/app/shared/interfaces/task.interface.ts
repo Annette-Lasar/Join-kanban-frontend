@@ -1,5 +1,6 @@
 import { Contact } from './contact.interface';
 import { Category } from './category.interface';
+import { BoardList } from './board-list.interface';
 
 export interface Task {
   id?: number;
@@ -9,9 +10,9 @@ export interface Task {
   due_date: string;
   contacts: Contact[];
   category: Category;
+  category_id?: number;
   subtasks: Subtask[];
   completed_subtasks?: number;
-  status: string;
   board: number;
   created_by?: number | null;
   board_list?: BoardList;
@@ -23,7 +24,11 @@ export interface Subtask {
   checked_status: boolean;
 }
 
-export interface BoardList {
+export interface SubtaskUI extends Subtask {
+  isEditing?: boolean;
+}
+
+/* export interface BoardList {
   id: number;
   name: string;
-}
+} */

@@ -33,6 +33,10 @@
   border: orchid 1px solid;
 }
 
+form {
+  height: 100%;
+}
+
 .title-input-wrapper,
 .task-description-input-wrapper,
 .task-due-date-input-wrapper {
@@ -60,6 +64,11 @@
   &:focus {
     outline: $lightblue 1px solid;
   }
+}
+
+.warning-message {
+  font-size: 0.6rem;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .prio-button-wrapper {

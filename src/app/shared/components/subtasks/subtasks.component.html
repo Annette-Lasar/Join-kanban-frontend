@@ -1,12 +1,11 @@
-@if (task) {
+@if (task || isNewTask) {
 <div class="add-subtask-wrapper">
   <input
     type="text"
     placeholder="Add subtask"
     [(ngModel)]="subtaskTitle"
-    (focus)="toggleAddSubtaskBox(true)"
-    (blur)="toggleAddSubtaskBox(false)"
-
+    (focus)="onFocusSubtaskInput()"
+    (blur)="onBlurSubtaskInput()"
   />
   @if (!isCancelAddSubtaskVisible) {
   <join-button
@@ -50,38 +49,58 @@
 </div>
 
 <ul class="subtasks-list">
-  @for (subtask of task.subtasks; track subtask) {
-  <label [for]="subtask.id">
-    <li class="subtask-item">
-      <div class="subtask-checkbox-title-wrapper">
-        <input [id]="subtask.id" type="checkbox" />
-        <span>{{ subtask.title }}</span>
-      </div>
-      <div class="subtask-edit-delete-wrapper">
-        <join-button
-          [buttonIcon]="true"
-          [buttonClass]="'white-button'"
-          [imgSrc]="'assets/icons/edit_dark.svg'"
-          [actionType]="'editSubtask'"
-          [alt]="'Edit subtask'"
-          [padding]="'0'"
-          [height]="'20px'"
-          [width]="'20px'"
-        />
-        <div class="separator"></div>
-        <join-button
-          [buttonIcon]="true"
-          [buttonClass]="'white-button'"
-          [imgSrc]="'assets/icons/delete.svg'"
-          [actionType]="'deleteSubtask'"
-          [alt]="'Delete subtask'"
-          [padding]="'0'"
-          [height]="'24px'"
-          [width]="'24px'"
-        />
-      </div>
-    </li>
-  </label>
+  @for (subtask of (isNewTask ? newSubtasks : subtasks); track subtask) {
+  <li class="subtask-item">
+    @if (!subtask.isEditing ) {
+    <div class="subtask-checkbox-title-wrapper">
+      <span>{{ subtask.title }}</span>
+    </div>
+    <div class="subtask-edit-delete-wrapper">
+      <join-button
+        [buttonIcon]="true"
+        [buttonClass]="'white-button'"
+        [imgSrc]="'assets/icons/edit_dark.svg'"
+        [actionType]="'openEditSubtaskBox'"
+        [alt]="'Edit subtask'"
+        [padding]="'0'"
+        [height]="'20px'"
+        [width]="'20px'"
+        [id]="subtask.id"
+      />
+      <div class="separator"></div>
+      <join-button
+        [buttonIcon]="true"
+        [buttonClass]="'white-button'"
+        [imgSrc]="'assets/icons/delete.svg'"
+        [actionType]="'deleteSubtask'"
+        [alt]="'Delete subtask'"
+        [padding]="'0'"
+        [height]="'24px'"
+        [width]="'24px'"
+        [id]="subtask.id"
+      />
+    </div>
+    } @else {
+    <div class="subtask-edit-wrapper">
+      <input
+        type="text"
+        [(ngModel)]="editedSubtaskTitle"
+        (blur)="cancelEditSubtask(subtask.id)"
+      />
+      <join-button
+        [buttonIcon]="true"
+        [buttonClass]="'white-button'"
+        [imgSrc]="'assets/icons/check.svg'"
+        [actionType]="'saveEditedSubtask'"
+        [alt]="'Save edited subtask'"
+        [padding]="'0'"
+        [height]="'24px'"
+        [width]="'24px'"
+        [id]="subtask.id"
+      />
+    </div>
+    }
+  </li>
   }
 </ul>
 }

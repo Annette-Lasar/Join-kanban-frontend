@@ -38,7 +38,7 @@ export class BoardService {
     );
   }
 
-  deleteDatak(boardId: number): Observable<void> {
+  deleteData(boardId: number): Observable<void> {
     return this.dataService.deleteData<Board>(
       'boards',
       boardId,

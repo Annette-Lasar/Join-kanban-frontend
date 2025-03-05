@@ -30,6 +30,12 @@ export class AuthService {
   }
 
 
+  getUserId(): number | null {
+    const userId = localStorage.getItem('userId');
+    return userId ? parseInt(userId, 10) : null;
+  }
+
+
   private storeUserData(
     response: Partial<LoginResponse>,
     userType: 'User' | 'Guest'

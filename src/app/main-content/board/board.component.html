@@ -80,7 +80,7 @@
       <div class="list" [ngClass]="board_list">
         <div class="board-list-headline-wrapper">
           <h2 class="bold_700">
-            {{ getFormattedBoardListName(board_list, "capitalized") }}
+            {{ getFormattedBoardListName(board_list.name, "capitalized") }}
           </h2>
           <div class="inner-task-button-wrapper">
             <join-button
@@ -109,7 +109,7 @@
         </div>
         @if(tasks) {
         <div class="task-card-wrapper">
-          @for(task of filteredTasks; track task) { @if(board_list ===
+          @for(task of filteredTasks; track task) { @if(board_list.name ===
           task.board_list?.name) {
           <join-task-card [task]="task" 
           (click)="openCardDetailView(task.id!)"
@@ -118,7 +118,7 @@
 
           <div class="list-content">
             No tasks found
-            {{ getFormattedBoardListName(board_list, "lowercased") }}
+            {{ getFormattedBoardListName(board_list.name, "lowercased") }}
           </div>
           }
         </div>
