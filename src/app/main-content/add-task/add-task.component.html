@@ -5,7 +5,11 @@
       <h1>Add Task</h1>
     </div>
     <form (ngSubmit)="onSubmit()">
-      <join-add-task-content [categories]="categories" [contacts]="contacts"/>
+      <join-add-task-content
+        [categories]="categories"
+        [contacts]="contacts"
+        (taskDataChange)="onTaskDataChange($event)"
+      />
       <div class="add-task-button-wrapper">
         <div class="info-required">
           <span class="red">*</span>This field is required.
@@ -35,6 +39,9 @@
             class="desktop-add-task"
             [buttonCaptionFirst]="true"
             [buttonIcon]="true"
+            [type]="'submit'"
+            [actionType]="'createNewTask'"
+            [infoMessage]="'toDo'"
             [imgSrc]="'assets/icons/check_white.svg'"
             [imgClass]="'check-icon'"
             [caption]="'Create task'"
@@ -42,7 +49,6 @@
             [width]="'110px'"
             [height]="'32px'"
             [padding]="'0'"
-            [disabled]="!isFormValid"
           />
         </div>
       </div>

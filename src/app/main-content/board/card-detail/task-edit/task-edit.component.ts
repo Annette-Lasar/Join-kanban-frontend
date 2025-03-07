@@ -11,7 +11,7 @@ import { Category } from '../../../../shared/interfaces/category.interface';
 import { ActionService } from '../../../../shared/services/action.service';
 import { TaskService } from '../../../../shared/services/task.service';
 import { ButtonPropertyService } from '../../../../shared/services/button-propertys.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'join-task-edit',
@@ -115,6 +115,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
     this.subscriptions.add(subscription);
   }
 
+
   onSubmit(): void {
     if (!this.editedTask.id) {
       console.error('Fehler: Keine gültige ID vorhanden.');
@@ -130,20 +131,30 @@ export class TaskEditComponent implements OnInit, OnDestroy {
     }
 
     this.actionService.saveEditedTaskEvent.emit(this.editedTask.id);
-    this.saveEditedTask();
+
+    this.saveEditedTask().subscribe({
+      next: () => {
+        this.taskService.clearAssignedContacts();
+        this.showSuccessMessage(); 
+      },
+      error: (err) => console.error('Fehler beim Speichern:', err),
+    });
   }
 
-  saveEditedTask(): void {
+
+  saveEditedTask(): Observable<Task> { 
     const updatedTask = this.taskService.generateTask();
     this.taskService.updateGeneralTaskState(updatedTask);
-    const subscription = this.taskService
-      .patchData(updatedTask.id!, updatedTask)
-      .subscribe({
-        next: () => console.log('Aufgabe erfolgreich aktualisiert!'),
-        error: (err) => console.error('Fehler beim Speichern:', err),
-      });
-    this.subscriptions.add(subscription);
+  
+    return this.taskService.patchData(updatedTask.id!, updatedTask).pipe(
+      tap(() => console.log('Aufgabe erfolgreich aktualisiert!'))
+    );
   }
+
+  showSuccessMessage(): void {
+    console.log('Aufgabe wurde erfolgreich editiert.');
+  }
+  
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();

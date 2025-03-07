@@ -9,6 +9,7 @@ export interface Task {
   priority: string;
   due_date: string;
   contacts: Contact[];
+  contact_ids?: number[] | undefined;
   category: Category;
   category_id?: number;
   subtasks: Subtask[];
@@ -27,8 +28,3 @@ export interface Subtask {
 export interface SubtaskUI extends Subtask {
   isEditing?: boolean;
 }
-
-/* export interface BoardList {
-  id: number;
-  name: string;
-} */

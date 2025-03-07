@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs';
 import { Task, Subtask } from '../interfaces/task.interface';
-import { BoardList } from '../interfaces/board-list.interface';
 import { Category } from '../interfaces/category.interface';
 import { Contact } from '../interfaces/contact.interface';
 import { DataService } from './data.service';
 import { AuthService } from './auth.service';
+import { BoardListService } from './board-list.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,10 +27,14 @@ export class TaskService {
   private newSubtasksSubject = new BehaviorSubject<Subtask[]>([]);
   newSubtasksSubject$: Observable<Subtask[]> =
     this.newSubtasksSubject.asObservable();
+  private assignedSubtasksSubject = new BehaviorSubject<Subtask[]>([]);
+  assignedSubtasksSubject$: Observable<Subtask[]> = 
+    this.assignedSubtasksSubject.asObservable();
 
   constructor(
     private dataService: DataService,
-    private authService: AuthService
+    private authService: AuthService,
+    private boardListService: BoardListService
   ) {}
 
   /* =====================================================================
@@ -180,17 +184,30 @@ export class TaskService {
     const tasks = this.tasksSubject.getValue();
     const updatedTasks = tasks.map((task) =>
       task.category.id === updatedCategory.id
-        ? { ...task, 
-          category: { 
-            ...task.category,
-            name: updatedCategory.name,
-            color: updatedCategory.color,
-            color_brightness: updatedCategory.color_brightness,
-          } }
+        ? {
+            ...task,
+            category: {
+              ...task.category,
+              name: updatedCategory.name,
+              color: updatedCategory.color,
+              color_brightness: updatedCategory.color_brightness,
+            },
+          }
         : task
     );
-  
+
     this.tasksSubject.next(updatedTasks);
+  }
+
+  async setContactsFromTask(taskId: number): Promise<void> {
+    const tasks = await firstValueFrom(this.tasks$);
+    const task = tasks.find((t) => t.id === taskId);
+    this.setAssignedContacts(task?.contacts ?? []);
+  }
+
+  clearAssignedContacts(): void {
+    this.setAssignedContacts([]);
+    console.log('%cAssignedContacts geleert: ', 'color: red;', this.assignedContactsSubject.getValue());
   }
 
   private handleUpdateError(subtaskId: number, error: any): void {
@@ -242,6 +259,7 @@ export class TaskService {
       },
       category_id: selectedCategory?.id,
       contacts: assignedContacts ?? [],
+      contact_ids: assignedContacts?.filter((c) => c.id !== undefined).map((c) => c.id as number) ?? [],
       subtasks: subtasks ?? [],
       completed_subtasks: subtasks?.filter((s) => s.checked_status).length ?? 0,
       board_list: currentTask?.board_list ?? { id: 1, name: 'toDo' },
@@ -250,26 +268,29 @@ export class TaskService {
     };
   }
 
-  createNewTask(): Task {
+  createNewTask(boardListName: string, taskData: Partial<Task>): Partial<Task> {
     const userId = this.authService.getUserId() ?? 4;
+    const boardListId =
+      this.boardListService.getBoardListIdByName(boardListName) ?? 1;
+
+    console.log('%cneue Daten: ', 'color: blue;', taskData);
 
     return {
+      ...taskData,
       id: undefined,
-      title: '',
-      description: '',
-      due_date: '',
-      priority: 'medium',
-      category: {
+      title: taskData.title ?? '',
+      due_date: taskData.due_date ?? '',
+      category: taskData.category ?? {
         id: 1,
         name: 'Technical Task',
         color: '#1FD7C1',
         color_brightness: true,
         created_by: null,
       },
-      contacts: [],
+      contacts: taskData.contacts ?? [],
       subtasks: [],
       completed_subtasks: 0,
-      board_list: { id: 1, name: 'toDo' },
+      board_list: { id: boardListId, name: boardListName },
       board: 1,
       created_by: userId,
     };

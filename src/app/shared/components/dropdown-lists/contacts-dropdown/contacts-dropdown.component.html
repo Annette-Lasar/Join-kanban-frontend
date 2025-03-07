@@ -54,18 +54,20 @@
           </div>
         </div>
         <div>
-          <input 
-          [id]="'contact_checkbox_' + contact.id"
-          [checked]="isContactAssigned(contact.id)"
-          (change)="toggleContactAssignment(contact)"
-          type="checkbox" 
+          <input
+            [id]="'contact_checkbox_' + contact.id"
+            [checked]="isContactAssigned(contact.id)"
+            (change)="toggleContactAssignment(contact)"
+            type="checkbox"
           />
         </div>
       </label>
     </li>
+
     }
   </ul>
   }
+  <span>{{ assignedContacts.length }}</span>
   <div class="contact-icons-wrapper">
     @if (assignedContacts.length > 0) { @for (assignedContact of
     assignedContacts; track assignedContact) {

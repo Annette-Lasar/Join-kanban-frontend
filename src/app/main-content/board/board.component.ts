@@ -122,7 +122,7 @@ export class BoardComponent implements OnInit, OnDestroy {
         this.boardService.boards$.subscribe({
           next: (boards) => {
             this.boards = boards;
-            console.log('Boards in AddTask:', this.boards);
+            console.log('Boards auf dem Board:', this.boards);
           },
           error: (err) => console.error('Fehler beim Abrufen der Boards:', err),
         });

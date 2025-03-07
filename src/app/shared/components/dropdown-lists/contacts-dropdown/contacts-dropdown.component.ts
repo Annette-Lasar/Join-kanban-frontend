@@ -1,9 +1,18 @@
-import { Component, Input, HostListener, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  HostListener,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+  OnDestroy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Task } from '../../../interfaces/task.interface';
 import { Contact } from '../../../interfaces/contact.interface';
 import { TaskService } from '../../../services/task.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'join-contacts-dropdown',
@@ -12,26 +21,55 @@ import { TaskService } from '../../../services/task.service';
   templateUrl: './contacts-dropdown.component.html',
   styleUrl: './contacts-dropdown.component.scss',
 })
-export class ContactsDropdownComponent implements OnInit {
+export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
   @Input() task: Task | null = null;
   @Input() contacts: Contact[] = [];
-  @Input () isNewTask: boolean = false;
+  @Input() isNewTask: boolean = false;
   filteredContacts: Contact[] | undefined = this.task?.contacts;
   assignedContacts: Contact[] = [];
   searchTerm: string = '';
   isContactsListVisible: boolean = false;
+  subscriptions = new Subscription();
 
   constructor(private taskService: TaskService) {}
 
   ngOnInit(): void {
-    this.assignContactsToProperty();
+    this.initializeContacts();
+    this.subscribeToAssignedContactsSubject();
   }
 
-  assignContactsToProperty() {
-    if (this.task) {
-      this.assignedContacts = this.task.contacts;
-      console.log('assignedContacts: ', this.assignedContacts);
+  initializeContacts(): void {
+    if (this.isNewTask) {
+      this.filteredContacts = [...this.contacts];
+      this.assignedContacts = [];
+    } else if (this.task) {
+      this.filteredContacts = [...this.task.contacts];
+      this.assignedContacts = [...this.task.contacts];
+    } else {
+      console.error(
+        'Fehler: Weder bestehende Aufgabe noch neue Aufgabe erkannt.'
+      );
+      this.filteredContacts = [];
+      this.assignedContacts = [];
     }
+  }
+
+  subscribeToAssignedContactsSubject(): void {
+    const subscription = this.taskService.assignedContactsSubject$.subscribe(
+      (assignedContacts) => {
+        this.assignedContacts = assignedContacts;
+        console.log(
+          '%cAktuell zugewiesene Kontakte',
+          'color: orange;',
+          this.assignedContacts
+        );
+      }
+    );
+    this.subscriptions.add(subscription);
+  }
+
+  ngOnChanges(): void {
+    this.initializeContacts();
   }
 
   toggleContactsList(event: Event): void {
@@ -74,16 +112,26 @@ export class ContactsDropdownComponent implements OnInit {
     );
   }
 
-  toggleContactAssignment(contact: Contact): void {
-    if (!this.task) return;
 
-    const index = this.task.contacts.findIndex((c) => c.id === contact.id);
+  toggleContactAssignment(contact: Contact): void {
+    let currentContacts = this.taskService.getAssignedContacts();
+
+    const index = currentContacts.findIndex((c) => c.id === contact.id);
 
     if (index === -1) {
-      this.task.contacts.push(contact);
+      currentContacts = [...currentContacts, contact];
     } else {
-      this.task.contacts.splice(index, 1);
+      currentContacts = currentContacts.filter((c) => c.id !== contact.id); // Kontakt entfernen
     }
-    this.taskService.setAssignedContacts(this.task.contacts);
+
+    this.taskService.setAssignedContacts(currentContacts);
+
+    if (this.task) {
+      this.task.contacts = currentContacts;
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

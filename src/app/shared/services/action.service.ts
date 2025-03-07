@@ -3,6 +3,7 @@ import { ContactStatusService } from './contact-status.service';
 import { ButtonPropertyService } from './button-propertys.service';
 import { BoardStatusService } from './board-status.service';
 import { InfoBoxService } from './info-box.service';
+import { TaskService } from './task.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PrepareDeleteAction } from '../constants/enum';
 import { DeleteAction } from '../constants/enum';
@@ -29,6 +30,7 @@ export class ActionService {
   deleteSubtaskEvent = new EventEmitter<number>();
   saveEditedSubtaskEvent = new EventEmitter<number>();
   openEditSubtaskBoxEvent = new EventEmitter<number>();
+  createNewTaskEvent = new EventEmitter<string>();
 
   private setItemToDeleteSubject = new BehaviorSubject<number | null>(null);
   setItemToDelete$: Observable<number | null> =
@@ -50,7 +52,8 @@ export class ActionService {
     private contactStatusService: ContactStatusService,
     private buttonPropertyService: ButtonPropertyService,
     private boardStatusService: BoardStatusService,
-    private infoBoxService: InfoBoxService
+    private infoBoxService: InfoBoxService,
+    private taskService: TaskService
   ) {
     this.actionMap = createActionMap(
       this,
@@ -112,11 +115,13 @@ export class ActionService {
     this.guestLoginEvent.emit();
   }
 
-  toggleEditTaskMode(status: string): void {
+  toggleEditTaskMode(status: string, id: number): void {
     if (status === 'show') {
       this.keepOriginalTaskStatusEvent.emit();
+      this.taskService.setContactsFromTask(id);
       this.buttonPropertyService.setTaskEditMode(true);
     } else if (status === 'hide') {
+      this.taskService.clearAssignedContacts();
       this.closeEditModeEvent.emit();
       this.buttonPropertyService.setTaskEditMode(false);
     } else {
@@ -144,6 +149,10 @@ export class ActionService {
     console.log('%c TaskID: ', 'color: red;', id);
     this.saveEditedTaskEvent.emit(id);
   }
+
+/*   createNewTask(message: string): void {
+    this.createNewTaskEvent.emit(message);
+  } */
 
   closeTaskDetail(id: number): void {
     this.buttonPropertyService.setIsTaskDetailVisibleStatusSubject(false);

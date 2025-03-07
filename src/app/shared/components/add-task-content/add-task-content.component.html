@@ -6,7 +6,7 @@
         type="text"
         placeholder="Enter a title"
         [(ngModel)]="title"
-        (input)="emitTaskData()"
+        (ngModelChange)="emitTaskData()"
         required
       />
       <div class="warning-info">Please enter a title.</div>
@@ -18,7 +18,7 @@
         id="description"
         placeholder="Enter a description"
         [(ngModel)]="description"
-        (input)="emitTaskData()"
+        (ngModelChange)="emitTaskData()"
       ></textarea>
     </div>
     <div class="prio add-task-item">
@@ -81,7 +81,7 @@
       <div class="bold_600 headword">Due date</div>
       <input type="date" [min]="today" 
       [(ngModel)]="due_date" 
-      (change)="emitTaskData()"
+      (ngModelChange)="emitTaskData()"
       required />
       <div class="warning-info">Please pick a date.</div>
     </div>

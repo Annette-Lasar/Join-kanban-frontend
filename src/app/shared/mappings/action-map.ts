@@ -61,8 +61,8 @@ export function createActionMap(
       'deleteContact',
       (message, id) => actionService.prepareDeleteAction(id!, 'deleteContact'),
     ],
-    ['showEditTaskMode', () => actionService.toggleEditTaskMode('show')],
-    ['closeTaskEditMode', () => actionService.toggleEditTaskMode('hide')],
+    ['showEditTaskMode', (message, id) => actionService.toggleEditTaskMode('show', id!)],
+    ['closeTaskEditMode', (message, id) => actionService.toggleEditTaskMode('hide', id!)],
     ['closeTaskDetail', (message, id) => actionService.closeTaskDetail(id!)],
     ['saveEditedTask', (message, id) => actionService.saveEditedTask(id!)],
     [
@@ -89,7 +89,6 @@ export function createActionMap(
       'openEditSubtaskBox',
       (message, id) => actionService.openEditSubtaskBox(id!),
     ],
-
     // add further actions here if necessary.
   ]);
 }

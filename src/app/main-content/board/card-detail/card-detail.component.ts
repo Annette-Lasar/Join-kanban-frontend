@@ -69,6 +69,8 @@ export class CardDetailComponent implements OnInit, OnDestroy {
   cancelEdit(): void {
     const subscription = this.actionService.closeEditModeEvent.subscribe(() => {
       const originalTask = this.taskStatusService.getOriginalTaskStatus();
+      this.taskService.clearAssignedContacts(); 
+      
       if (originalTask) {
         this.task = null;
         setTimeout(() => {
@@ -81,6 +83,8 @@ export class CardDetailComponent implements OnInit, OnDestroy {
     });
     this.subscriptions.add(subscription);
   }
+
+
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();

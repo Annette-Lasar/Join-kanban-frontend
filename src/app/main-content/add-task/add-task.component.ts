@@ -6,6 +6,7 @@ import { ButtonComponent } from '../../shared/components/button/button.component
 import { TaskService } from '../../shared/services/task.service';
 import { CategoryService } from '../../shared/services/category.service';
 import { ContactService } from '../../shared/services/contact.service';
+import { TaskCreationService } from '../../shared/services/task-creation.service';
 import { Task } from '../../shared/interfaces/task.interface';
 import { Category } from '../../shared/interfaces/category.interface';
 import { Contact } from '../../shared/interfaces/contact.interface';
@@ -28,13 +29,15 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   categories: Category[] = [];
   contacts: Contact[] = [];
   newTask: Partial<Task> = {};
+  selectedCategory: Category | null = null;
   isFormValid: boolean = false;
   subscriptions = new Subscription();
 
   constructor(
     private taskService: TaskService,
     private categoryService: CategoryService,
-    private contactService: ContactService
+    private contactService: ContactService,
+    private taskCreationService: TaskCreationService
   ) {}
 
   ngOnInit(): void {
@@ -117,8 +120,25 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     this.subscriptions.add(subscription);
   }
 
+  onTaskDataChange(
+    updatedData: Partial<{
+      title: string;
+      description: string;
+      due_date: string;
+      priority: string;
+    }>
+  ) {
+    this.newTask = { ...this.newTask, ...updatedData };
+  }
+
   onSubmit(): void {
-    // Code zum Triggern eines Klick-Events für das Erstellen einer neuen Aufgabe hier
+    if (!this.newTask.title?.trim() || !this.newTask.due_date) {
+      console.error('Fehler: Pflichtfelder nicht ausgefüllt!');
+      return;
+    }
+
+    console.log('Neue Aufgabe wird erstellt:', this.newTask);
+    this.taskCreationService.startTaskCreation('toDo', this.newTask);
   }
 
   ngOnDestroy(): void {
