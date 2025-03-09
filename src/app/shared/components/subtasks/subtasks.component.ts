@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { Subtask, Task, SubtaskUI } from '../../interfaces/task.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,7 +22,7 @@ import { ButtonPropertyService } from '../../services/button-propertys.service';
   templateUrl: './subtasks.component.html',
   styleUrl: './subtasks.component.scss',
 })
-export class SubtasksComponent implements OnInit, OnDestroy {
+export class SubtasksComponent implements OnInit, OnDestroy, OnChanges {
   @Input() task!: Task;
   @Input() isNewTask: boolean = false;
   get subtasks(): SubtaskUI[] {
@@ -37,12 +44,43 @@ export class SubtasksComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.initializeSubtasks();
+    this.subscribeToAssignedSubtasks();
     this.subscribeToToggleAddSubtaskBox();
     this.listenToMouseDown();
     this.listenToMouseUp();
     this.subscribeToDeleteSubtask();
     this.subscribeToEditSubtask();
     this.subscribeToOpenEditSubtaskBox();
+  }
+
+  ngOnChanges(): void {
+    this.initializeSubtasks();
+  }
+
+  initializeSubtasks(): void {
+    if (this.isNewTask) {
+      this.newSubtasks = [];
+      this.taskService.setAssignedSubtasks([]);
+    } else if (this.task) {
+      this.newSubtasks = this.task.subtasks;
+      this.taskService.setAssignedSubtasks(this.newSubtasks);
+    } else {
+      console.error('Fehler: Weder bestehende noch neue Aufgabe erkannt');
+      this.newSubtasks = [];
+    }
+  }
+
+  subscribeToAssignedSubtasks(): void {
+    const subscription = this.taskService.assignedSubtasksSubject$.subscribe(
+      (assignedSubtasks) => {
+        this.newSubtasks = assignedSubtasks.map((subtask) => ({
+          ...subtask,
+          isEditing: false,
+        }));
+      }
+    );
+    this.subscriptions.add(subscription);
   }
 
   subscribeToToggleAddSubtaskBox(): void {
@@ -90,7 +128,6 @@ export class SubtasksComponent implements OnInit, OnDestroy {
 
   organizeNewSubtaskHandling() {
     if (this.isNewTask) {
-      console.log('Eine ganz neue Subtask erstellen');
       this.addSubtaskToNewTask();
     } else {
       this.addSubtaskToList();
@@ -126,15 +163,18 @@ export class SubtasksComponent implements OnInit, OnDestroy {
   }
 
   addSubtaskToNewTask(): void {
-    const newSubtask: Subtask = {
+    const newSubtask: SubtaskUI = {
       id: undefined,
+      tempId: Date.now() + Math.floor(Date.now() + Math.random() * 10),
       title: this.subtaskTitle.trim(),
       checked_status: false,
     };
 
-    this.newSubtasks.push(newSubtask);
-    this.taskService.setNewSubtasks(this.newSubtasks);
-    this.cancelSubtask();
+    if (this.subtaskTitle.trim() !== '') {
+      this.newSubtasks.push(newSubtask);
+      this.taskService.setAssignedSubtasks(this.newSubtasks);
+      this.cancelSubtask();
+    }
   }
 
   addSubtaskToList(): void {
@@ -154,7 +194,13 @@ export class SubtasksComponent implements OnInit, OnDestroy {
   subscribeToDeleteSubtask(): void {
     const subscription = this.actionService.deleteSubtaskEvent.subscribe(
       (id) => {
-        this.deleteSubtaskFromList(id);
+        if (this.task) {
+          this.deleteSubtaskFromList(id);
+        } else if (this.isNewTask) {
+          this.deleteSubtaskFromNewTask(id);
+        } else {
+          console.warn('Unknown status: no subtask found for deletion.');
+        }
       }
     );
     this.subscriptions.add(subscription);
@@ -170,11 +216,29 @@ export class SubtasksComponent implements OnInit, OnDestroy {
     this.taskService.setSubtasks([...this.task.subtasks]);
   }
 
+  deleteSubtaskFromNewTask(id?: number) {
+    const index = this.newSubtasks.findIndex(
+      (subtask) => subtask.tempId === id
+    );
+    if (index !== -1) {
+      this.newSubtasks.splice(index, 1);
+    } else {
+      console.log(`Subtask with the ID ${id} was not found.`);
+    }
+    this.taskService.setNewSubtasks([...this.newSubtasks]);
+  }
+
   subscribeToOpenEditSubtaskBox(): void {
     const subscription = this.actionService.openEditSubtaskBoxEvent.subscribe(
       (id) => {
         this.buttonPropertyService.setEditSubtaskSubject(true);
-        this.startEditingSubtask(id);
+        if (this.task) {
+          this.startEditingSubtask(id);
+        } else if (this.isNewTask) {
+          this.startEditingSubtaskInNewTask(id);
+        } else {
+          console.warn('Unknown status: no subtask available for editing');
+        }
       }
     );
     this.subscriptions.add(subscription);
@@ -188,11 +252,28 @@ export class SubtasksComponent implements OnInit, OnDestroy {
     }
   }
 
+  startEditingSubtaskInNewTask(id?: number) {
+    console.log('Neue Subtasks in der Komponente: ', this.newSubtasks);
+    console.log('Aufgabe kann jetzt bearbeitet werden');
+    const subtask = this.newSubtasks.find((subtask) => subtask.tempId === id);
+    if (subtask) {
+      this.editedSubtaskTitle = subtask.title;
+      subtask.isEditing = true;
+    }
+  }
+
   subscribeToEditSubtask(): void {
     const subscription = this.actionService.saveEditedSubtaskEvent.subscribe(
       (id) => {
-        console.log('Ich wurde auch angeklickt!');
-        this.editSubtaskInList(id);
+        if (this.task) {
+          this.editSubtaskInList(id);
+        } else if (this.isNewTask) {
+          this.editSubtaskInNewTask(id);
+        } else {
+          console.warn(
+            'Unknown status: no edited subtask available for saving.'
+          );
+        }
       }
     );
     this.subscriptions.add(subscription);
@@ -212,6 +293,25 @@ export class SubtasksComponent implements OnInit, OnDestroy {
     this.taskService.setSubtasks(
       this.subtasks.map((subtask) => {
         const { isEditing, ...cleanSubtask } = subtask;
+        return cleanSubtask;
+      })
+    );
+  }
+
+  editSubtaskInNewTask(id?: number): void {
+    const subtask = this.newSubtasks.find((subtask) => subtask.tempId === id);
+    if (!subtask) return;
+    if (this.editedSubtaskTitle.trim() === '') {
+      this.editedSubtaskTitle = subtask.title;
+      subtask.isEditing = false;
+    }
+
+    subtask.title = this.editedSubtaskTitle.trim();
+    subtask.isEditing = false;
+
+    this.taskService.setSubtasks(
+      this.subtasks.map((subtask) => {
+        const { tempId, isEditing, ...cleanSubtask } = subtask;
         return cleanSubtask;
       })
     );

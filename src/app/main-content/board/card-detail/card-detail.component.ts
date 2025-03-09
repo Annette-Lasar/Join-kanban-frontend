@@ -69,6 +69,7 @@ export class CardDetailComponent implements OnInit, OnDestroy {
   cancelEdit(): void {
     const subscription = this.actionService.closeEditModeEvent.subscribe(() => {
       const originalTask = this.taskStatusService.getOriginalTaskStatus();
+      this.taskService.clearSelectedCategory();
       this.taskService.clearAssignedContacts(); 
       
       if (originalTask) {

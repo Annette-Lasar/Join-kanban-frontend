@@ -1,4 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from '../button/button.component';
@@ -8,6 +13,8 @@ import { Task } from '../../interfaces/task.interface';
 import { Category } from '../../interfaces/category.interface';
 import { Contact } from '../../interfaces/contact.interface';
 import { SubtasksComponent } from '../subtasks/subtasks.component';
+import { TaskCreationService } from '../../services/task-creation.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'join-add-task-content',
@@ -18,12 +25,12 @@ import { SubtasksComponent } from '../subtasks/subtasks.component';
     ButtonComponent,
     CategoriesDropdownComponent,
     ContactsDropdownComponent,
-    SubtasksComponent
+    SubtasksComponent,
   ],
   templateUrl: './add-task-content.component.html',
   styleUrl: './add-task-content.component.scss',
 })
-export class AddTaskContentComponent {
+export class AddTaskContentComponent implements OnInit, OnDestroy {
   @Input() task: Task | null = null;
   @Input() categories: Category[] = [];
   @Input() contacts: Contact[] = [];
@@ -34,32 +41,41 @@ export class AddTaskContentComponent {
   title = '';
   description = '';
   due_date = '';
+  subscriptions = new Subscription();
 
-  @Output() taskDataChange = new EventEmitter<{
-    title: string;
-    description: string;
-    due_date: string;
-    priority: string;
-  }>();
+
+  constructor(private taskCreationService: TaskCreationService) {}
+
+  ngOnInit(): void {
+    this.subscribeToNewTask();
+  }
+
+  subscribeToNewTask(): void {
+    const subscription = this.taskCreationService.newTask$.subscribe(
+      (newTask) => {
+        this.title = newTask.title ?? '';
+        this.description = newTask.description ?? '';
+        this.due_date = newTask.due_date ?? '';
+        this.prioStatus = newTask.priority ?? 'medium';
+      }
+    );
+    this.subscriptions.add(subscription);
+  }
 
   setPrioStatus(newStatus: string): void {
     this.prioStatus = newStatus;
     console.log('aktueller Prio-Status: ', this.prioStatus);
   }
 
-  emitTaskData() {
-    this.taskDataChange.emit({
+
+  updateTaskData(): void {
+    this.taskCreationService.updateNewTask({
       title: this.title,
       description: this.description,
       due_date: this.due_date,
       priority: this.prioStatus,
     });
   }
-
-  /*   prioChangeHandler(event: Event): void {
-    // Implementiere die Logik für Prio-Änderungen
-    // Brauche ich das? In der TaskEditComponent ging es auch ohne.
-  } */
 
   toggleCategoryList(event: Event): void {
     event.stopPropagation();
@@ -73,5 +89,9 @@ export class AddTaskContentComponent {
 
   closeCategoryList(): void {
     this.isCategoryListVisible = false;
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

@@ -89,6 +89,7 @@ export function createActionMap(
       'openEditSubtaskBox',
       (message, id) => actionService.openEditSubtaskBox(id!),
     ],
+    ['resetNewTask', () => actionService.resetNewTask()],
     // add further actions here if necessary.
   ]);
 }

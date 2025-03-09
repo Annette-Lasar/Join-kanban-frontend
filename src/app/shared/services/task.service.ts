@@ -5,7 +5,6 @@ import { Category } from '../interfaces/category.interface';
 import { Contact } from '../interfaces/contact.interface';
 import { DataService } from './data.service';
 import { AuthService } from './auth.service';
-import { BoardListService } from './board-list.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,13 +27,12 @@ export class TaskService {
   newSubtasksSubject$: Observable<Subtask[]> =
     this.newSubtasksSubject.asObservable();
   private assignedSubtasksSubject = new BehaviorSubject<Subtask[]>([]);
-  assignedSubtasksSubject$: Observable<Subtask[]> = 
+  assignedSubtasksSubject$: Observable<Subtask[]> =
     this.assignedSubtasksSubject.asObservable();
 
   constructor(
     private dataService: DataService,
     private authService: AuthService,
-    private boardListService: BoardListService
   ) {}
 
   /* =====================================================================
@@ -148,6 +146,10 @@ export class TaskService {
     this.currentTaskSubject.next(task);
   }
 
+  setAssignedSubtasks(subtasks: Subtask[]): void {
+    this.assignedSubtasksSubject.next(subtasks);
+  }
+
   /* =====================================================================
   Methods to interact with frontend for new or changed task data
   ========================================================================= */
@@ -207,7 +209,14 @@ export class TaskService {
 
   clearAssignedContacts(): void {
     this.setAssignedContacts([]);
-    console.log('%cAssignedContacts geleert: ', 'color: red;', this.assignedContactsSubject.getValue());
+  }
+
+  clearSelectedCategory(): void {
+    this.setSelectedCategory(null);
+    console.log(
+      'SelectedCategory zurückgesetzt: ',
+      this.selectedCategorySubject.getValue()
+    );
   }
 
   private handleUpdateError(subtaskId: number, error: any): void {
@@ -259,39 +268,14 @@ export class TaskService {
       },
       category_id: selectedCategory?.id,
       contacts: assignedContacts ?? [],
-      contact_ids: assignedContacts?.filter((c) => c.id !== undefined).map((c) => c.id as number) ?? [],
+      contact_ids:
+        assignedContacts
+          ?.filter((c) => c.id !== undefined)
+          .map((c) => c.id as number) ?? [],
       subtasks: subtasks ?? [],
       completed_subtasks: subtasks?.filter((s) => s.checked_status).length ?? 0,
       board_list: currentTask?.board_list ?? { id: 1, name: 'toDo' },
       board: currentTask?.board ?? 1,
-      created_by: userId,
-    };
-  }
-
-  createNewTask(boardListName: string, taskData: Partial<Task>): Partial<Task> {
-    const userId = this.authService.getUserId() ?? 4;
-    const boardListId =
-      this.boardListService.getBoardListIdByName(boardListName) ?? 1;
-
-    console.log('%cneue Daten: ', 'color: blue;', taskData);
-
-    return {
-      ...taskData,
-      id: undefined,
-      title: taskData.title ?? '',
-      due_date: taskData.due_date ?? '',
-      category: taskData.category ?? {
-        id: 1,
-        name: 'Technical Task',
-        color: '#1FD7C1',
-        color_brightness: true,
-        created_by: null,
-      },
-      contacts: taskData.contacts ?? [],
-      subtasks: [],
-      completed_subtasks: 0,
-      board_list: { id: boardListId, name: boardListName },
-      board: 1,
       created_by: userId,
     };
   }

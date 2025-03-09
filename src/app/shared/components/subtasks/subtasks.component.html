@@ -65,7 +65,7 @@
         [padding]="'0'"
         [height]="'20px'"
         [width]="'20px'"
-        [id]="subtask.id"
+        [id]="subtask.id ? subtask.id : subtask.tempId"
       />
       <div class="separator"></div>
       <join-button
@@ -77,7 +77,7 @@
         [padding]="'0'"
         [height]="'24px'"
         [width]="'24px'"
-        [id]="subtask.id"
+        [id]="subtask.id ? subtask.id : subtask.tempId"
       />
     </div>
     } @else {
@@ -96,7 +96,7 @@
         [padding]="'0'"
         [height]="'24px'"
         [width]="'24px'"
-        [id]="subtask.id"
+        [id]="subtask.id ? subtask.id : subtask.tempId"
       />
     </div>
     }

@@ -97,6 +97,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
   subscribeToSelectedCategory() {
     const subscription = this.taskService.selectedCategorySubject$.subscribe(
       (category) => {
+        console.log('Kategorie: ', category);
         this.selectedCategory = category;
       }
     );
@@ -134,6 +135,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
 
     this.saveEditedTask().subscribe({
       next: () => {
+        this.taskService.clearSelectedCategory();
         this.taskService.clearAssignedContacts();
         this.showSuccessMessage(); 
       },

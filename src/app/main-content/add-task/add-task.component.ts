@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgModel, NgForm } from '@angular/forms';
 import { AddTaskContentComponent } from '../../shared/components/add-task-content/add-task-content.component';
@@ -7,6 +7,7 @@ import { TaskService } from '../../shared/services/task.service';
 import { CategoryService } from '../../shared/services/category.service';
 import { ContactService } from '../../shared/services/contact.service';
 import { TaskCreationService } from '../../shared/services/task-creation.service';
+import { ActionService } from '../../shared/services/action.service';
 import { Task } from '../../shared/interfaces/task.interface';
 import { Category } from '../../shared/interfaces/category.interface';
 import { Contact } from '../../shared/interfaces/contact.interface';
@@ -32,20 +33,26 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   selectedCategory: Category | null = null;
   isFormValid: boolean = false;
   subscriptions = new Subscription();
+  isDesktop: boolean = false;
+  private resizeObserver!: ResizeObserver;
 
   constructor(
     private taskService: TaskService,
     private categoryService: CategoryService,
     private contactService: ContactService,
-    private taskCreationService: TaskCreationService
+    private taskCreationService: TaskCreationService,
+    private cdr: ChangeDetectorRef,
+    private actionService: ActionService
   ) {}
 
   ngOnInit(): void {
     // this.loadTasks();
     this.loadCategories();
     this.loadContacts();
+    this.initializeResizeObserver();
     this.subscribeToSelectedCategory();
     this.subscribeToAssignedContacts();
+    this.subscribeToResetNewTaskEvent();
   }
 
   /*   loadTasks(): void {
@@ -100,6 +107,15 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     this.subscriptions.add(subscription);
   }
 
+  initializeResizeObserver(): void {
+    this.resizeObserver = new ResizeObserver(() => {
+      this.isDesktop = window.innerWidth > 800;
+      this.cdr.detectChanges();
+    });
+    this.resizeObserver.observe(document.body);
+    this.isDesktop = window.innerWidth > 800;
+  }
+
   subscribeToSelectedCategory(): void {
     const subscription = this.taskService.selectedCategorySubject$.subscribe(
       (category) => {
@@ -131,17 +147,37 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     this.newTask = { ...this.newTask, ...updatedData };
   }
 
+  subscribeToResetNewTaskEvent(): void {
+    const subscription = this.actionService.resetNewTaskEvent.subscribe(() => {
+      this.resetNewTask();
+    });
+    this.subscriptions.add(subscription);
+  }
+
+  resetNewTask(): void {
+    this.taskCreationService.clearNewTask();
+
+    this.taskService.setSelectedCategory(null);
+    this.taskService.clearAssignedContacts();
+    this.taskService.setAssignedSubtasks([]);
+
+    console.log('%cNeue Aufgabe wurde zurückgesetzt!', 'color: green;');
+  }
+
   onSubmit(): void {
-    if (!this.newTask.title?.trim() || !this.newTask.due_date) {
-      console.error('Fehler: Pflichtfelder nicht ausgefüllt!');
+    const taskData = this.taskCreationService.getCurrentTask();
+
+    if (!taskData.title?.trim()) {
+      console.error('Fehler: Titel fehlt!');
       return;
     }
 
-    console.log('Neue Aufgabe wird erstellt:', this.newTask);
-    this.taskCreationService.startTaskCreation('toDo', this.newTask);
+    console.log('%cNeue Aufgabe wird gesendet: ', 'color: green; ', taskData);
+    this.taskCreationService.startTaskCreation('toDo', taskData);
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+    this.resizeObserver.disconnect();
   }
 }

@@ -73,53 +73,30 @@
   grid-area: due-date;
 }
 
+.category {
+  grid-area: category;
+}
+
 join-categories-dropdown {
   min-height: 48px;
   width: 100%;
   position: relative;
-  grid-area: category;
 }
 
 .assigned-to {
-  position: relative;
   grid-area: assigned-to;
-  .contacts-wrapper {
-    padding: 0.5em;
-    @include flex-container();
-    border: $anthracite 1px solid;
-    border-radius: 4px;
-    background-color: $white;
-    cursor: pointer;
-    .dropdown-arrow {
-      height: 10px;
-      transform: rotate(180deg);
-    }
-  }
-  .contacts-list {
-    padding: 0;
-    position: absolute;
-    top: 52px;
-    left: 0;
-    width: 100%;
-    background-color: $white;
-    border: $anthracite 1px solid;
-    border-radius: 4px;
-    .contact-list-element {
-      width: 98%;
-      margin: 0 auto 0.3em;
+  .contact-item {
+    position: relative;
+    .contacts-wrapper {
       padding: 0.5em;
-      list-style-type: none;
+      @include flex-container();
       border: $anthracite 1px solid;
       border-radius: 4px;
-      background-color: white;
+      background-color: $white;
       cursor: pointer;
-      .contact-label {
-        @include flex-container();
-        .contact-initials-and-text-wrapper {
-          width: 60%;
-          @include flex-container();
-          border: red 1px solid;
-        }
+      .dropdown-arrow {
+        height: 10px;
+        transform: rotate(180deg);
       }
     }
   }

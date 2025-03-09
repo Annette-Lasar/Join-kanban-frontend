@@ -26,5 +26,6 @@ export interface Subtask {
 }
 
 export interface SubtaskUI extends Subtask {
+  tempId?: number;
   isEditing?: boolean;
 }

@@ -4,7 +4,7 @@ import { ButtonPropertyService } from './button-propertys.service';
 import { BoardStatusService } from './board-status.service';
 import { InfoBoxService } from './info-box.service';
 import { TaskService } from './task.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { PrepareDeleteAction } from '../constants/enum';
 import { DeleteAction } from '../constants/enum';
 import { createActionMap } from '../mappings/action-map';
@@ -31,6 +31,7 @@ export class ActionService {
   saveEditedSubtaskEvent = new EventEmitter<number>();
   openEditSubtaskBoxEvent = new EventEmitter<number>();
   createNewTaskEvent = new EventEmitter<string>();
+  resetNewTaskEvent = new EventEmitter<void>();
 
   private setItemToDeleteSubject = new BehaviorSubject<number | null>(null);
   setItemToDelete$: Observable<number | null> =
@@ -38,9 +39,9 @@ export class ActionService {
   private deleteCategorySubject = new BehaviorSubject<number | null>(null);
   deleteCategorySubject$: Observable<number | null> =
     this.deleteCategorySubject.asObservable();
-  private deleteTaskSubject = new BehaviorSubject<number | null>(null);
+  /* private deleteTaskSubject = new BehaviorSubject<number | null>(null);
   deleteTaskSubject$: Observable<number | null> =
-    this.deleteTaskSubject.asObservable();
+    this.deleteTaskSubject.asObservable(); */
   private deleteContactSubject = new BehaviorSubject<number | null>(null);
   deleteContactSubject$: Observable<number | null> =
     this.deleteContactSubject.asObservable();
@@ -146,13 +147,13 @@ export class ActionService {
   }
 
   saveEditedTask(id?: number): void {
-    console.log('%c TaskID: ', 'color: red;', id);
     this.saveEditedTaskEvent.emit(id);
   }
 
-/*   createNewTask(message: string): void {
-    this.createNewTaskEvent.emit(message);
-  } */
+
+  resetNewTask(): void {
+    this.resetNewTaskEvent.emit();
+  }
 
   closeTaskDetail(id: number): void {
     this.buttonPropertyService.setIsTaskDetailVisibleStatusSubject(false);
@@ -160,15 +161,13 @@ export class ActionService {
   }
 
   prepareDeleteAction(id: number, actionType: string): void {
-    console.log('aktueller ActionType: ', id, actionType);
     if (!id) {
-      console.warn('Keine Kategorie-ID angegeben.');
+      console.warn('No category id declared.');
       return;
     }
 
     switch (actionType) {
       case PrepareDeleteAction.TASK:
-        console.log('Löschen der Aufgabe vorbereitet.');
         this.deleteItem(id, DeleteAction.TASK);
         break;
       case PrepareDeleteAction.ITEM:
@@ -193,14 +192,11 @@ export class ActionService {
     switch (action) {
       case DeleteAction.CATEGORY:
         this.deleteCategoryEvent.emit();
-        console.log(`deleteCategory wurde aufgerufen mit ID: ${id}`);
         this.deleteCategorySubject.next(id);
         break;
 
       case DeleteAction.TASK:
-        this.deleteTaskEvent.emit();
-        console.log(`deleteTask wurde aufgerufen mit ID: ${id}`);
-        this.deleteTaskSubject.next(id);
+        this.deleteTaskEvent.emit(id);
         break;
 
       case DeleteAction.CONTACT:

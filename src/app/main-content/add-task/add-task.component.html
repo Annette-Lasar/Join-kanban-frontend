@@ -8,7 +8,6 @@
       <join-add-task-content
         [categories]="categories"
         [contacts]="contacts"
-        (taskDataChange)="onTaskDataChange($event)"
       />
       <div class="add-task-button-wrapper">
         <div class="info-required">
@@ -16,22 +15,14 @@
         </div>
         <div class="button-wrapper">
           <join-button
-            class="mobile-clear-task-button"
-            [buttonIcon]="true"
-            [imgSrc]="'assets/icons/close.svg'"
-            [buttonClass]="'light-square-button-blue-hover-completely '"
-            [width]="'32px'"
-            [height]="'32px'"
-            [padding]="'0'"
-          />
-          <join-button
-            class="desktop-clear-task-button"
-            [buttonCaptionFirst]="true"
+            class="clear-task-button"
+            [buttonCaptionFirst]="isDesktop"
             [buttonIcon]="true"
             [imgSrc]="'assets/icons/close.svg'"
             [caption]="'Clear'"
+            [actionType]="'resetNewTask'"
             [buttonClass]="'light-square-button-blue-hover-completely '"
-            [width]="'80px'"
+            [width]="isDesktop ? '80px' : '32px'"
             [height]="'32px'"
             [padding]="'0'"
           />

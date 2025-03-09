@@ -11,7 +11,6 @@ import { TaskStatusService } from '../../../../shared/services/task-status.servi
 import { ActionService } from '../../../../shared/services/action.service';
 import { InfoBoxService } from '../../../../shared/services/info-box.service';
 import { ButtonPropertyService } from '../../../../shared/services/button-propertys.service';
-import { take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -39,7 +38,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getUpdatedTasksSubject();
     this.listenForOriginalTaskStatusEvent();
-    this.subscribeToConfirmDelete();
+    this.subscribeToDeleteTaskEvent();
     this.getUpdatedWarningBoxStatus();
   }
 
@@ -52,16 +51,15 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.add(subscription);
   }
 
-  subscribeToConfirmDelete() {
-    const subscription = this.infoBoxService.confirmDelete$
-      .pipe(take(1))
-      .subscribe(() => {
-        this.subscribeToDeleteTaskSubject();
-      });
+
+  subscribeToDeleteTaskEvent(): void {
+    const subscription = this.actionService.deleteTaskEvent.subscribe((id) => {
+      this.deleteTask(id);
+    });
     this.subscriptions.add(subscription);
   }
 
-  // Methode noch notwendig???
+ 
   listenForOriginalTaskStatusEvent(): void {
     const subscription =
       this.actionService.keepOriginalTaskStatusEvent.subscribe(() => {
@@ -89,19 +87,13 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.add(subscription);
   }
 
-  subscribeToDeleteTaskSubject() {
-    const subscription = this.actionService.deleteTaskSubject$.subscribe(
-      (taskId) => {
-        if (!taskId) return;
 
-        this.taskService.removeTaskFromUI(taskId);
-        this.taskService.deleteTaskFromBackend(taskId);
+  deleteTask(id: number): void {
+    this.taskService.removeTaskFromUI(id);
+    this.taskService.deleteTaskFromBackend(id);
 
-        this.closeWarningBox();
-        this.closeDetailView();
-      }
-    );
-    this.subscriptions.add(subscription);
+    this.closeWarningBox();
+    this.closeDetailView();
   }
 
   closeWarningBox(): void {

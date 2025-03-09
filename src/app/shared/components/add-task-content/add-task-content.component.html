@@ -6,7 +6,7 @@
         type="text"
         placeholder="Enter a title"
         [(ngModel)]="title"
-        (ngModelChange)="emitTaskData()"
+        (ngModelChange)="updateTaskData()"
         required
       />
       <div class="warning-info">Please enter a title.</div>
@@ -18,7 +18,7 @@
         id="description"
         placeholder="Enter a description"
         [(ngModel)]="description"
-        (ngModelChange)="emitTaskData()"
+        (ngModelChange)="updateTaskData()"
       ></textarea>
     </div>
     <div class="prio add-task-item">
@@ -79,31 +79,37 @@
     </div>
     <div class="due-date add-task-item">
       <div class="bold_600 headword">Due date</div>
-      <input type="date" [min]="today" 
-      [(ngModel)]="due_date" 
-      (ngModelChange)="emitTaskData()"
-      required />
+      <input
+        type="date"
+        [min]="today"
+        [(ngModel)]="due_date"
+        (ngModelChange)="updateTaskData()"
+        required
+      />
       <div class="warning-info">Please pick a date.</div>
     </div>
-    <join-categories-dropdown
-      class="add-task-item"
-      [isNewTask]="true"
-      [categories]="categories"
-    />
-    <join-contacts-dropdown
-      class="add-task-item"
-      [isNewTask]="true"
-      [contacts]="contacts"
-    />
+    <div class="category add-task-item">
+      <div class="bold_600 headword">
+        <span>Categories</span><span class="red">*</span>
+      </div>
+      <join-categories-dropdown
+        class="category-item"
+        [isNewTask]="true"
+        [categories]="categories"
+      />
+    </div>
+    <div class="assigned-to add-task-item">
+      <div class="bold_600 headword">Contacts</div>
+      <join-contacts-dropdown
+        class="contact-item"
+        [isNewTask]="true"
+        [contacts]="contacts"
+      />
+    </div>
+
     <div class="subtasks add-task-item">
       <div class="bold_600 headword">Subtasks</div>
-      <!-- <div class="subtask-wrapper">
-        <input type="text" placeholder="Add a new subtask" />
-        <img src="assets/icons/plus.svg" alt="Add a subtask" />
-      </div> -->
-      <join-subtasks
-        [isNewTask]="true"
-      />
+      <join-subtasks [isNewTask]="true" />
     </div>
     <div class="separator-line"></div>
   </div>

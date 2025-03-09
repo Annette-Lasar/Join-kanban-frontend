@@ -58,11 +58,6 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
     const subscription = this.taskService.assignedContactsSubject$.subscribe(
       (assignedContacts) => {
         this.assignedContacts = assignedContacts;
-        console.log(
-          '%cAktuell zugewiesene Kontakte',
-          'color: orange;',
-          this.assignedContacts
-        );
       }
     );
     this.subscriptions.add(subscription);
@@ -124,6 +119,7 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
       currentContacts = currentContacts.filter((c) => c.id !== contact.id); // Kontakt entfernen
     }
 
+    console.log('%cAktuell zugewiesene Kontakte: ', 'color: red;', currentContacts);
     this.taskService.setAssignedContacts(currentContacts);
 
     if (this.task) {
