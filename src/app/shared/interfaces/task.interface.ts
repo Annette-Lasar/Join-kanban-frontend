@@ -17,6 +17,7 @@ export interface Task {
   board: number;
   created_by?: number | null;
   board_list?: BoardList;
+  board_list_id?: number;
 }
 
 export interface Subtask {

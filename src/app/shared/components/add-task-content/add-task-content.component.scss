@@ -2,7 +2,7 @@
 @import "../../../../scss_files/mixins.scss";
 
 .add-task-grid {
-  height: calc(100vh - $header-height - $mobile-navbar-height - 80px - 48px);
+  height: 100%;
   max-width: 600px;
   margin: 0 auto;
   display: grid;
@@ -129,6 +129,10 @@ join-categories-dropdown {
 .separator-line {
   display: none;
 }
+
+/* ===================================================================
+MEDIA QUERIES
+======================================================================*/
 
 @media (min-width: 50em) {
   .add-task-grid {

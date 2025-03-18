@@ -63,7 +63,7 @@ export function createActionMap(
     ],
     ['showEditTaskMode', (message, id) => actionService.toggleEditTaskMode('show', id!)],
     ['closeTaskEditMode', (message, id) => actionService.toggleEditTaskMode('hide', id!)],
-    ['closeTaskDetail', (message, id) => actionService.closeTaskDetail(id!)],
+    ['closeTaskDetail', () => actionService.closeTaskDetail()],
     ['saveEditedTask', (message, id) => actionService.saveEditedTask(id!)],
     [
       'openAddSubtaskBox',
@@ -90,6 +90,8 @@ export function createActionMap(
       (message, id) => actionService.openEditSubtaskBox(id!),
     ],
     ['resetNewTask', () => actionService.resetNewTask()],
+    ['openAddTaskOverlay', (message, id) => actionService.openAddTaskOverlay(message!)],
+    ['closeAddTaskOverlay', () => actionService.closeAddTaskOverlay()],
     // add further actions here if necessary.
   ]);
 }

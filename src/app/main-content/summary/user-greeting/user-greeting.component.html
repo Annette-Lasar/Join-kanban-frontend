@@ -1,9 +1,11 @@
-<div class="greetings-container">
-  <span class="greeting bold_600">{{ salutation }},</span> <br />
-  @if(isLoggedIn) {
-  <span class="user-name blue bold_700">Sofia Müller!</span>
-  } @else {
 
-  <span class="user-name blue bold_700">Guest!</span>
+
+<div class="greetings-container">
+  @if (user) {
+  <span class="greeting bold_600">{{ salutation }},</span> <br />
+  <span class="user-name blue bold_700">
+    {{user.userType === 'User' ? (user.firstname + ' ' + user.lastname): 'Guest'}}
+  </span>
   }
 </div>
+

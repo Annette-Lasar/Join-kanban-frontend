@@ -52,8 +52,12 @@ form {
   height: 70%;
   @include flex-container(column, center, space-between);
   border: red 2px solid;
+  .input-message-wrapper {
+    width: 100%;
+  }
   .input-wrapper {
     width: 100%;
+    margin: 0 0 0.3em;
     padding-inline: 8px;
     @include flex-container($align: center, $justify: space-between);
     border: $bordergray 1px solid;
@@ -73,6 +77,24 @@ form {
     border: none;
     outline: none;
   }
+  .warning-message-wrapper {
+    width: 100%;
+    @include flex-container($align: flex-start);
+    border: royalblue 1px solid;
+    .warning-message:first-of-type {
+      width: 60%;
+    }
+
+    .warning-message:last-of-type {
+      width: 40%;
+      text-align: right;
+    }
+  }
+  .warning-message {
+    padding: 0 0 0 0.25em;
+    font-size: 0.6rem;
+    border: green 1px solid;
+  }
 }
 
 .agreement {
@@ -86,8 +108,3 @@ form {
     text-decoration: none;
   }
 }
-
-/* join-legal-links {
-  width: 90%;
-  @include flex-container($justify: center);
-} */

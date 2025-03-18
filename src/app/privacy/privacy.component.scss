@@ -1,5 +1,5 @@
-@import '../../scss_files/variables.scss';
-@import '../../scss_files/mixins.scss';
+@import "../../scss_files/variables.scss";
+@import "../../scss_files/mixins.scss";
 
 h2 {
   padding: 1.5em 0 1em;
@@ -19,6 +19,7 @@ h4 {
   font-weight: 700;
 }
 
+
 .content {
   background-color: $verylightgray;
   min-height: calc(100vh - $header-height - $mobile-navbar-height - 24px);
@@ -37,6 +38,12 @@ h4 {
   height: calc(100vh - $header-height - $mobile-navbar-height - 80px);
   padding: 0.5em;
   overflow-y: auto;
+}
+
+.back-to-summary.inactive {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 p {

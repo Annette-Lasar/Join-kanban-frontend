@@ -53,8 +53,6 @@ export class CardDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.add(getUpdatedDetailMode);
   }
 
-
-  // Wozu brauche ich diese Methode??
   listenToOriginalTaskState(): void {
     const subscription =
       this.taskStatusService.originalTaskStateSubject$.subscribe(
@@ -70,8 +68,8 @@ export class CardDetailComponent implements OnInit, OnDestroy {
     const subscription = this.actionService.closeEditModeEvent.subscribe(() => {
       const originalTask = this.taskStatusService.getOriginalTaskStatus();
       this.taskService.clearSelectedCategory();
-      this.taskService.clearAssignedContacts(); 
-      
+      this.taskService.clearAssignedContacts();
+
       if (originalTask) {
         this.task = null;
         setTimeout(() => {
@@ -84,8 +82,6 @@ export class CardDetailComponent implements OnInit, OnDestroy {
     });
     this.subscriptions.add(subscription);
   }
-
-
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();

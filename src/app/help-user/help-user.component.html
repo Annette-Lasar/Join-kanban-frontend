@@ -3,7 +3,7 @@
     <div class="inner-content-wrapper">
       <div class="title-wrapper">
         <h1>Help</h1>
-        <a routerLink="../summary">
+        <a routerLink="../summary" class="back-to-summary" [ngClass]="{'inactive': !isLoggedIn}">
           <img src="../../assets/icons/arrow_left_line_default.svg" alt="" />
         </a>
       </div>

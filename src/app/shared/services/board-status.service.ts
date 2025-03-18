@@ -1,25 +1,28 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BoardStatusService {
   boardSuccessStatus = new BehaviorSubject<boolean>(false);
-  boardSuccessStatus$ = this.boardSuccessStatus.asObservable();
+  boardSuccessStatus$: Observable<boolean> =
+    this.boardSuccessStatus.asObservable();
+
+  boardTaskOverlayOpenStatus = new BehaviorSubject<boolean>(false);
+  boardTaskOverlayOpenStatus$: Observable<boolean> =
+    this.boardTaskOverlayOpenStatus.asObservable();
+
 
   /* =============================================================
-  
-  METHODS
-
+    METHODS
   ================================================================  */
 
   setBoardSuccessStatus(status: boolean): void {
     this.boardSuccessStatus.next(status);
   }
 
-  toggleBoardSuccessStatus() {
-    let currentStatus = this.boardSuccessStatus.getValue();
-    this.boardSuccessStatus.next(!currentStatus);
+  setBoardTaskOverlayOpenStatus(status: boolean): void {
+    this.boardTaskOverlayOpenStatus.next(status);
   }
 }

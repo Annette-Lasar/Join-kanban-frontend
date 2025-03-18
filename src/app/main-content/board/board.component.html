@@ -4,39 +4,29 @@
     <div class="inner-content-header">
       <h1>Board</h1>
       <div class="board-task-button-wrapper">
-        <div class="inner-task-button-wrapper">
-          <join-button
-            (toggleContainer)="toggleContainerVisibility($event)"
-            class="mobile-link-add-task info-button"
-            [infoMessage]="'Add a task to \'to do\'.'"
-            [actionType]="'toggle'"
-            [buttonIcon]="true"
-            [imgSrc]="'assets/icons/info.svg'"
-            [buttonClass]="'light-square-button'"
-            [width]="'16px'"
-            [height]="'16px'"
-            [padding]="'0'"
-          />
-          <join-button
-            class="mobile-link-add-task"
-            [routerLink]="'#'"
-            [buttonIcon]="true"
-            [imgSrc]="'assets/icons/plus_white.svg'"
-            [buttonClass]="'dark-square-button'"
-            [width]="'24px'"
-            [height]="'24px'"
-            [padding]="'0'"
-          />
-        </div>
         <join-button
-          class="desktop-add-task"
-          [buttonCaptionFirst]="true"
+          (toggleContainer)="toggleContainerVisibility($event)"
+          class="board-add-task info-button global-info"
+          [infoMessage]="'Add a task to To do.'"
+          [actionType]="'toggle'"
+          [buttonIcon]="true"
+          [imgSrc]="'assets/icons/info.svg'"
+          [buttonClass]="'light-square-button'"
+          [width]="'16px'"
+          [height]="'16px'"
+          [padding]="'0'"
+        />
+        <join-button
+          class="board-add-task add-task-button"
+          [buttonCaptionFirst]="isDesktop"
+          [caption]="'Add task'"
           [buttonIcon]="true"
           [imgSrc]="'assets/icons/plus_white.svg'"
-          [caption]="'Add task'"
           [buttonClass]="'dark-square-button'"
-          [width]="'100px'"
-          [height]="'32px'"
+          [actionType]="'openAddTaskOverlay'"
+          [infoMessage]="'toDo'"
+          [width]="isDesktop ? '100px' : '24px'"
+          [height]="isDesktop ? '32px' : '24px'"
           [padding]="'0'"
         />
       </div>
@@ -64,7 +54,11 @@
         />
         }
       </div>
-      <div class="match-box" [ngClass]="{ 'd-none': !isSearchActive() }">
+      <div
+        class="match-box"
+        [ngClass]="{ 'd-none': !isSearchActive() }"
+        [ngStyle]="{ color: filteredTasks.length > 0 ? '#2a3647' : '#ff3d00' }"
+      >
         <span>{{ getMatchText() }} </span>found
       </div>
     </div>
@@ -82,11 +76,15 @@
           <h2 class="bold_700">
             {{ getFormattedBoardListName(board_list.name, "capitalized") }}
           </h2>
+          @if (board_list.name !== 'done') {
           <div class="inner-task-button-wrapper">
             <join-button
               (toggleContainer)="toggleContainerVisibility($event)"
-              class="mobile-link-add-task info-button"
-              [infoMessage]="'Add a task to \'to do\'.'"
+              class="list-add-task info-button"
+              [infoMessage]="
+                'Add a task to ' +
+                getFormattedBoardListName(board_list.name, 'capitalized')
+              "
               [actionType]="'toggle'"
               [buttonIcon]="true"
               [imgSrc]="'assets/icons/info.svg'"
@@ -96,25 +94,39 @@
               [padding]="'0'"
             />
             <join-button
-              [routerLink]="'#'"
               [buttonIcon]="true"
               [imgSrc]="'assets/icons/plus.svg'"
               [buttonClass]="'light-square-button-blue-hover-completely'"
+              [actionType]="'openAddTaskOverlay'"
+              [infoMessage]="board_list.name"
               [width]="'24px'"
               [height]="'24px'"
               [padding]="'0'"
-              [tooltip]="'Add a new task in todo list'"
+              [tooltip]="'Add a new task to this list'"
             />
           </div>
+          }
         </div>
         @if(tasks) {
-        <div class="task-card-wrapper">
-          @for(task of filteredTasks; track task) { @if(board_list.name ===
-          task.board_list?.name) {
-          <join-task-card [task]="task" 
-          (click)="openCardDetailView(task.id!)"
-          />
-          } } @empty {
+        <div
+          cdkDropList
+          [id]="board_list.name"
+          [cdkDropListData]="tasksByBoardList[board_list.name] || []"
+          [cdkDropListConnectedTo]="connectedDropLists"
+          (cdkDropListDropped)="onTaskDrop($event)"
+          (cdkDropListEntered)="onDragEntered(board_list.name)"
+          (cdkDropListExited)="onDragExited(board_list.name)"
+          [class.highlight]="highlightedList === board_list.name"
+          class="task-card-wrapper"
+        >
+          @for(task of filteredTasksByBoardList[board_list.name]; track task) {
+          <div cdkDrag [cdkDragData]="task">
+            <join-task-card
+              [task]="task"
+              (click)="openCardDetailView(task.id!)"
+            />
+          </div>
+          } @empty {
 
           <div class="list-content">
             No tasks found
@@ -135,3 +147,57 @@
   />
   }
 </div>
+@if(isAddTaskOverlayVisible) {
+<div class="add-task-content-wrapper">
+  <div class="add-task-title-wrapper">
+    <h1>Add Task</h1>
+    <join-button
+      [buttonIcon]="true"
+      [imgSrc]="'assets/icons/close.svg'"
+      [buttonClass]="'dark-close-button'"
+      [actionType]="'closeAddTaskOverlay'"
+      [padding]="'0'"
+      [width]="'20px'"
+      [height]="'20px'"
+    />
+  </div>
+  <form (ngSubmit)="onSubmit()">
+    <div class="add-task-content">
+      <join-add-task-content [categories]="categories" [contacts]="contacts" />
+    </div>
+    <div class="info-and-add-task-button-wrapper">
+      <div class="required-info">
+        <span class="red">*</span>This field is required
+      </div>
+      <div class="add-task-button-wrapper">
+        <join-button
+          class="clear-task-button"
+          [buttonCaptionFirst]="isDesktop"
+          [buttonIcon]="true"
+          [imgSrc]="'assets/icons/close.svg'"
+          [caption]="'Clear'"
+          [actionType]="'resetNewTask'"
+          [buttonClass]="'light-square-button-blue-hover-completely '"
+          [width]="isDesktop ? '80px' : '32px'"
+          [height]="'32px'"
+          [padding]="'0'"
+        />
+        <join-button
+          [buttonCaptionFirst]="true"
+          [buttonIcon]="true"
+          [type]="'submit'"
+          [actionType]="'createNewTask'"
+          [infoMessage]="'toDo'"
+          [imgSrc]="'assets/icons/check_white.svg'"
+          [imgClass]="'check-icon'"
+          [caption]="'Create task'"
+          [buttonClass]="'dark-square-button'"
+          [width]="'110px'"
+          [height]="'32px'"
+          [padding]="'0'"
+        />
+      </div>
+    </div>
+  </form>
+</div>
+}

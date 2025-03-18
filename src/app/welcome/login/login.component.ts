@@ -2,9 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../shared/components/button/button.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
-import { TaskService } from '../../shared/services/task.service';
 import { ActionService } from '../../shared/services/action.service';
 import { Subscription } from 'rxjs';
 
@@ -19,15 +18,15 @@ export class LoginComponent implements OnInit, OnDestroy {
   buttonLinkClassLight: string = '';
   username: string = '';
   password: string = '';
+  errorMessage: string = '';
   passwordVisible: boolean = false;
-  passwordIcon = 'assets/icons/lock.svg';
-  private guestLoginSubscription!: Subscription;
+  passwordIcon: string = 'assets/icons/lock.svg';
+  subscriptions = new Subscription();
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private actionService: ActionService,
-    private taskService: TaskService
+    private actionService: ActionService
   ) {}
 
   ngOnInit(): void {
@@ -50,50 +49,57 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.passwordIcon = 'assets/icons/lock.svg';
   }
 
-
-  login(): void {
+  onSubmitLogin(loginForm: NgForm): void {
     if (!this.username || !this.password) {
-      console.log('Bitte fülle beide Felder aus!');
+      console.log('Please enter email and password.');
       return;
     }
 
-    this.verifyUserInformation();
+    this.verifyUserInformation(loginForm);
   }
 
-  verifyUserInformation() {
-    this.authService.login(this.username, this.password).subscribe({
-      next: () => {
-        console.log('Login erfolgreich!');
-        this.router.navigate(['/main-content/summary']);
-      },
-      error: (err) => {
-        console.error('Login fehlgeschlagen:', err);
-      },
-    });
-  }
+
+    verifyUserInformation(loginForm: NgForm) {
+      this.authService.login(this.username, this.password).subscribe({
+        next: () => {
+          console.log('Login erfolgreich!');
+          this.router.navigate(['/main-content/summary']);
+        },
+        error: (err) => {
+          console.error('Login failed:', err);
+          this.errorMessage = err.error.error;
+    
+          setTimeout(() => {
+            loginForm.resetForm();
+          }, 2000);
+        },
+      });
+    }
+    
 
   setOffGuestLogin(): void {
-    this.guestLoginSubscription = this.actionService.guestLoginEvent.subscribe(
-      () => {
-        this.guestLogin();
-      }
-    );
+    const subscription = this.actionService.guestLoginEvent.subscribe(() => {
+      this.guestLogin();
+    });
+    this.subscriptions.add(subscription);
   }
 
   guestLogin(): void {
     this.authService.guestLogin().subscribe({
       next: () => {
-        console.log('Guest Login erfolgreich!');
-        // this.taskService.fetchTasks();
         this.router.navigate(['/main-content/summary']);
       },
       error: (err) => {
-        console.error('Guest Login fehlgeschlagen:', err);
+        console.error('Guest login failed:', err);
       },
     });
   }
 
+  clearErrorMessage(): void {
+    this.errorMessage = '';
+  }
+
   ngOnDestroy(): void {
-    this.guestLoginSubscription.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 }

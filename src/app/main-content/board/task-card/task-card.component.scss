@@ -5,6 +5,7 @@
   height: 240px;
   width: 200px;
   padding: 1em;
+  position: relative;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 24px 36px 60px 20px auto;
@@ -30,16 +31,13 @@
     border-radius: 8px;
     font-size: 0.8rem;
   }
+  .join-button {
+    margin: 0;
+    padding: 0;
+  }
   .task-card-context-menu-wrapper {
     padding: 0.25em;
     @include flex-container($justify: center);
-    border: var(--accent-color-gray) 0.5px solid;
-    border-radius: 50%;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease;
-    &:hover {
-      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    }
     img {
       transform: rotate(90deg);
       filter: invert(81%) sepia(19%) saturate(1%) hue-rotate(341deg)
@@ -84,11 +82,11 @@ h3 {
     border-radius: 8px;
   }
   progress::-webkit-progress-bar {
-    background-color: $progressgray; 
+    background-color: $progressgray;
     border-radius: 8px;
   }
   progress::-moz-progress-bar {
-    background-color: $progressblue; 
+    background-color: $progressblue;
     border-radius: 8px;
   }
 }
@@ -117,9 +115,23 @@ h3 {
   }
 }
 
+/* ===========================================================
+MEDIA QUERIES
+=============================================================*/
 
-@media (min-width: 50em) {
-    .task-card {
-        width: 100%;
+@media (min-width: 64em) {
+  .task-card {
+    margin: 0.5em 0 1em;
+    width: 100%;
+    max-width: 230px;
+    .subtasks-progress-wrapper {
+      progress {
+        width: 50%;
+      }
+      label {
+        width: 50%;
+        text-align: right;
+      }
     }
+  }
 }

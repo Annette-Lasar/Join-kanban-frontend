@@ -2,47 +2,137 @@
   <div class="sign-up-header">
     <div class="title-wrapper">
       <join-button
-      [buttonIcon]="true"
-      [imgSrc]="'assets/icons/arrow_left_line_default.svg'"
-      [padding]="'0.5em'"
-      [width]="''"
-      [height]="''"
-      [buttonClass]="'arrow-button'"
-      [actionType]="'onToggleShowLogin'"
+        [buttonIcon]="true"
+        [imgSrc]="'assets/icons/arrow_left_line_default.svg'"
+        [padding]="'0.5em'"
+        [width]="''"
+        [height]="''"
+        [buttonClass]="'arrow-button'"
+        [actionType]="'onToggleShowLogin'"
       />
       <h1>Sign up</h1>
     </div>
     <div class="separator"></div>
   </div>
-  <form action="">
+  <form #signUpForm="ngForm" (ngSubmit)="onSubmitSignUp(signUpForm)" novalidate>
     <div class="sign-up-content">
-      <div class="input-wrapper">
-        <input type="text" placeholder="Name" />
-        <img src="assets/icons/person.svg" alt="" />
+      <div class="input-message-wrapper">
+        <div class="input-wrapper">
+          <input
+            type="text"
+            placeholder="Name*"
+            name="name"
+            [(ngModel)]="name"
+            #nameInput="ngModel"
+            (ngModelChange)="validateName(name)"
+            required
+          />
+          <img src="assets/icons/person.svg" alt="" />
+        </div>
+        <div
+          class="warning-message red"
+          [style.opacity]="nameInput.touched && !nameIsValid ? 1 : 0"
+        >
+          Enter a first and a last name with at least two characters each.
+        </div>
       </div>
-      <div class="input-wrapper">
-        <input type="text" placeholder="Email" />
-        <img src="assets/icons/mail.svg" alt="" />
+      <div class="input-message-wrapper">
+        <div class="input-wrapper">
+          <input
+            type="text"
+            placeholder="Email*"
+            name="email"
+            [(ngModel)]="email"
+            (ngModelChange)="validateEmail(email)"
+            #emailInput="ngModel"
+            required
+          />
+          <img src="assets/icons/mail.svg" alt="" />
+        </div>
+        <div
+          class="warning-message red"
+          [style.opacity]="emailInput.touched && !emailIsValid ? 1 : 0"
+        >
+          Please enter a valid email address.
+        </div>
       </div>
-      <div class="input-wrapper password-wrapper">
-        <input type="password" placeholder="Password" />
-        <img src="assets/icons/lock.svg" alt="" />
-      </div>
-      <div class="input-wrapper password-wrapper">
-        <input type="password" placeholder="Confirm Password" />
-        <img src="assets/icons/lock.svg" alt="" />
+      <div class="input-message-wrapper">
+        <div class="input-wrapper password-wrapper">
+          <input
+            [type]="passwordVisible ? 'text' : 'password'"
+            placeholder="Password*"
+            name="password"
+            [(ngModel)]="password"
+            (ngModelChange)="validatePassword(password)"
+            (focus)="onPasswordFocus('password')"
+            (blur)="onPasswordBlur('password')"
+            #passwordInput="ngModel"
+            required
+          />
+          <img
+            [src]="passwordIcon"
+            alt="Toggle password visibility"
+            (click)="togglePasswordVisibility('password')"
+          />
+        </div>
+        <div class="input-wrapper password-wrapper">
+          <input
+            [type]="confirmPasswordVisible ? 'text' : 'password'"
+            placeholder="Confirm password*"
+            name="confirmPassword"
+            [(ngModel)]="confirmPassword"
+            (ngModelChange)="validatePasswordMatch()"
+            (focus)="onPasswordFocus('confirmPassword')"
+            (blur)="onPasswordBlur('confirmPassword')"
+            #confirmPasswordInput="ngModel"
+            required
+          />
+          <img
+            [src]="confirmPasswordIcon"
+            alt="Toggle visibility of confirming password"
+            (click)="togglePasswordVisibility('confirmPassword')"
+          />
+        </div>
+        <div class="warning-message-wrapper">
+          <div
+            class="warning-message red password"
+            [style.opacity]="passwordInput.touched && !passwordIsValid ? 1 : 0"
+          >
+            Password must have at least 6 characters, including 1 letter and 1
+            number.
+          </div>
+          <div
+            class="warning-message red password"
+            [style.opacity]="
+              confirmPasswordInput.touched && !passwordMatch ? 1 : 0
+            "
+          >
+            Passwords don't match.
+          </div>
+        </div>
       </div>
     </div>
     <div class="agreement">
-      <input type="checkbox" name="agreement" id="" />
-      I accept the <a href="#">Privacy Policy</a>
+      <input
+        id="privacyPolicy"
+        type="checkbox"
+        name="agreement"
+        [(ngModel)]="agreement"
+        #agreementInput="ngModel"
+        required
+      />
+      <label for="privacyPolicy">
+        I accept the <a routerLink="/main-content/privacy-policy">Privacy Policy</a>
+      </label>
     </div>
     <join-button
       [caption]="'Sign up'"
+      [type]="'submit'"
       [buttonClass]="'dark-square-button'"
       [padding]="'0'"
       [width]="'100px'"
       [height]="'32px'"
+      [disabled]="!signUpForm.valid || password !== confirmPassword"
     >
     </join-button>
   </form>

@@ -13,7 +13,7 @@ import { RandomColorService } from '../../../shared/services/random-color.servic
 import { ColorBrightnessService } from '../../../shared/services/color-brightness.service';
 import { ContactService } from '../../../shared/services/contact.service';
 import { GroupContactsService } from '../../../shared/services/group-contacts.service';
-import { ValidatateInputFieldsService } from '../../../shared/services/validateInputFields.service';
+import { ValidateInputFieldsService } from '../../../shared/services/validateInputFields.service';
 import { ContactStatusService } from '../../../shared/services/contact-status.service';
 import { ButtonPropertyService } from '../../../shared/services/button-propertys.service';
 import { InfoBoxService } from '../../../shared/services/info-box.service';
@@ -68,7 +68,7 @@ export class ContactFormComponent implements OnInit {
     private groupContactsService: GroupContactsService,
     private randomColorService: RandomColorService,
     private colorBrightnessService: ColorBrightnessService,
-    private validateInputFieldsService: ValidatateInputFieldsService,
+    private validateInputFieldsService: ValidateInputFieldsService,
     private buttonPropertyService: ButtonPropertyService,
     private infoBoxService: InfoBoxService
   ) {}
@@ -147,27 +147,27 @@ export class ContactFormComponent implements OnInit {
   }
 
   validateName(email: string) {
-    this.validateInputFieldsService
+    /* this.validateInputFieldsService
       .checkIfNameIsValid(email)
       .subscribe((isValid) => {
         this.nameIsValid = isValid;
-      });
+      }); */
   }
 
   validateEmail(email: string) {
-    this.validateInputFieldsService
+    /* this.validateInputFieldsService
       .checkIfEmailIsValid(email)
       .subscribe((isValid) => {
         this.emailIsValid = isValid;
-      });
+      }); */
   }
 
   validatePhone(phone: string): void {
-    this.validateInputFieldsService
+   /*  this.validateInputFieldsService
       .checkIfPhoneIsValid(phone)
       .subscribe((isValid) => {
         this.phoneIsValid = isValid;
-      });
+      }); */
   }
 
   onSubmit(): void {

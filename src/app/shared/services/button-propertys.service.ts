@@ -32,7 +32,7 @@ export class ButtonPropertyService {
   successMessage$: Observable<string | undefined> =
     this.successMessage.asObservable();
 
-  private loginStatusSubject = new BehaviorSubject<boolean>(true);
+  private loginStatusSubject = new BehaviorSubject<boolean>(true); // Wieder auf true setzen!!
   loginStatus$ = this.loginStatusSubject.asObservable();
 
   private isTaskDetailVisibleStatusSubject = new BehaviorSubject<boolean>(

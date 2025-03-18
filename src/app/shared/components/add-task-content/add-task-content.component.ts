@@ -64,7 +64,6 @@ export class AddTaskContentComponent implements OnInit, OnDestroy {
 
   setPrioStatus(newStatus: string): void {
     this.prioStatus = newStatus;
-    console.log('aktueller Prio-Status: ', this.prioStatus);
   }
 
 

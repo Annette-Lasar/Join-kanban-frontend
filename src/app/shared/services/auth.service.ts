@@ -3,66 +3,101 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { BASE_URL } from '../constants/global-constants.data';
-import { LoginResponse } from '../interfaces/login.interface';
+import { User } from '../interfaces/user.interface';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private tokenKey = 'auth_token';
+  private userSubject = new BehaviorSubject<User | null>(
+    this.loadUserFromStorage()
+  );
+  userSubject$: Observable<User | null> =
+    this.userSubject.asObservable();
+
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(
     this.hasToken()
   );
-  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  isAuthenticated$: Observable<boolean> =
+    this.isAuthenticatedSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private localStorageService: LocalStorageService
+  ) {}
 
-  guestLogin(): Observable<Partial<LoginResponse>> {
+  guestLogin(): Observable<Partial<User>> {
     return this.http
-      .get<Partial<LoginResponse>>(`${BASE_URL}/guest-login/`)
+      .get<Partial<User>>(`${BASE_URL}/guest-login/`)
       .pipe(tap((response) => this.storeUserData(response, 'Guest')));
   }
 
-  login(username: string, password: string): Observable<LoginResponse> {
+  login(username: string, password: string): Observable<User> {
     return this.http
-      .post<LoginResponse>(`${BASE_URL}/login/`, { username, password })
+      .post<User>(`${BASE_URL}/login/`, { username, password })
       .pipe(tap((response) => this.storeUserData(response, 'User')));
   }
 
-
-  getUserId(): number | null {
-    const userId = localStorage.getItem('userId');
-    return userId ? parseInt(userId, 10) : null;
-  }
-
-
   private storeUserData(
-    response: Partial<LoginResponse>,
+    response: Partial<User>,
     userType: 'User' | 'Guest'
   ): void {
     localStorage.setItem('authToken', response.token || '');
     localStorage.setItem('userId', response.id?.toString() || '');
     localStorage.setItem('userName', response.username || '');
-    localStorage.setItem('userType', userType);
-    if (userType === 'User') {
-      localStorage.setItem('userEmail', response.email || '');
-      localStorage.setItem('userFirstName', response.firstname || '');
-      localStorage.setItem('userLastName', response.lastname || '');
+    localStorage.setItem('userFirstName', response.firstname || '');
+    localStorage.setItem('userLastName', response.lastname || '');
+    localStorage.setItem('userType', userType || '');
+
+    const user: User = {
+      token: response.token || '',
+      id: response.id!,
+      username: response.username!,
+      firstname: response.firstname || '',
+      lastname: response.lastname || '',
+      userType: userType,
+    };
+    this.userSubject.next(user);
+  }
+
+  private loadUserFromStorage(): User | null {
+    const token = this.localStorageService.getAuthTokenFromLocalStorage();
+    const id = this.localStorageService.getUserIdFromLocalStorage();
+    const userName = this.localStorageService.getUserNameFromLocalStorage();
+    const firstName =
+      this.localStorageService.getUserFirstNameFromLocalStorage();
+    const lastName = this.localStorageService.getUserLastNameFromLocalStorage();
+    const userType = this.localStorageService.getUserTypeFromLocalStorage();
+
+    if (id && userType) {
+      return {
+        id: id,
+        username: userName,
+        firstname: firstName || '',
+        lastname: lastName || '',
+        userType: userType,
+        token: token,
+      };
     }
-
-    this.isAuthenticatedSubject.next(true);
+    return null;
   }
 
-  hasToken(): boolean {
-    return !!localStorage.getItem(this.tokenKey);
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+  isUserLoggedIn(): boolean {
+    const userType = this.localStorageService.getUserTypeFromLocalStorage();
+    return userType === 'User' || userType === 'Guest';
   }
 
   logout(): void {
-    localStorage.clear();
-    this.isAuthenticatedSubject.next(false);
+    this.localStorageService.clearLocalStorage();
+    this.userSubject.next(null);
+  }
+
+  hasToken(): boolean {
+    return !!this.localStorageService.getAuthTokenFromLocalStorage();
+  }
+
+  resetUserSubject(): void {
+    this.userSubject.next(null);
   }
 }

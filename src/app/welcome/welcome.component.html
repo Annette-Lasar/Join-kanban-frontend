@@ -55,7 +55,9 @@
     @if(loginStatus) {
     <join-login />
     } @else {
-    <join-sign-up />
+    <join-sign-up 
+    (registrationSuccess)="onRegistrationSuccess()"
+    />
 
     }
     <join-legal-links
@@ -64,3 +66,8 @@
     />
   </div>
 </div>
+<join-info
+  [infoText]="'You signed up successfully.'"
+  [infoMessageClass]="'success-message'"
+  [ngClass]="{'visible': showSuccessMessage}"
+/>

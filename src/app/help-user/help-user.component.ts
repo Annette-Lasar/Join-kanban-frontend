@@ -1,15 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { HeaderComponent } from '../shared/components/header/header.component';
-import { NavbarComponent } from '../shared/components/navbar/navbar.component';
+import { CommonModule } from '@angular/common';
+import { CheckIfLoggedInService } from '../shared/services/check-if-logged-in.service';
 
 @Component({
   selector: 'join-help-user',
   standalone: true,
-  imports: [HeaderComponent, NavbarComponent, RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './help-user.component.html',
-  styleUrl: './help-user.component.scss'
+  styleUrl: './help-user.component.scss',
 })
-export class HelpUserComponent {
+export class HelpUserComponent implements OnInit {
+  isLoggedIn: boolean = false;
 
+  constructor(
+    private checkIfLoggedInService: CheckIfLoggedInService
+  ) {}
+
+  ngOnInit(): void {
+    this.isLoggedIn = this.checkIfLoggedInService.checkIfLoggedIn();
+    console.log('help logged in: ', this.isLoggedIn);
+  }
 }

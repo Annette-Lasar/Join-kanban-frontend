@@ -1,36 +1,40 @@
 <nav>
-  <a href="../html/summary.html" class="join-logo">
+  <a routerLink="summary" class="join-logo" [ngClass]="{ inactive: !isLoggedIn }">
     <img src="assets/icons/join_logo_white.svg" alt="" />
   </a>
   <div id="menu_items_wrapper" class="menu-items-wrapper">
     <div id="summary_link" class="menu-items">
-      <a routerLink="summary" class="current-page">
+      <a
+        routerLink="summary"
+        [ngClass]="{ inactive: !isLoggedIn }"
+        class="current-page"
+      >
         <img src="assets/icons/summary.svg" alt="" />
         <p>Summary</p>
       </a>
     </div>
     <div id="board_link" class="menu-items">
-      <a routerLink="board">
-        <img src="assets/icons/board.svg" alt="Go to board" />
+      <a routerLink="board" [ngClass]="{ inactive: !isLoggedIn }">
+        <img src="assets/icons/board.svg" alt="Go to board." />
         <p>Board</p>
       </a>
     </div>
     <div id="add_task_link" class="menu-items">
-      <a routerLink="add-task">
-        <img src="assets/icons/add_task.svg" alt="Go to add task-section" />
+      <a routerLink="add-task" [ngClass]="{ inactive: !isLoggedIn }">
+        <img src="assets/icons/add_task.svg" alt="Go to add task section." />
         <p>Add Task</p>
       </a>
     </div>
     <div id="contacts_link" class="menu-items">
-      <a routerLink="contacts">
-        <img src="assets/icons/contacts.svg" alt="" />
+      <a routerLink="contacts" [ngClass]="{ inactive: !isLoggedIn }">
+        <img src="assets/icons/contacts.svg" alt="Go to contacts section." />
         <p>Contacts</p>
       </a>
     </div>
   </div>
 
-  <join-legal-links 
-  [legalLinksClass]="'navbar-legal-links'"
-  [innerLegalLinksClass]="'navbar-inner-legal-wrapper'"
+  <join-legal-links
+    [legalLinksClass]="'navbar-legal-links'"
+    [innerLegalLinksClass]="'navbar-inner-legal-wrapper'"
   />
 </nav>

@@ -19,7 +19,7 @@ export class ActionService {
   deleteCategoryEvent = new EventEmitter<void>();
   saveEditedTaskEvent = new EventEmitter<number>();
   deleteContactEvent = new EventEmitter<number>();
-  taskDetailEvent = new EventEmitter<number>();
+  taskDetailEvent = new EventEmitter<void>();
   keepOriginalTaskStatusEvent = new EventEmitter<void>();
   closeEditModeEvent = new EventEmitter<void>();
   addSubtaskEvent = new EventEmitter<{
@@ -32,6 +32,8 @@ export class ActionService {
   openEditSubtaskBoxEvent = new EventEmitter<number>();
   createNewTaskEvent = new EventEmitter<string>();
   resetNewTaskEvent = new EventEmitter<void>();
+  openAddTaskOverlayEvent = new EventEmitter<string>();
+  closeAddTaskOverlayEvent = new EventEmitter<void>();
 
   private setItemToDeleteSubject = new BehaviorSubject<number | null>(null);
   setItemToDelete$: Observable<number | null> =
@@ -39,9 +41,6 @@ export class ActionService {
   private deleteCategorySubject = new BehaviorSubject<number | null>(null);
   deleteCategorySubject$: Observable<number | null> =
     this.deleteCategorySubject.asObservable();
-  /* private deleteTaskSubject = new BehaviorSubject<number | null>(null);
-  deleteTaskSubject$: Observable<number | null> =
-    this.deleteTaskSubject.asObservable(); */
   private deleteContactSubject = new BehaviorSubject<number | null>(null);
   deleteContactSubject$: Observable<number | null> =
     this.deleteContactSubject.asObservable();
@@ -85,7 +84,6 @@ export class ActionService {
   }
 
   toggleInfoContainer(message?: string): void {
-    this.boardStatusService.toggleBoardSuccessStatus();
     this.buttonPropertyService.setOnSuccessMessageStatus(message);
   }
 
@@ -155,9 +153,16 @@ export class ActionService {
     this.resetNewTaskEvent.emit();
   }
 
-  closeTaskDetail(id: number): void {
-    this.buttonPropertyService.setIsTaskDetailVisibleStatusSubject(false);
+  closeTaskDetail(): void {
     this.taskDetailEvent.emit();
+  }
+
+  openAddTaskOverlay(message: string): void {
+    this.openAddTaskOverlayEvent.emit(message);
+  }
+
+  closeAddTaskOverlay(): void {
+    this.closeAddTaskOverlayEvent.emit();
   }
 
   prepareDeleteAction(id: number, actionType: string): void {

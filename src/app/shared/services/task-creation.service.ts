@@ -2,20 +2,22 @@ import { Injectable } from '@angular/core';
 import { TaskService } from './task.service';
 import { Task } from '../interfaces/task.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { AuthService } from './auth.service';
+import { LocalStorageService } from './local-storage.service';
 import { BoardListService } from './board-list.service';
+import { BoardStatusService } from './board-status.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskCreationService {
   private newTaskSubject = new BehaviorSubject<Partial<Task>>({});
-  newTask$ = this.newTaskSubject.asObservable();
+  newTask$: Observable<Partial<Task>> = this.newTaskSubject.asObservable();
 
   constructor(
     private taskService: TaskService,
-    private authService: AuthService,
-    private boardListService: BoardListService
+    private boardListService: BoardListService,
+    private boardStatusService: BoardStatusService,
+    private localStorageService: LocalStorageService,
   ) {}
 
   startTaskCreation(boardListName: string, taskData: Partial<Task>): void {
@@ -24,12 +26,15 @@ export class TaskCreationService {
     const newTask = this.createNewTask(boardListName, completeTaskData) as Task;
 
     this.taskService.addData(newTask).subscribe({
-      next: (createdTask) => console.log('Neue Aufgabe erstellt:', createdTask),
-      error: (err) => console.error('Fehler beim Erstellen:', err),
+      next: (createdTask) => {
+        console.log('New task successfully created:', createdTask);
+        this.clearNewTask();
+        this.taskService.clearSelectedCategory();
+        this.taskService.clearAssignedContacts();
+        this.boardStatusService.setBoardTaskOverlayOpenStatus(false);
+      },
+      error: (err) => console.error('Error creating task:', err),
     });
-    this.clearNewTask();
-    this.taskService.clearSelectedCategory();
-    this.taskService.clearAssignedContacts();
   }
 
   updateNewTask(updatedData: Partial<Task>): void {
@@ -52,11 +57,18 @@ export class TaskCreationService {
   }
 
   getCurrentTask(): Partial<Task> {
-    return this.newTaskSubject.getValue();
+    // return this.newTaskSubject.getValue();
+    const currentTask = this.newTaskSubject.getValue();
+    console.log('Current Task im getCurrentTask: ', currentTask);
+
+    return {
+      ...currentTask,
+      category: this.taskService.getSelectedCategory() ?? undefined,
+    };
   }
 
   createNewTask(boardListName: string, taskData: Partial<Task>): Partial<Task> {
-    const userId = this.authService.getUserId() ?? 4;
+    const userId = this.localStorageService.getUserIdFromLocalStorage() ?? 4;
     const boardListId =
       this.boardListService.getBoardListIdByName(boardListName) ?? 1;
 
@@ -67,6 +79,11 @@ export class TaskCreationService {
       taskData.contacts
         ?.map((c) => c.id)
         .filter((id): id is number => id !== undefined)
+    );
+
+    console.log(
+      'fürs Backend vorbereitete Kategorie: ',
+      this.taskService.getSelectedCategory()
     );
 
     return {
@@ -82,6 +99,7 @@ export class TaskCreationService {
       subtasks: [],
       completed_subtasks: 0,
       board_list: { id: boardListId, name: boardListName },
+      board_list_id: boardListId,
       board: 1,
       created_by: userId,
     };

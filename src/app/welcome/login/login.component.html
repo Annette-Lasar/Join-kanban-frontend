@@ -4,16 +4,18 @@
       <h1>Log in</h1>
       <div class="separator"></div>
     </div>
-    <form (ngSubmit)="login()">
+    <form #loginForm="ngForm" (ngSubmit)="onSubmitLogin(loginForm)">
       <div class="data-wrapper">
         <div class="input-wrapper">
           <div class="email-wrapper">
             <input
               type="text"
               name="email"
-              id="email"
-              placeholder="Email"
+              placeholder="Email*"
               [(ngModel)]="username"
+              (input)="clearErrorMessage()"
+              #emailInput="ngModel"
+              required
             />
             <img src="assets/icons/mail.svg" alt="" />
           </div>
@@ -22,8 +24,9 @@
               [type]="passwordVisible ? 'text': 'password'"
               name="password"
               id="password"
-              placeholder="Password"
+              placeholder="Password*"
               [(ngModel)]="password"
+              (input)="clearErrorMessage()"
               (focus)="onPasswordFocus()"
               (blur)="onPasswordBlur()"
             />
@@ -34,7 +37,7 @@
             />
           </div>
           <div class="incorrect-data">
-            Check your email and password. Please try again.
+            {{errorMessage}}
           </div>
         </div>
         <div class="remember">

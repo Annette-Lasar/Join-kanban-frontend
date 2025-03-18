@@ -79,7 +79,6 @@ export class AddTaskComponent implements OnInit, OnDestroy {
         this.categoryService.categories$.subscribe({
           next: (categories) => {
             this.categories = categories;
-            console.log('Kategorien in AddTask:', this.categories);
           },
           error: (err) =>
             console.error('Fehler beim Abrufen der Kategorien:', err),
@@ -96,7 +95,6 @@ export class AddTaskComponent implements OnInit, OnDestroy {
         this.contactService.contacts$.subscribe({
           next: (contacts) => {
             this.contacts = contacts;
-            console.log('Kontakte in AddTask:', this.contacts);
           },
           error: (err) =>
             console.error('Fehler beim Abrufen der Kontakte:', err),
@@ -160,8 +158,6 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     this.taskService.setSelectedCategory(null);
     this.taskService.clearAssignedContacts();
     this.taskService.setAssignedSubtasks([]);
-
-    console.log('%cNeue Aufgabe wurde zurückgesetzt!', 'color: green;');
   }
 
   onSubmit(): void {
@@ -172,7 +168,6 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log('%cNeue Aufgabe wird gesendet: ', 'color: green; ', taskData);
     this.taskCreationService.startTaskCreation('toDo', taskData);
   }
 

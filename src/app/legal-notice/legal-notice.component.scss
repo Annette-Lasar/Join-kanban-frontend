@@ -13,6 +13,12 @@ h3 {
   font-weight: 700;
 }
 
+.back-to-summary.inactive {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .content {
   background-color: $verylightgray;
   min-height: calc(100vh - $header-height - $mobile-navbar-height - 24px);

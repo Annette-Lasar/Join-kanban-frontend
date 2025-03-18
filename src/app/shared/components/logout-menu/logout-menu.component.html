@@ -1,6 +1,17 @@
-<div class="menu-wrapper">
-  <button routerLink="/main-content/help-user">Help</button>
-  <button routerLink="/main-content/legal-notice">Legal Notice</button>
-  <button routerLink="/main-content/privacy-policy">Privacy Policy</button>
-  <button (click)="logout()">Log out</button>
+<div class="menu-wrapper logoutContextMenu">
+  @if(menuItemCaption1) {
+  <button routerLink="/main-content/help-user">
+    {{ menuItemCaption1 }}
+  </button>
+  } @if(menuItemCaption2) {
+  <button routerLink="/main-content/legal-notice">
+    {{ menuItemCaption2 }}
+  </button>
+  } @if (menuItemCaption3) {
+  <button routerLink="/main-content/privacy-policy">
+    {{ menuItemCaption3 }}
+  </button>
+  } @if (menuItemCaption4) {
+  <button (click)="logout()">{{ menuItemCaption4 }}</button>
+  }
 </div>

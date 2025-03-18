@@ -13,13 +13,6 @@ export class SummaryService {
 
   constructor(private dataService: DataService) {}
 
-  /*   fetchSummaryData(): Observable<SummaryData[]> {
-    console.log(`GET Request to: /summary`);
-    return this.dataService
-      .fetchData<SummaryData>('summary', this.summarySubject)
-      .pipe(tap((data) => console.log('Fetched summary data:', data)));
-  } */
-
   fetchSummaryData(): Observable<SummaryData[]> {
     return this.dataService.fetchData<SummaryData>(
       'summary',

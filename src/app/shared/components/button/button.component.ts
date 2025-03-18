@@ -3,6 +3,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ActionService } from '../../services/action.service';
 import { InfoBoxService } from '../../services/info-box.service';
+import { BoardStatusService } from '../../services/board-status.service';
 
 @Component({
   selector: 'join-button',
@@ -59,7 +60,8 @@ export class ButtonComponent {
 
   constructor(
     private actionService: ActionService,
-    private infoBoxService: InfoBoxService
+    private infoBoxService: InfoBoxService,
+    private boardStatusService: BoardStatusService
   ) {}
 
   setPrioStatus(newStatus: string) {
@@ -70,6 +72,12 @@ export class ButtonComponent {
     if (!this.actionType) {
       console.warn('Kein actionType definiert!');
       return;
+    }
+
+    if (this.actionType === 'toggle') {
+      const currentStatus =
+        this.boardStatusService.boardSuccessStatus.getValue();
+      this.boardStatusService.setBoardSuccessStatus(!currentStatus);
     }
 
     if (this.actionType === 'deleteTask') {

@@ -4,7 +4,7 @@ import { Task, Subtask } from '../interfaces/task.interface';
 import { Category } from '../interfaces/category.interface';
 import { Contact } from '../interfaces/contact.interface';
 import { DataService } from './data.service';
-import { AuthService } from './auth.service';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -32,7 +32,7 @@ export class TaskService {
 
   constructor(
     private dataService: DataService,
-    private authService: AuthService,
+    private localStorageService: LocalStorageService
   ) {}
 
   /* =====================================================================
@@ -127,6 +127,7 @@ export class TaskService {
 
   setSelectedCategory(category: Category | null): void {
     this.selectedCategorySubject.next(category);
+    console.log('gewählte Kategorie: ', this.selectedCategorySubject.getValue());
   }
 
   setAssignedContacts(contacts: Contact[]): void {
@@ -201,6 +202,18 @@ export class TaskService {
     this.tasksSubject.next(updatedTasks);
   }
 
+  getTasksByBoardList(tasks: Task[]): { [key: string]: Task[] } {
+    return tasks.reduce((acc, task) => {
+      if (!task.board_list || !task.board_list.name) {
+        return acc;
+      }
+      const listName = task.board_list.name;
+      acc[listName] = acc[listName] || [];
+      acc[listName].push(task);
+      return acc;
+    }, {} as { [key: string]: Task[] });
+  }
+
   async setContactsFromTask(taskId: number): Promise<void> {
     const tasks = await firstValueFrom(this.tasks$);
     const task = tasks.find((t) => t.id === taskId);
@@ -249,7 +262,7 @@ export class TaskService {
     const selectedCategory = this.getSelectedCategory();
     const assignedContacts = this.getAssignedContacts();
     const subtasks = this.getSubtasks();
-    const userId = this.authService.getUserId() ?? 4;
+    const userId = this.localStorageService.getUserIdFromLocalStorage() ?? 4;
     if (!currentTask) throw new Error('Keine Aufgabe vorhanden!');
 
     return {

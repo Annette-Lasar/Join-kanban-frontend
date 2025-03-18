@@ -1,5 +1,5 @@
-@import '../../../../scss_files/variables.scss';
-@import '../../../../scss_files/mixins.scss';
+@import "../../../../scss_files/variables.scss";
+@import "../../../../scss_files/mixins.scss";
 
 nav {
   width: 100%;
@@ -29,7 +29,7 @@ nav {
 .menu-items a {
   width: 64px;
   height: 64px;
-  @include flex-container( $direction: column, $justify: center, $gap: 8px);
+  @include flex-container($direction: column, $justify: center, $gap: 8px);
   font-size: 0.75rem;
   text-decoration: none;
   color: $white;
@@ -38,6 +38,12 @@ nav {
   &:hover {
     scale: 1.05;
   }
+}
+
+.menu-items a.inactive {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .current-page {
@@ -73,6 +79,11 @@ join-legal-links {
       img {
         height: 44px;
       }
+    }
+    .join-logo.inactive {
+      pointer-events: none;
+      opacity: 0.5;
+      cursor: not-allowed;
     }
     .menu-items-wrapper {
       max-height: 500px;

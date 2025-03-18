@@ -36,7 +36,7 @@ header {
     width: 40px;
     height: 40px;
     @include flex-container($justify: center);
-    border: $darkblue 2px solid;
+    // border: $darkblue 2px solid;
     border-radius: 50%;
     font-weight: 700;
     color: $lightblue;

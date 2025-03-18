@@ -14,8 +14,23 @@
             <img src="assets/icons/help.svg" alt="" />
           </a>
         </div>
-        <div id="user_icon" class="user-icon" (click)="toggleHeaderMenu()">
-          {{ getUserInitials() }}
+        <div
+          appOutsideClick
+          class="header-menu-wrapper"
+          (outsideClick)="closeHeaderMenu()"
+        >
+          <div id="user_icon" class="user-icon" (click)="toggleHeaderMenu()" [ngStyle]="isLoggedIn ? {'border': '#2a3647 2px solid'} : {'border': 'none'}">
+            @if (isLoggedIn) {
+            {{ userInitials }}
+            } @else {
+            <img
+              src="assets/icons/logout.svg"
+              alt="Logout Icon"
+              height="24"
+              width="24"
+            />
+            }
+          </div>
         </div>
       </div>
       <div
@@ -23,7 +38,12 @@
         class="header-menu"
         [ngClass]="{ 'd-none': !isMenuVisible }"
       >
-        <join-logout-menu />
+        <join-logout-menu 
+        [menuItemCaption1]="'Help'"
+        [menuItemCaption2]="'Legal Notice'"
+        [menuItemCaption3]="'Privacy Policy'"
+        [menuItemCaption4]="'Log out'"
+        />
       </div>
     </div>
   </div>
