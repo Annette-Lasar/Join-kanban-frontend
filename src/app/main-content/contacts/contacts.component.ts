@@ -1,19 +1,17 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { Contact } from '../../shared/interfaces/contact.interface';
 import { ContactDetailsComponent } from './contact-details/contact-details.component';
-import { contacts } from '../../shared/data/contacts.data';
 import { ContactService } from '../../shared/services/contact.service';
-import { Subscription } from 'rxjs';
 import { ContactFormComponent } from './contact-form/contact-form.component';
 import { ContextMenuComponent } from '../../shared/components/context-menu/context-menu.component';
 import { OutsideClickDirective } from '../../shared/directives/outside-click.directive';
 import { CommonModule } from '@angular/common';
 import { GroupContactsService } from '../../shared/services/group-contacts.service';
-import { InfoComponent } from '../../shared/components/info/info.component';
 import { ContactStatusService } from '../../shared/services/contact-status.service';
 import { ButtonPropertyService } from '../../shared/services/button-propertys.service';
 import { InfoBoxService } from '../../shared/services/info-box.service';
+import { switchMap, Subscription } from 'rxjs';
 
 @Component({
   selector: 'join-contacts',
@@ -25,14 +23,12 @@ import { InfoBoxService } from '../../shared/services/info-box.service';
     ContactFormComponent,
     ContextMenuComponent,
     OutsideClickDirective,
-    InfoComponent,
   ],
   templateUrl: './contacts.component.html',
   styleUrl: './contacts.component.scss',
 })
-export class ContactsComponent implements OnInit {
+export class ContactsComponent implements OnInit, OnDestroy {
   contacts: Contact[] = [];
-  // dummyContacts: Contact[] | null = contacts;
   groupedContacts: { key: string; value: Contact[] }[] = [];
 
   isMobile: boolean = true;
@@ -48,21 +44,22 @@ export class ContactsComponent implements OnInit {
   colorBrightness: boolean = false;
   isInitialLoad: boolean = true;
 
-  private subscription: Subscription | null = null;
+  private subscriptions: Subscription | null = null;
 
   constructor(
     private contactService: ContactService,
     private groupContactsService: GroupContactsService,
     private contactStatusService: ContactStatusService,
     private buttonPropertyService: ButtonPropertyService,
-    private infoBoxService: InfoBoxService
+    private infoBoxService: InfoBoxService,
   ) {}
 
   ngOnInit(): void {
+    this.loadContacts();
     this.checkViewport();
+    this.subscribeToCurrentContactSubject();
     // this.initializeContactsValue();
     // this.updateContactsList();
-    this.loadContacts();
     // this.groupContacts();
     this.getGroupedContacts();
     this.updateShowDetails();
@@ -77,9 +74,7 @@ export class ContactsComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscriptions?.unsubscribe();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -91,22 +86,19 @@ export class ContactsComponent implements OnInit {
     this.isMobile = window.innerWidth < 800;
   }
 
-
   loadContacts(): void {
-    this.contactService.fetchData().subscribe({
-      next: () => {
-        this.contactService.contacts$.subscribe({
-          next: (contacts) => {
-            this.contacts = contacts;
-            console.log('Kontakte in Contacts:', this.contacts);
-            this.groupContacts();
-          },
-          error: (err) =>
-            console.error('Fehler beim Abrufen der Kontakte:', err),
-        });
-      },
-      error: (err) => console.error('Fehler beim Laden der Kontakte:', err),
-    });
+    const subscription = this.contactService
+      .fetchData()
+      .pipe(switchMap(() => this.contactService.contacts$))
+      .subscribe({
+        next: (contacts) => {
+          this.contacts = contacts;
+          this.groupContacts();
+          console.log('Kontakte auf dem Board:', this.contacts);
+        },
+        error: (err) => console.error('Fehler beim Laden der Kontakte:', err),
+      });
+    this.subscriptions?.add(subscription);
   }
 
   setNewContactFormStatus(newStatus: boolean): void {
@@ -118,6 +110,15 @@ export class ContactsComponent implements OnInit {
     this.contactStatusService.contactFormStatus$.subscribe((status) => {
       this.contactFormStatus = status;
     });
+  }
+
+  subscribeToCurrentContactSubject(): void {
+    const subscription = this.contactService.currentContact$.subscribe(
+      (contact) => {
+        this.currentContact = contact;
+      }
+    );
+    this.subscriptions?.add(subscription);
   }
 
   getUpdatedShowDetailsStatus(): void {
@@ -147,7 +148,7 @@ export class ContactsComponent implements OnInit {
   }
 
   getUpdatedSuccessStatus() {
-    this.infoBoxService.successStatus$.subscribe((status) => {
+    this.contactStatusService.contactSuccessStatus$.subscribe((status) => {
       this.successStatus = status;
     });
   }
@@ -178,7 +179,7 @@ export class ContactsComponent implements OnInit {
 
   getGroupedContacts() {
     this.groupContactsService.groupContactsSubject$.subscribe((groups) => {
-      console.log('Gruppierte Kontakte: ', this.groupedContacts);
+      // console.log('Gruppierte Kontakte: ', this.groupedContacts);
       this.groupedContacts = this.sortLetters(groups);
     });
   }
@@ -190,7 +191,7 @@ export class ContactsComponent implements OnInit {
   }
 
   updateShowDetails() {
-    this.subscription = this.contactStatusService.showDetailsStatus$.subscribe(
+    this.subscriptions = this.contactStatusService.showDetailsStatus$.subscribe(
       (value) => {
         this.showDetails = value;
       }

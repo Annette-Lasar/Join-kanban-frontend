@@ -1,19 +1,24 @@
-@import '../scss_files/variables.scss';
-@import '../scss_files/mixins.scss';
+@import "../scss_files/variables.scss";
+@import "../scss_files/mixins.scss";
 
 #page {
-    height: 100vh;
-    @include flex-container($justify: center);
+  height: 100vh;
+  @include flex-container($justify: center);
 }
 
 .outer-login-wrapper {
-    width: 100%;
-    max-width: 1440px;
-    height: 100%;
-    max-height: 800px;
-    position: relative;
-    @include flex-container($justify: center);
-
+  width: 100%;
+  max-width: 1440px;
+  height: 100%;
+  max-height: 800px;
+  position: relative;
+  @include flex-container($justify: center);
 }
 
-
+join-info {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+}

@@ -18,7 +18,9 @@
         [padding]="'0'"
         [width]="'20px'"
         [height]="'20px'"
-        [actionType]="'closeTaskDetail'"
+        [actionMessage]="{
+          actionType: 'closeTaskDetail'
+        }"
       />
     </div>
     <div class="task-detail-text-wrapper">
@@ -88,23 +90,39 @@
     </div>
   </div>
   <div class="task-detail-button-wrapper">
+    <!-- AKTUELL! -->
     <join-button
       [caption]="'Delete'"
       [buttonIcon]="true"
       [buttonCaptionSecond]="true"
-      [actionType]="'openDeleteTaskSecurityInfo'"
+      [actionMessage]="{
+        securityQuestion: true,
+        alertTitle: 'Alert',
+        infoQuestion: 'Are you sure you want to delete this task permanently?',
+        infoText: 'This process is irreversible.',
+        imageSrc: 'assets/icons/join_logo_white.svg',
+        actionType: 'handleInfoAndSuccessMessages',
+        nextActionType: 'deleteTask',
+        caption1: 'Yes, proceed',
+        caption2: 'No, preserve',
+        id: task.id,
+        isVisible: true,
+        persistent: true
+      }"
       [buttonClass]="'light-button-with-icon'"
       [padding]="'0'"
       [imgSrc]="'assets/icons/delete.svg'"
       [imgClass]="'bin'"
       [width]="'80px'"
       [height]="'24px'"
-      [id]="task.id"
     />
     <div class="separator"></div>
     <join-button
       [caption]="'Edit'"
-      [actionType]="'showEditTaskMode'"
+      [actionMessage]="{
+        actionType: 'showEditTaskMode',
+        id: task.id
+      }"
       [buttonIcon]="true"
       [buttonCaptionSecond]="true"
       [buttonClass]="'light-button-with-icon'"
@@ -113,22 +131,7 @@
       [imgClass]="'pen'"
       [width]="'70px'"
       [height]="'24px'"
-      [id]="task.id"
     />
   </div>
 </div>
-} @if(task && isWarningMessageVisible) {
-<join-info
-  [alertTitle]="'Alert'"
-  [infoQuestion]="'Are you sure you want to delete this task permanently?'"
-  [infoText]="'This process is irreversible.'"
-  [imageSrc]="'assets/icons/join_logo_white.svg'"
-  [imageSrc2]="'assets/icons/close_white.svg'"
-  [infoMessageClass]="'security-info-box'"
-  [securityQuestion]="true"
-  [actionType]="'deleteTask'"
-  [caption1]="'Yes, proceed.'"
-  [caption2]="'No, preserve.'"
-  [id]="task!.id"
-/>
-}
+} 

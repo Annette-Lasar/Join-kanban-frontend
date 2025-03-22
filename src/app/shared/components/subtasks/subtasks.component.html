@@ -13,7 +13,10 @@
     [buttonClass]="'white-button'"
     [imgSrc]="'assets/icons/plus.svg'"
     [actionType]="'openAddSubtaskBox'"
-    [infoMessage]="'open'"
+    [actionMessage]="{
+      actionType: 'openAddSubtaskBox',
+      infoText: 'open'
+    }"
     [alt]="'Add subtask'"
     [padding]="'0'"
     [height]="'20px'"
@@ -25,8 +28,10 @@
       [buttonIcon]="true"
       [buttonClass]="'white-button'"
       [imgSrc]="'assets/icons/close.svg'"
-      [actionType]="'cancelAddSubtask'"
-      [infoMessage]="'cancel'"
+      [actionMessage]="{
+        actionType: 'cancelAddSubtask',
+        infoText: 'cancel'
+      }"
       [alt]="'Cancel add subtask'"
       [padding]="'0'"
       [height]="'20px'"
@@ -37,8 +42,10 @@
       [buttonIcon]="true"
       [buttonClass]="'white-button'"
       [imgSrc]="'assets/icons/check.svg'"
-      [actionType]="'saveAddedSubtask'"
-      [infoMessage]="'save'"
+      [actionMessage]="{
+        actionType: 'saveAddedSubtask',
+        infoText: 'save'
+      }"
       [alt]="'Save subtask'"
       [padding]="'0'"
       [height]="'20px'"
@@ -60,24 +67,28 @@
         [buttonIcon]="true"
         [buttonClass]="'white-button'"
         [imgSrc]="'assets/icons/edit_dark.svg'"
-        [actionType]="'openEditSubtaskBox'"
+        [actionMessage]="{
+          actionType: 'openEditSubtaskBox',
+          id: subtask.id ? subtask.id : subtask.tempId
+        }"
         [alt]="'Edit subtask'"
         [padding]="'0'"
         [height]="'20px'"
         [width]="'20px'"
-        [id]="subtask.id ? subtask.id : subtask.tempId"
       />
       <div class="separator"></div>
       <join-button
         [buttonIcon]="true"
         [buttonClass]="'white-button'"
         [imgSrc]="'assets/icons/delete.svg'"
-        [actionType]="'deleteSubtask'"
+        [actionMessage]="{
+          actionType: 'deleteSubtask',
+          id: subtask.id ? subtask.id : subtask.tempId
+        }"
         [alt]="'Delete subtask'"
         [padding]="'0'"
         [height]="'24px'"
         [width]="'24px'"
-        [id]="subtask.id ? subtask.id : subtask.tempId"
       />
     </div>
     } @else {
@@ -91,12 +102,15 @@
         [buttonIcon]="true"
         [buttonClass]="'white-button'"
         [imgSrc]="'assets/icons/check.svg'"
+        [actionMessage]="{
+          actionType: 'saveEditedSubtask',
+          id: subtask.id ? subtask.id : subtask.tempId
+        }"
         [actionType]="'saveEditedSubtask'"
         [alt]="'Save edited subtask'"
         [padding]="'0'"
         [height]="'24px'"
         [width]="'24px'"
-        [id]="subtask.id ? subtask.id : subtask.tempId"
       />
     </div>
     }

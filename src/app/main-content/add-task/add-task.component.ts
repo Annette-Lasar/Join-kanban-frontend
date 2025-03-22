@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgModel, NgForm } from '@angular/forms';
 import { AddTaskContentComponent } from '../../shared/components/add-task-content/add-task-content.component';
 import { ButtonComponent } from '../../shared/components/button/button.component';
+import { DataLoaderService } from '../../shared/services/data-loader.service';
 import { TaskService } from '../../shared/services/task.service';
 import { CategoryService } from '../../shared/services/category.service';
 import { ContactService } from '../../shared/services/contact.service';
@@ -11,7 +12,7 @@ import { ActionService } from '../../shared/services/action.service';
 import { Task } from '../../shared/interfaces/task.interface';
 import { Category } from '../../shared/interfaces/category.interface';
 import { Contact } from '../../shared/interfaces/contact.interface';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 
 @Component({
   selector: 'join-add-task',
@@ -37,6 +38,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   private resizeObserver!: ResizeObserver;
 
   constructor(
+    private dataLoaderService: DataLoaderService,
     private taskService: TaskService,
     private categoryService: CategoryService,
     private contactService: ContactService,
@@ -46,63 +48,26 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // this.loadTasks();
-    this.loadCategories();
-    this.loadContacts();
+    this.loadAllData();
     this.initializeResizeObserver();
     this.subscribeToSelectedCategory();
     this.subscribeToAssignedContacts();
     this.subscribeToResetNewTaskEvent();
   }
 
-  /*   loadTasks(): void {
-    const subscription = this.taskService.fetchData().subscribe({
-      next: () => {
-        this.taskService.tasks$.subscribe({
-          next: (tasks) => {
-            this.tasks = tasks;
-            console.log('Tasks in AddTask:', this.tasks);
-          },
-          error: (err) =>
-            console.error('Fehler beim Abrufen der Aufgaben:', err),
-        });
-      },
-      error: (err) => console.error('Fehler beim Laden der Aufgaben:', err),
-    });
-    this.subscriptions.add(subscription);
-  }
- */
-
-  loadCategories(): void {
-    const subscription = this.categoryService.fetchData().subscribe({
-      next: () => {
-        this.categoryService.categories$.subscribe({
-          next: (categories) => {
-            this.categories = categories;
-          },
-          error: (err) =>
-            console.error('Fehler beim Abrufen der Kategorien:', err),
-        });
-      },
-      error: (err) => console.error('Fehler beim Laden der Kategorien:', err),
-    });
-    this.subscriptions.add(subscription);
-  }
-
-  loadContacts(): void {
-    const subscription = this.contactService.fetchData().subscribe({
-      next: () => {
-        this.contactService.contacts$.subscribe({
-          next: (contacts) => {
-            this.contacts = contacts;
-          },
-          error: (err) =>
-            console.error('Fehler beim Abrufen der Kontakte:', err),
-        });
-      },
-      error: (err) => console.error('Fehler beim Laden der Kontakte:', err),
-    });
-    this.subscriptions.add(subscription);
+  loadAllData(): void {
+    this.subscriptions.add(
+      forkJoin({
+        categories: this.dataLoaderService.loadCategories(),
+        contacts: this.dataLoaderService.loadContacts(),
+      }).subscribe({
+        next: ({ categories, contacts }) => {
+          this.categories = categories;
+          this.contacts = contacts;
+        },
+        error: (err) => console.error('Error loading data: ', err),
+      })
+    );
   }
 
   initializeResizeObserver(): void {
@@ -154,7 +119,6 @@ export class AddTaskComponent implements OnInit, OnDestroy {
 
   resetNewTask(): void {
     this.taskCreationService.clearNewTask();
-
     this.taskService.setSelectedCategory(null);
     this.taskService.clearAssignedContacts();
     this.taskService.setAssignedSubtasks([]);

@@ -7,8 +7,11 @@
         <join-button
           (toggleContainer)="toggleContainerVisibility($event)"
           class="board-add-task info-button global-info"
-          [infoMessage]="'Add a task to To do.'"
-          [actionType]="'toggle'"
+          [actionMessage]="{
+            actionType: 'handleInfoAndSuccessMessages',
+            isVisible: true,
+            infoText: 'Add a task to To do.'
+          }"
           [buttonIcon]="true"
           [imgSrc]="'assets/icons/info.svg'"
           [buttonClass]="'light-square-button'"
@@ -23,13 +26,16 @@
           [buttonIcon]="true"
           [imgSrc]="'assets/icons/plus_white.svg'"
           [buttonClass]="'dark-square-button'"
-          [actionType]="'openAddTaskOverlay'"
-          [infoMessage]="'toDo'"
+          [actionMessage]="{
+            actionType: 'openAddTaskOverlay',
+            infoText: 'toDo'
+          }"
           [width]="isDesktop ? '100px' : '24px'"
           [height]="isDesktop ? '32px' : '24px'"
           [padding]="'0'"
         />
       </div>
+      {{isSearchActive()}}
       <div class="search-wrapper">
         <input
           type="text"
@@ -62,14 +68,8 @@
         <span>{{ getMatchText() }} </span>found
       </div>
     </div>
-    @if(isContainerVisible) {
-    <div appOutsideClick (outsideClick)="hideContainer()">
-      <join-info [infoText]="message" />
-    </div>
-
-    }
     <div class="outer-board-wrapper">
-      @for(board_list of boards[0].board_lists; track board_list; let i =
+      @for(board_list of boards[0].board_lists; track board_list.id; let i =
       $index) {
       <div class="list" [ngClass]="board_list">
         <div class="board-list-headline-wrapper">
@@ -81,11 +81,14 @@
             <join-button
               (toggleContainer)="toggleContainerVisibility($event)"
               class="list-add-task info-button"
-              [infoMessage]="
-                'Add a task to ' +
-                getFormattedBoardListName(board_list.name, 'capitalized')
-              "
-              [actionType]="'toggle'"
+              [actionMessage]="{
+                infoText:
+                  'Add a task to ' +
+                  getFormattedBoardListName(board_list.name, 'capitalized'),
+                actionType: 'handleInfoAndSuccessMessages',
+                isVisible: true,
+                persistent: false
+              }"
               [buttonIcon]="true"
               [imgSrc]="'assets/icons/info.svg'"
               [buttonClass]="'light-square-button'"
@@ -97,12 +100,13 @@
               [buttonIcon]="true"
               [imgSrc]="'assets/icons/plus.svg'"
               [buttonClass]="'light-square-button-blue-hover-completely'"
-              [actionType]="'openAddTaskOverlay'"
-              [infoMessage]="board_list.name"
+              [actionMessage]="{
+                actionType: 'openAddTaskOverlay',
+                infoText: board_list.name
+              }"
               [width]="'24px'"
               [height]="'24px'"
               [padding]="'0'"
-              [tooltip]="'Add a new task to this list'"
             />
           </div>
           }
@@ -119,8 +123,8 @@
           [class.highlight]="highlightedList === board_list.name"
           class="task-card-wrapper"
         >
-          @for(task of filteredTasksByBoardList[board_list.name]; track task) {
-          <div cdkDrag [cdkDragData]="task">
+          @for(task of filteredTasksByBoardList[board_list.name]; track task.id) {
+            <div cdkDrag [cdkDragData]="task">
             <join-task-card
               [task]="task"
               (click)="openCardDetailView(task.id!)"
@@ -155,7 +159,9 @@
       [buttonIcon]="true"
       [imgSrc]="'assets/icons/close.svg'"
       [buttonClass]="'dark-close-button'"
-      [actionType]="'closeAddTaskOverlay'"
+      [actionMessage]="{
+        actionType: 'closeAddTaskOverlay'
+      }"
       [padding]="'0'"
       [width]="'20px'"
       [height]="'20px'"
@@ -173,10 +179,12 @@
         <join-button
           class="clear-task-button"
           [buttonCaptionFirst]="isDesktop"
+          [caption]="'Clear'"
           [buttonIcon]="true"
           [imgSrc]="'assets/icons/close.svg'"
-          [caption]="'Clear'"
-          [actionType]="'resetNewTask'"
+          [actionMessage]="{
+            actionType: 'resetNewTask'
+          }"
           [buttonClass]="'light-square-button-blue-hover-completely '"
           [width]="isDesktop ? '80px' : '32px'"
           [height]="'32px'"
@@ -186,8 +194,10 @@
           [buttonCaptionFirst]="true"
           [buttonIcon]="true"
           [type]="'submit'"
-          [actionType]="'createNewTask'"
-          [infoMessage]="'toDo'"
+          [actionMessage]="{
+            actionType: 'createNewTask',
+            infoText: 'toDo'
+          }"
           [imgSrc]="'assets/icons/check_white.svg'"
           [imgClass]="'check-icon'"
           [caption]="'Create task'"

@@ -5,6 +5,7 @@ import { Category } from '../interfaces/category.interface';
 import { Contact } from '../interfaces/contact.interface';
 import { DataService } from './data.service';
 import { LocalStorageService } from './local-storage.service';
+import { InfoBoxService } from './info-box.service';
 
 @Injectable({
   providedIn: 'root',
@@ -32,7 +33,8 @@ export class TaskService {
 
   constructor(
     private dataService: DataService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private infoBoxService: InfoBoxService
   ) {}
 
   /* =====================================================================
@@ -127,7 +129,10 @@ export class TaskService {
 
   setSelectedCategory(category: Category | null): void {
     this.selectedCategorySubject.next(category);
-    console.log('gewählte Kategorie: ', this.selectedCategorySubject.getValue());
+    console.log(
+      'gewählte Kategorie: ',
+      this.selectedCategorySubject.getValue()
+    );
   }
 
   setAssignedContacts(contacts: Contact[]): void {
@@ -154,13 +159,40 @@ export class TaskService {
   /* =====================================================================
   Methods to interact with frontend for new or changed task data
   ========================================================================= */
-  updateGeneralTaskState(updatedTask: Partial<Task>): void {
+  /*   updateGeneralTaskState(updatedTask: Partial<Task>): void {
     const tasks = this.tasksSubject.getValue();
     const updatedTasks = tasks.map((task) =>
       task.id === updatedTask.id ? { ...task, ...updatedTask } : task
     );
 
     this.tasksSubject.next(updatedTasks);
+  } */
+
+  updateGeneralTaskState(updatedTask: Partial<Task>): void {
+    const tasks = this.tasksSubject.getValue();
+    let hasChanges = false;
+
+    const updatedTasks = tasks.map((task) => {
+      if (task.id !== updatedTask.id) return task;
+
+      const isEqual =
+        task.board_list_id === updatedTask.board_list_id &&
+        task.title === updatedTask.title &&
+        task.description === updatedTask.description &&
+        task.priority === updatedTask.priority &&
+        task.due_date === updatedTask.due_date;
+
+      if (isEqual) {
+        return task;
+      } else {
+        hasChanges = true;
+        return { ...task, ...updatedTask };
+      }
+    });
+
+    if (hasChanges) {
+      this.tasksSubject.next(updatedTasks);
+    }
   }
 
   private updateTaskState(taskId: number, subtask: Subtask): void {
@@ -252,7 +284,15 @@ export class TaskService {
 
   deleteTaskFromBackend(taskId: number): void {
     this.deleteData(taskId).subscribe({
-      next: () => console.log('Task successfully deleted from Backend!'),
+      next: () => {
+        console.log('Task successfully deleted from Backend');
+        this.infoBoxService.setInfoBox({
+          isVisible: false,
+          persistent: true,
+        });
+
+        this.showSuccessMessage('Task successfully deleted!');
+      },
       error: (err) => console.error('Issue deleting task: ', err),
     });
   }
@@ -291,5 +331,17 @@ export class TaskService {
       board: currentTask?.board ?? 1,
       created_by: userId,
     };
+  }
+
+  showSuccessMessage(message: string) {
+    console.log('Ich werde ausgeführt');
+    setTimeout(() => {
+      this.infoBoxService.setInfoBox({
+        isVisible: true,
+        infoText: message,
+        infoMessageClass: 'success-message',
+        persistent: false,
+      });
+    }, 1000);
   }
 }

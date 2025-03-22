@@ -71,11 +71,6 @@
   .list-item:last-of-type {
     margin-bottom: 1em;
   }
-
-  .list-item.current {
-    background-color: $darkblue;
-    color: $white;
-  }
 }
 
 .inner-details-wrapper {
@@ -93,7 +88,7 @@
 MEDIA QUERIES
 ======================================================================*/
 
-@media (min-width: 50em) {
+@media (min-width: 64em) {
   .outer-content-wrapper {
     height: 100%;
     max-height: calc(800px - $header-height);
@@ -148,4 +143,11 @@ MEDIA QUERIES
 
 .white {
   color: $white;
+}
+
+.contact-list {
+  .list-item.current {
+    background-image: linear-gradient($darkblue, $darkblue);
+    color: $white;
+  }
 }

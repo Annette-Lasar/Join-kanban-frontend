@@ -3,6 +3,7 @@ import { ContactStatusService } from '../services/contact-status.service';
 import { ButtonPropertyService } from '../services/button-propertys.service';
 import { BoardStatusService } from '../services/board-status.service';
 import { InfoBoxService } from '../services/info-box.service';
+import { InfoMessage } from '../interfaces/info-message.interface';
 
 export function createActionMap(
   actionService: ActionService,
@@ -10,12 +11,12 @@ export function createActionMap(
   buttonPropertyService: ButtonPropertyService,
   boardStatusService: BoardStatusService,
   infoBoxService: InfoBoxService
-) {
-  return new Map<
-    string,
-    (message?: string, id?: number, event?: Event) => void
-  >([
-    ['toggle', (message) => actionService.toggleInfoContainer(message)],
+): Map<string, (infoMessage: InfoMessage, event?: Event) => void> {
+  return new Map([
+    [
+      'handleInfoAndSuccessMessages',
+      (infoMessage) => actionService.handleInfoContainers(infoMessage),
+    ],
     [
       'showAddContactForm',
       () => buttonPropertyService.setIsAddContactButtonStatus(true),
@@ -32,65 +33,107 @@ export function createActionMap(
     ['clearInputFields', () => buttonPropertyService.setClearInputStatus(true)],
     [
       'openSecurityInfo',
-      (message, id) =>
-        actionService.organizeSecurityQuestion(id!, 'setItemToDelete'),
+      (infoMessage?) =>
+        actionService.organizeSecurityQuestion(
+          infoMessage!.id!,
+          'setItemToDelete'
+        ),
     ],
-    ['openDeleteTaskSecurityInfo', (message, id) => actionService.organizeSecurityQuestion(id!, 'deleteTask')],
+    [
+      'openDeleteTaskSecurityInfo',
+      (infoMessage) =>
+        actionService.organizeSecurityQuestion(infoMessage!.id!, 'deleteTask'),
+    ],
     ['closeSecurityInfo', () => actionService.showOrHideInfoBox(false)],
     ['onToggleShowLogin', () => actionService.showSignUp()],
     ['guestLogin', () => actionService.triggerGuestLogin()],
     [
       'setTaskToDelete',
-      (message, id) =>
-        actionService.prepareDeleteAction(id!, 'setTaskToDelete'),
+      (infoMessage) =>
+        actionService.prepareDeleteAction(infoMessage.id!, 'setTaskToDelete'),
     ],
     [
       'deleteTask',
-      (message, id) => actionService.prepareDeleteAction(id!, 'deleteTask'),
+      (infoMessage) =>
+        actionService.prepareDeleteAction(infoMessage.id!, 'deleteTask'),
     ],
     [
       'deleteCategory',
-      (message, id) => actionService.prepareDeleteAction(id!, 'deleteCategory'),
+      (infoMessage) =>
+        actionService.prepareDeleteAction(infoMessage.id!, 'deleteCategory'),
     ],
     [
       'setContactToDelete',
-      (message, id) =>
-        actionService.prepareDeleteAction(id!, 'setContactToDelete'),
+      (infoMessage) =>
+        actionService.prepareDeleteAction(
+          infoMessage.id!,
+          'setContactToDelete'
+        ),
     ],
     [
       'deleteContact',
-      (message, id) => actionService.prepareDeleteAction(id!, 'deleteContact'),
+      (infoMessage) =>
+        actionService.prepareDeleteAction(infoMessage.id!, 'deleteContact'),
     ],
-    ['showEditTaskMode', (message, id) => actionService.toggleEditTaskMode('show', id!)],
-    ['closeTaskEditMode', (message, id) => actionService.toggleEditTaskMode('hide', id!)],
+    [
+      'showEditTaskMode',
+      (infoMessage) =>
+        actionService.toggleEditTaskMode('show', infoMessage.id!),
+    ],
+    [
+      'closeTaskEditMode',
+      (infoMessage) =>
+        actionService.toggleEditTaskMode('hide', infoMessage.id!),
+    ],
     ['closeTaskDetail', () => actionService.closeTaskDetail()],
-    ['saveEditedTask', (message, id) => actionService.saveEditedTask(id!)],
+    [
+      'saveEditedTask',
+      (infoMessage) => actionService.saveEditedTask(infoMessage.id!),
+    ],
     [
       'openAddSubtaskBox',
-      (message, id, event) =>
-        actionService.toggleAddSubtaskBox(message, id, event),
+      (infoMessage, event) =>
+        actionService.toggleAddSubtaskBox(
+          infoMessage.infoText,
+          infoMessage.id,
+          event
+        ),
     ],
     [
       'cancelAddSubtask',
-      (message, id, event) =>
-        actionService.toggleAddSubtaskBox(message, id, event),
+      (infoMessage, event) =>
+        actionService.toggleAddSubtaskBox(
+          infoMessage.infoText,
+          infoMessage.id,
+          event
+        ),
     ],
     [
       'saveAddedSubtask',
-      (message, id, event) =>
-        actionService.toggleAddSubtaskBox(message, id, event),
+      (infoMessage, event) =>
+        actionService.toggleAddSubtaskBox(
+          infoMessage.infoText,
+          infoMessage.id,
+          event
+        ),
     ],
-    ['deleteSubtask', (message, id) => actionService.deleteSubtask(id!)],
+    [
+      'deleteSubtask',
+      (infoMessage) => actionService.deleteSubtask(infoMessage.id!),
+    ],
     [
       'saveEditedSubtask',
-      (message, id) => actionService.saveEditedSubtask(id!),
+      (infoMessage) => actionService.saveEditedSubtask(infoMessage.id!),
     ],
     [
       'openEditSubtaskBox',
-      (message, id) => actionService.openEditSubtaskBox(id!),
+      (infoMessage) => actionService.openEditSubtaskBox(infoMessage.id!),
     ],
     ['resetNewTask', () => actionService.resetNewTask()],
-    ['openAddTaskOverlay', (message, id) => actionService.openAddTaskOverlay(message!)],
+    [
+      'openAddTaskOverlay',
+      (infoMessage) => actionService.openAddTaskOverlay(infoMessage.infoText!),
+    ],
     ['closeAddTaskOverlay', () => actionService.closeAddTaskOverlay()],
     // add further actions here if necessary.
   ]);

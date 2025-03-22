@@ -20,11 +20,14 @@ import { InfoBoxService } from '../../../shared/services/info-box.service';
   styleUrl: './contact-details.component.scss',
 })
 export class ContactDetailsComponent implements OnInit, OnDestroy {
+  @Input() contact: Contact | null = null;
+
+
   isMobile: boolean = false;
+  showContactDetails: boolean = false;
+  
   private subscription: Subscription | null = null;
 
-  @Input() contact: Contact | null = null;
-  showContactDetails: boolean = false;
 
   constructor(
     private contactService: ContactService,

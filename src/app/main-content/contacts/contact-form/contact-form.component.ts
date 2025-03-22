@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Contact } from '../../../shared/interfaces/contact.interface';
+import { User } from '../../../shared/interfaces/user.interface';
 import { RandomColorService } from '../../../shared/services/random-color.service';
 import { ColorBrightnessService } from '../../../shared/services/color-brightness.service';
 import { ContactService } from '../../../shared/services/contact.service';
@@ -17,6 +18,7 @@ import { ValidateInputFieldsService } from '../../../shared/services/validateInp
 import { ContactStatusService } from '../../../shared/services/contact-status.service';
 import { ButtonPropertyService } from '../../../shared/services/button-propertys.service';
 import { InfoBoxService } from '../../../shared/services/info-box.service';
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
 
 @Component({
   selector: 'join-contact-form',
@@ -26,6 +28,10 @@ import { InfoBoxService } from '../../../shared/services/info-box.service';
   styleUrl: './contact-form.component.scss',
 })
 export class ContactFormComponent implements OnInit {
+  @Input() contacts: Contact[] | null = null;
+  @Input() currentContact: Contact | null = null;
+  @Input() currentUser: User | null = this.localStorageService.getWholeUserObjectFromLocalStorage();
+
   isMobile: boolean = true;
   isInputName: boolean = false;
   isCreateContactClicked: boolean = false;
@@ -37,6 +43,7 @@ export class ContactFormComponent implements OnInit {
   nameIsValid: boolean = false;
   emailIsValid: boolean = true;
   phoneIsValid: boolean = true;
+  
 
   /*   newContact: Contact = {
     id: undefined,
@@ -56,8 +63,7 @@ export class ContactFormComponent implements OnInit {
     created_by: null,
   };
 
-  @Input() contacts: Contact[] | null = null;
-  @Input() currentContact: Contact | null = null;
+
   // @Input() detailStatus: boolean = false;
 
   @ViewChild('contactForm') contactForm!: NgForm;
@@ -70,7 +76,8 @@ export class ContactFormComponent implements OnInit {
     private colorBrightnessService: ColorBrightnessService,
     private validateInputFieldsService: ValidateInputFieldsService,
     private buttonPropertyService: ButtonPropertyService,
-    private infoBoxService: InfoBoxService
+    private infoBoxService: InfoBoxService,
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
@@ -177,7 +184,7 @@ export class ContactFormComponent implements OnInit {
       this.groupContactsService.groupContactsAlphabetically(this.contacts);
       this.clearInputFields();
       this.contactStatusService.setContactFormStatus(false);
-      this.infoBoxService.setSuccessStatus(true);
+      this.contactStatusService.setContactSuccessStatus(true);
     }
   }
 

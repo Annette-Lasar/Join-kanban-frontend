@@ -4,6 +4,7 @@ import { ButtonPropertyService } from './button-propertys.service';
 import { BoardStatusService } from './board-status.service';
 import { InfoBoxService } from './info-box.service';
 import { TaskService } from './task.service';
+import { InfoMessage } from '../interfaces/info-message.interface';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { PrepareDeleteAction } from '../constants/enum';
 import { DeleteAction } from '../constants/enum';
@@ -34,6 +35,7 @@ export class ActionService {
   resetNewTaskEvent = new EventEmitter<void>();
   openAddTaskOverlayEvent = new EventEmitter<string>();
   closeAddTaskOverlayEvent = new EventEmitter<void>();
+  infoBoxEvent = new EventEmitter<void>();
 
   private setItemToDeleteSubject = new BehaviorSubject<number | null>(null);
   setItemToDelete$: Observable<number | null> =
@@ -64,27 +66,40 @@ export class ActionService {
     );
   }
 
-  private actionMap: Map<
+  /*   private actionMap: Map<
     string,
     (message?: string, id?: number, event?: Event) => void
+  >; */
+
+  private actionMap: Map<
+    string,
+    (infoMessage: InfoMessage, event?: Event) => void
   >;
 
-  executeAction(
-    actionType: string,
-    id?: number,
-    message?: string,
-    event?: Event
-  ) {
-    const action = this.actionMap.get(actionType);
+  executeAction(infoMessage: InfoMessage, event?: Event) {
+    if (!infoMessage) {
+      console.warn('infoMessage ist null und kann nicht verarbeitet werden.');
+      return;
+    }
+    const action = this.actionMap.get(infoMessage.actionType!);
+
     if (action) {
-      action(message, id, event);
+      action(infoMessage, event);
     } else {
-      console.warn(`Action ${actionType} is not defined.`);
+      console.warn(`Action ${infoMessage.actionType} is not defined.`);
     }
   }
 
-  toggleInfoContainer(message?: string): void {
-    this.buttonPropertyService.setOnSuccessMessageStatus(message);
+  handleInfoContainers(message?: InfoMessage): void {
+    if (message) {
+      this.infoBoxService.setInfoBox(message);
+      /*       console.log(
+        '%cDaten aus der Infobox: ',
+        'color: orange;',
+        this.infoBoxService.getInfoBoxData()
+      ); */
+      this.infoBoxEvent.emit();
+    }
   }
 
   onCreateContactClick(): void {
@@ -147,7 +162,6 @@ export class ActionService {
   saveEditedTask(id?: number): void {
     this.saveEditedTaskEvent.emit(id);
   }
-
 
   resetNewTask(): void {
     this.resetNewTaskEvent.emit();

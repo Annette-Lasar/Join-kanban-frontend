@@ -12,29 +12,50 @@ export class CategoryService {
 
   constructor(private dataService: DataService) {}
 
-
   fetchData(): Observable<Category[]> {
-      return this.dataService.fetchData<Category>('categories', this.categoriesSubject);
-    }
-  
-    addData(category: Category): Observable<Category> {
-      return this.dataService.addData<Category>('categories', category, this.categoriesSubject);
-    }
-  
-    updateData(categoryId: number, updatedCategory: Category): Observable<Category> {
-      return this.dataService.updateData<Category>('categories', categoryId, updatedCategory, this.categoriesSubject);
-    }
-  
-    patchData(categoryId: number, partialUpdate: Partial<Category>): Observable<Category> {
-      return this.dataService.patchData<Category>('categories', categoryId, partialUpdate, this.categoriesSubject);
-    }
-  
-    deleteData(categoryId: number): Observable<void> {
-      return this.dataService.deleteData<Category>('categories', categoryId, this.categoriesSubject);
-    }
+    return this.dataService.fetchData<Category>(
+      'categories',
+      this.categoriesSubject
+    );
+  }
+
+  addData(category: Category): Observable<Category> {
+    return this.dataService.addData<Category>(
+      'categories',
+      category,
+      this.categoriesSubject
+    );
+  }
+
+  updateData(
+    categoryId: number,
+    updatedCategory: Category
+  ): Observable<Category> {
+    return this.dataService.updateData<Category>(
+      'categories',
+      categoryId,
+      updatedCategory,
+      this.categoriesSubject
+    );
+  }
+
+  patchData(
+    categoryId: number,
+    partialUpdate: Partial<Category>
+  ): Observable<Category> {
+    return this.dataService.patchData<Category>(
+      'categories',
+      categoryId,
+      partialUpdate,
+      this.categoriesSubject
+    );
+  }
+
+  deleteData(categoryId: number): Observable<void> {
+    return this.dataService.deleteData<Category>(
+      'categories',
+      categoryId,
+      this.categoriesSubject
+    );
+  }
 }
-
-
-
-
-

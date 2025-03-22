@@ -5,10 +5,7 @@
       <h1>Add Task</h1>
     </div>
     <form (ngSubmit)="onSubmit()">
-      <join-add-task-content
-        [categories]="categories"
-        [contacts]="contacts"
-      />
+      <join-add-task-content [categories]="categories" [contacts]="contacts" />
       <div class="add-task-button-wrapper">
         <div class="info-required">
           <span class="red">*</span>This field is required.
@@ -20,7 +17,9 @@
             [buttonIcon]="true"
             [imgSrc]="'assets/icons/close.svg'"
             [caption]="'Clear'"
-            [actionType]="'resetNewTask'"
+            [actionMessage]="{
+              actionType: 'resetNewTask'
+            }"
             [buttonClass]="'light-square-button-blue-hover-completely '"
             [width]="isDesktop ? '80px' : '32px'"
             [height]="'32px'"

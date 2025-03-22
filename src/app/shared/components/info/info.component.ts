@@ -1,8 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
-import { ContactStatusService } from '../../services/contact-status.service';
 import { InfoBoxService } from '../../services/info-box.service';
+import { InfoMessage } from '../../interfaces/info-message.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'join-info',
@@ -11,23 +19,36 @@ import { InfoBoxService } from '../../services/info-box.service';
   templateUrl: './info.component.html',
   styleUrl: './info.component.scss',
 })
-export class InfoComponent {
-  @Input() securityQuestion: boolean = false;
-  @Input() textAndIcon: boolean = false;
-  @Input() alertTitle: string = '';
-  @Input() infoQuestion: string = '';
-  @Input() infoText: string = '';
-  @Input() infoMessageClass: string = '';
-  @Input() imageSrc: string = '';
-  @Input() imageSrc2: string = '';
-  @Input() actionType!: string;
-  @Input() caption1: string = '';
-  @Input() caption2: string = '';
-  @Input() id?: number;
-
+export class InfoComponent implements OnInit, OnDestroy {
   @Output() close = new EventEmitter<void>();
 
+  infoMessage: InfoMessage | null = null;
+
+  private subscriptions: Subscription = new Subscription();
+
   constructor(private infoBoxService: InfoBoxService) {}
+
+  ngOnInit(): void {
+    this.subscribeToInfoBox();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  subscribeToInfoBox(): void {
+    const subscription = this.infoBoxService.infoBoxSubject$.subscribe(
+      (message) => {
+        this.infoMessage = message;
+        console.log(
+          '%cInfoComponent updated: ',
+          'color: orchid;',
+          this.infoMessage
+        );
+      }
+    );
+    this.subscriptions.add(subscription);
+  }
 
   closeInfoBox(): void {
     this.close.emit();

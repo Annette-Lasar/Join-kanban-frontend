@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { ActionService } from '../../services/action.service';
 import { InfoBoxService } from '../../services/info-box.service';
 import { BoardStatusService } from '../../services/board-status.service';
+import { InfoMessage } from '../../interfaces/info-message.interface';
 
 @Component({
   selector: 'join-button',
@@ -13,6 +14,7 @@ import { BoardStatusService } from '../../services/board-status.service';
   styleUrl: './button.component.scss',
 })
 export class ButtonComponent {
+  @Input() actionMessage: InfoMessage | null = null;
   @Input() actionType: string = '';
   @Input() activeSrc: string = '';
   @Input() alt: string = '';
@@ -25,10 +27,10 @@ export class ButtonComponent {
   @Input() defaultSrc: string = '';
   @Input() disabled: boolean = false;
   @Input() height: string = '75px';
-  @Input() id?: number;
+  // @Input() id?: number;
   @Input() imgClass: string = '';
   @Input() imgSrc: string = '';
-  @Input() infoMessage: string = '';
+  // @Input() infoMessage: string = '';
   @Input() isPrioButton: boolean = false;
   @Input() padding: string = '1em 1.5em';
   @Input() prioClass: string = '';
@@ -38,14 +40,12 @@ export class ButtonComponent {
   @Input() type: 'button' | 'submit' = 'button';
   @Input() width: string = '75px';
 
-  @Input() actionFunction: (
-    event: Event,
-    actionType?: string,
-    message?: string,
-    id?: number
-  ) => void = (event, actionType, message, id) => {
+  @Input() actionFunction: (event: Event, infoMessage: InfoMessage) => void = (
+    event,
+    infoMessage
+  ) => {
     event.stopPropagation();
-    this.actionService.executeAction(actionType!, id, message, event);
+    this.actionService.executeAction(infoMessage, event);
   };
 
   @Output() toggleContainer = new EventEmitter<string>();
@@ -69,22 +69,24 @@ export class ButtonComponent {
   }
 
   onClick(event: Event): void {
-    if (!this.actionType) {
+    console.log('%cAction-Message: ', 'color: green', this.actionMessage);
+    console.log('%cAction-Message-ID: ', 'color: pink', this.actionMessage?.id);
+    if (!this.actionMessage?.actionType) {
       console.warn('Kein actionType definiert!');
       return;
     }
 
-    if (this.actionType === 'toggle') {
+    if (this.actionMessage?.actionType === 'handleInfoAndSuccessMessages') {
       const currentStatus =
         this.boardStatusService.boardSuccessStatus.getValue();
       this.boardStatusService.setBoardSuccessStatus(!currentStatus);
     }
 
-    if (this.actionType === 'deleteTask') {
+    if (this.actionMessage?.actionType === 'deleteTask') {
       this.infoBoxService.triggerDelete();
     }
 
-    this.actionFunction(event, this.actionType, this.infoMessage, this.id);
+    this.actionFunction(event, this.actionMessage!);
   }
 
   get isPrioActive(): boolean {

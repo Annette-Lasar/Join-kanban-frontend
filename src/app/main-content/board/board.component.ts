@@ -4,29 +4,27 @@ import {
   ElementRef,
   OnInit,
   OnDestroy,
-  ChangeDetectorRef,
+  ChangeDetectorRef
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from '../../shared/components/button/button.component';
-import { InfoComponent } from '../../shared/components/info/info.component';
 import { AddTaskContentComponent } from '../../shared/components/add-task-content/add-task-content.component';
-import { OutsideClickDirective } from '../../shared/directives/outside-click.directive';
+import { DataLoaderService } from '../../shared/services/data-loader.service';
 import { ButtonPropertyService } from '../../shared/services/button-propertys.service';
 import { BoardStatusService } from '../../shared/services/board-status.service';
 import { ActionService } from '../../shared/services/action.service';
 import { TaskService } from '../../shared/services/task.service';
 import { TaskCreationService } from '../../shared/services/task-creation.service';
-import { CategoryService } from '../../shared/services/category.service';
-import { ContactService } from '../../shared/services/contact.service';
-import { BoardService } from '../../shared/services/board.service';
 import { BoardListService } from '../../shared/services/board-list.service';
+import { InfoBoxService } from '../../shared/services/info-box.service';
 import { TextFormatterService } from '../../shared/services/text-formatter.service';
 import { Task } from '../../shared/interfaces/task.interface';
 import { Category } from '../../shared/interfaces/category.interface';
 import { Contact } from '../../shared/interfaces/contact.interface';
 import { Board } from '../../shared/interfaces/board.interface';
 import { BoardList } from '../../shared/interfaces/board-list.interface';
+import { InfoMessage } from '../../shared/interfaces/info-message.interface';
 import { TaskCardComponent } from './task-card/task-card.component';
 import { CardDetailComponent } from './card-detail/card-detail.component';
 import {
@@ -35,7 +33,7 @@ import {
   CdkDropList,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 
 @Component({
   selector: 'join-board',
@@ -45,8 +43,6 @@ import { Subscription } from 'rxjs';
     FormsModule,
     ButtonComponent,
     AddTaskContentComponent,
-    InfoComponent,
-    OutsideClickDirective,
     TaskCardComponent,
     CardDetailComponent,
     DragDropModule,
@@ -55,6 +51,8 @@ import { Subscription } from 'rxjs';
   styleUrl: './board.component.scss',
 })
 export class BoardComponent implements OnInit, OnDestroy {
+  @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
+
   tasks: Task[] = [];
   filteredTasks: Task[] = [];
   tasksByBoardList: { [key: string]: Task[] } = {};
@@ -62,62 +60,55 @@ export class BoardComponent implements OnInit, OnDestroy {
   categories: Category[] = [];
   contacts: Contact[] = [];
   boards: Board[] = [];
-  isFocused = false;
-  isContainerVisible = false;
-  searchTerm: string = '';
-  message: string = '';
-  isTaskDetailVisible: boolean = false;
-  selectedTask: Task | null = null;
-  isDesktop: boolean = false;
-  isAddTaskOverlayVisible: boolean = false; // später auf false setzen;
-  highlightedList: string | null = null;
-  private resizeObserver!: ResizeObserver;
   connectedDropLists = ['toDo', 'inProgress', 'awaitFeedback', 'done'];
   currentAddTaskList: string = 'toDo';
 
+  isFocused = false;
+  infoBoxProperties: InfoMessage | null = null;
+  isTaskDetailVisible: boolean = false;
+  isDesktop: boolean = false;
+  isAddTaskOverlayVisible: boolean = false;
+  highlightedList: string | null = null;
+  selectedTask: Task | null = null;
+  searchTerm: string = '';
+  message: string = '';
+
+  private resizeObserver!: ResizeObserver;
   private subscriptions = new Subscription();
 
-  @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
-
   constructor(
+    private dataLoaderService: DataLoaderService,
     private buttonPropertyService: ButtonPropertyService,
-    private boardService: BoardService,
+    private infoBoxService: InfoBoxService,
     private boardListService: BoardListService,
     private boardStatusService: BoardStatusService,
     private taskService: TaskService,
     private taskCreationService: TaskCreationService,
-    private categoryService: CategoryService,
-    private contactService: ContactService,
     private textFormatterService: TextFormatterService,
     private actionService: ActionService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.getUpdatedBoardSuccessStatus();
+    this.loadAllData();
     this.getUpdatedMessage();
-    this.loadBoards();
-    this.loadTasks();
-    this.loadCategories();
-    this.loadContacts();
     this.initializeResizeObserver();
     this.fetchBoardListsFromServer();
-    this.getUpdatedTasksSubject();
+    this.subscribeToTasks();
     this.getUpdatedIsTaskDetailVisibleStatus();
     this.subscribeToTaskDetailEventAndResetSelectedTask();
-    this.subscribeToUpdatedTasksByBoardList();
     this.subscribeToOpenAddTaskOverlayEvent();
     this.subscribeToCloseAddTaskOverlayEvent();
+    this.subscribeToInfoBoxSubject();
+    this.subscribeToResetNewTaskEvent();
   }
 
-  getUpdatedBoardSuccessStatus(): void {
-    this.boardStatusService.boardSuccessStatus$.subscribe((status) => {
-      this.isContainerVisible = status;
-    });
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   getUpdatedMessage(): void {
-    this.buttonPropertyService.successMessage$.subscribe((message) => {
+    this.infoBoxService.successMessage$.subscribe((message) => {
       if (message) {
         this.message = message;
       }
@@ -132,110 +123,46 @@ export class BoardComponent implements OnInit, OnDestroy {
     );
   }
 
-  getUpdatedTasksSubject(): void {
+
+
+  subscribeToTasks(): void {
     const subscription = this.taskService.tasks$.subscribe((tasks) => {
       this.tasks = tasks;
-      this.filteredTasks = [...tasks];
-      this.categorizeTasksByBoardList();
-      this.filterTasks();
-    });
-    this.subscriptions.add(subscription);
-  }
-
-  subscribeToUpdatedTasksByBoardList(): void {
-    const subscription = this.taskService.tasks$.subscribe((tasks) => {
+      // this.filteredTasks = [...tasks];
+      const newFiltered = [...tasks];
+      if (this.filteredTasks.length === 0 ||
+        !this.arraysAreEqual(this.filteredTasks, tasks)) {
+        this.filteredTasks = [...tasks];
+      }
       this.tasksByBoardList = this.taskService.getTasksByBoardList(tasks);
       this.filterTasks();
     });
     this.subscriptions.add(subscription);
   }
 
-  /*   loadBoards(): void {
-    this.boardService.fetchData().subscribe({
-      next: () => {
-        this.boardService.boards$.subscribe({
-          next: (boards) => {
-            this.boards = boards;
-            console.log('Boards auf dem Board:', this.boards);
-          },
-          error: (err) => console.error('Fehler beim Abrufen der Boards:', err),
-        });
-      },
-      error: (err) => console.error('Fehler beim Laden der Boards:', err),
-    });
-  } */
 
-  loadBoards(): void {
-    this.boardService.fetchData().subscribe({
-      next: () => {
-        this.boardService.boards$.subscribe({
-          next: (boards) => {
-            this.boards = boards;
-            console.log('Boards auf dem Board:', this.boards);
-
-            // Direkt prüfen, ob board_lists vorhanden und korrekt sind
-            this.boards.forEach((board) => {
-              console.log('Board Lists:', board.board_lists);
-            });
-          },
-          error: (err) => console.error('Fehler beim Abrufen der Boards:', err),
-        });
-      },
-      error: (err) => console.error('Fehler beim Laden der Boards:', err),
-    });
+  private loadAllData(): void {
+    this.subscriptions.add(
+      forkJoin({
+        boards: this.dataLoaderService.loadBoards(),
+        tasks: this.dataLoaderService.loadTasks(),
+        categories: this.dataLoaderService.loadCategories(),
+        contacts: this.dataLoaderService.loadContacts(),
+      }).subscribe({
+        next: ({ boards, tasks, categories, contacts }) => {
+          this.boards = boards;
+          this.tasks = tasks;
+          this.categories = categories;
+          this.contacts = contacts;
+          this.filterTasks();
+        },
+        error: (err) => console.error('Error loading data: ', err),
+      })
+    );
   }
 
   fetchBoardListsFromServer(): void {
     this.boardListService.fetchBoardLists();
-  }
-
-  loadTasks(): void {
-    this.taskService.fetchData().subscribe({
-      next: () => {
-        this.taskService.tasks$.subscribe({
-          next: (tasks) => {
-            this.tasks = tasks;
-            this.filterTasks();
-            console.log('Tasks auf dem Board:', this.tasks);
-          },
-          error: (err) =>
-            console.error('Fehler beim Abrufen der Aufgaben:', err),
-        });
-      },
-      error: (err) => console.error('Fehler beim Laden der Aufgaben:', err),
-    });
-  }
-
-  loadCategories(): void {
-    this.categoryService.fetchData().subscribe({
-      next: () => {
-        this.categoryService.categories$.subscribe({
-          next: (categories) => {
-            this.categories = categories;
-            console.log('Kategorien auf dem Board:', this.categories);
-          },
-          error: (err) =>
-            console.error('Fehler beim Abrufen der Kategorien:', err),
-        });
-      },
-      error: (err) => console.error('Fehler beim Laden der Kategorien:', err),
-    });
-  }
-
-  loadContacts(): void {
-    this.contactService.fetchData().subscribe({
-      next: () => {
-        this.contactService.contacts$.subscribe({
-          next: (contacts) => {
-            this.contacts = contacts;
-            console.log('Kontakte auf dem Board:', this.contacts);
-          },
-          error: (err) =>
-            console.error('Fehler beim Abrufen der Kontakte:', err),
-        });
-      },
-      error: (err) => console.error('Fehler beim Laden der Kontakte:', err),
-    });
   }
 
   initializeResizeObserver(): void {
@@ -269,33 +196,6 @@ export class BoardComponent implements OnInit, OnDestroy {
     }
   }
 
-  /* onTaskDrop({
-    item,
-    container,
-    previousContainer,
-  }: CdkDragDrop<Task[]>): void {
-    const movedTask = item.data as Task;
-    const targetList = this.boards[0].board_lists.find(
-      (list) => list.name === container.id
-    );
-    if (!targetList) return;
-
-    this.optimisticUIUpdate(
-      movedTask,
-      previousContainer,
-      container,
-      targetList
-    );
-    this.updateTaskInBackend(
-      movedTask,
-      targetList,
-      container,
-      previousContainer
-    );
-
-    this.highlightedList = null;
-  } */
-
   onTaskDrop({
     item,
     container,
@@ -303,7 +203,6 @@ export class BoardComponent implements OnInit, OnDestroy {
   }: CdkDragDrop<Task[]>): void {
     const movedTask = item.data as Task;
 
-    // Warten, bis die Boards geladen sind
     if (!this.boards || this.boards.length === 0) {
       console.error('Boards sind noch nicht geladen!');
       return;
@@ -331,12 +230,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       container,
       targetList
     );
-    this.updateTaskInBackend(
-      movedTask,
-      targetList,
-      container,
-      previousContainer
-    );
+    this.updateTaskInBackend(movedTask, targetList);
 
     this.highlightedList = null;
   }
@@ -354,22 +248,23 @@ export class BoardComponent implements OnInit, OnDestroy {
         previousContainer.data.indexOf(movedTask),
         container.data.length
       );
-
-      this.cdr.detectChanges();
     }
-
+  
     this.taskService.updateGeneralTaskState({
       id: movedTask.id,
       board_list_id: targetList.id,
     });
+  
+    this.cdr.detectChanges();
+  }
+  
+
+  logRender(title: string): string {
+    console.log('Render Task:', title);
+    return '';
   }
 
-  private updateTaskInBackend(
-    movedTask: Task,
-    targetList: BoardList,
-    container: CdkDropList<Task[]>,
-    previousContainer: CdkDropList<Task[]>
-  ): void {
+  private updateTaskInBackend(movedTask: Task, targetList: BoardList): void {
     const updatedTask: Task = {
       ...movedTask,
       board_list_id: targetList.id,
@@ -379,24 +274,7 @@ export class BoardComponent implements OnInit, OnDestroy {
 
     this.taskService.updateData(movedTask.id!, updatedTask).subscribe({
       next: () => {},
-      error: (err) => {
-        console.error('Fehler beim Aktualisieren des Tasks:', err);
-
-        transferArrayItem(
-          container.data,
-          previousContainer.data,
-          container.data.indexOf(movedTask),
-          previousContainer.data.length
-        );
-
-        this.taskService.updateGeneralTaskState({
-          id: movedTask.id,
-          board_list_id: movedTask.board_list_id,
-        });
-
-        this.cdr.detectChanges();
-        this.cdr.markForCheck();
-      },
+      error: () => {},
     });
   }
 
@@ -434,7 +312,21 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.subscriptions.add(subscription);
   }
 
-  filterTasks(): void {
+  subscribeToResetNewTaskEvent(): void {
+    const subscription = this.actionService.resetNewTaskEvent.subscribe(() => {
+      this.resetNewTask();
+    });
+    this.subscriptions.add(subscription);
+  }
+
+  resetNewTask(): void {
+    this.taskCreationService.clearNewTask();
+    this.taskService.setSelectedCategory(null);
+    this.taskService.clearAssignedContacts();
+    this.taskService.setAssignedSubtasks([]);
+  }
+
+  /*   filterTasks(): void {
     const term = this.searchTerm.toLowerCase().trim();
 
     this.filteredTasks = this.taskService
@@ -447,7 +339,71 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.filteredTasksByBoardList = this.taskService.getTasksByBoardList(
       this.filteredTasks
     );
-  }
+  } */
+
+  /* filterTasks(): void {
+    const term = this.searchTerm.toLowerCase().trim();
+
+    const filteredTasks = this.taskService
+      .getTasks()
+      .filter(
+        (task) =>
+          task.title.toLowerCase().includes(term) ||
+          task.description.toLowerCase().includes(term)
+      );
+
+    const newFilteredByList =
+      this.taskService.getTasksByBoardList(filteredTasks);
+    const updated: { [key: string]: Task[] } = {};
+
+    for (const key of this.connectedDropLists) {
+      const newList = newFilteredByList[key] || [];
+      const oldList = this.filteredTasksByBoardList[key];
+
+      const isNew = !oldList;
+
+      const hasChanged =
+        isNew ||
+        oldList.length !== newList.length ||
+        oldList.some((task, i) => task.id !== newList[i]?.id);
+
+      updated[key] = hasChanged ? newList : oldList;
+    }
+
+    this.filteredTasksByBoardList = updated;
+  } */
+
+    filterTasks(): void {
+      const term = this.searchTerm.toLowerCase().trim();
+      const filteredTasks = this.taskService.getTasks().filter((task) =>
+        task.title.toLowerCase().includes(term) ||
+        task.description.toLowerCase().includes(term)
+      );
+      this.filteredTasks = filteredTasks;
+    
+      const newFilteredByList = this.taskService.getTasksByBoardList(filteredTasks);
+    
+      let changed = false;
+      const updated: { [key: string]: Task[] } = { ...this.filteredTasksByBoardList };
+    
+      for (const key of this.connectedDropLists) {
+        const newList = newFilteredByList[key] || [];
+        const oldList = this.filteredTasksByBoardList[key] || [];
+    
+        const sameLength = oldList.length === newList.length;
+        const sameContent = sameLength && oldList.every((t, i) => t.id === newList[i].id);
+    
+        if (!sameContent) {
+          updated[key] = newList;
+          changed = true;
+        }
+      }
+    
+      if (changed) {
+        this.filteredTasksByBoardList = updated;
+      }
+    }
+    
 
   isSearchActive(): boolean {
     return (
@@ -476,13 +432,13 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   toggleContainerVisibility(newMessage: string) {
-    this.message = newMessage;
-    this.isContainerVisible = !this.isContainerVisible;
-    this.boardStatusService.setBoardSuccessStatus(this.isContainerVisible);
+    /* this.message = newMessage;
+    this.isInfoContainerVisible = !this.isInfoContainerVisible;
+    this.boardStatusService.setBoardSuccessStatus(this.isInfoContainerVisible); */
   }
 
   hideContainer() {
-    this.isContainerVisible = false;
+    // this.isInfoContainerVisible = false;
   }
 
   getFormattedBoardListName(boardListName: string, action: string): string {
@@ -519,20 +475,11 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.boardStatusService.setBoardSuccessStatus(newStatus);
   }
 
-  /*   onSubmit(): void {
-    const taskData = this.taskCreationService.getCurrentTask();
-    console.log('Task Data:', taskData);
-
-    console.log('Kategorie beim Submit:', this.taskService.getSelectedCategory());
-
-    if (!taskData.title?.trim()) {
-      console.error('Fehler: Titel fehlt!');
-      return;
-    }
-
-    console.log('Huhu! Aktuelle Liste für neue Task: ', this.currentAddTaskList);
-    this.taskCreationService.startTaskCreation(this.currentAddTaskList, taskData);
-  } */
+  subscribeToInfoBoxSubject(): void {
+    this.infoBoxService.infoBoxSubject$.subscribe((info) => {
+      this.infoBoxProperties = info;
+    });
+  }
 
   onSubmit(): void {
     const taskData = this.taskCreationService.getCurrentTask();
@@ -543,7 +490,6 @@ export class BoardComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Überprüfen, ob die aktuelle Liste existiert
     const boardListId = this.boardListService.getBoardListIdByName(
       this.currentAddTaskList
     );
@@ -556,15 +502,14 @@ export class BoardComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log('Huhu! Aktuelle Liste für neue Task:', this.currentAddTaskList);
-
     this.taskCreationService.startTaskCreation(
       this.currentAddTaskList,
       taskData
     );
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+  private arraysAreEqual(a: Task[], b: Task[]): boolean {
+    if (a.length !== b.length) return false;
+    return a.every((task, i) => task.id === b[i]?.id);
   }
 }

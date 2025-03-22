@@ -11,6 +11,7 @@ import { Category } from '../../../../shared/interfaces/category.interface';
 import { ActionService } from '../../../../shared/services/action.service';
 import { TaskService } from '../../../../shared/services/task.service';
 import { ButtonPropertyService } from '../../../../shared/services/button-propertys.service';
+import { InfoBoxService } from '../../../../shared/services/info-box.service';
 import { Subscription, Observable, tap } from 'rxjs';
 
 @Component({
@@ -44,7 +45,8 @@ export class TaskEditComponent implements OnInit, OnDestroy {
   constructor(
     private actionService: ActionService,
     private taskService: TaskService,
-    private buttonPropertyService: ButtonPropertyService
+    private buttonPropertyService: ButtonPropertyService,
+    private infoBoxService: InfoBoxService
   ) {}
 
   ngOnInit(): void {
@@ -67,6 +69,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
       due_date: this.task.due_date,
       priority: this.task.priority,
     };
+    this.prioStatus = this.task.priority;
   }
 
   initializeSelectedCategory(): void {
@@ -116,7 +119,6 @@ export class TaskEditComponent implements OnInit, OnDestroy {
     this.subscriptions.add(subscription);
   }
 
-
   onSubmit(): void {
     if (!this.editedTask.id) {
       console.error('Fehler: Keine gültige ID vorhanden.');
@@ -137,26 +139,31 @@ export class TaskEditComponent implements OnInit, OnDestroy {
       next: () => {
         this.taskService.clearSelectedCategory();
         this.taskService.clearAssignedContacts();
-        this.showSuccessMessage(); 
+        this.actionService.handleInfoContainers({
+          infoText: 'Task successfully edited.',
+          isVisible: true,
+          persistent: false,
+        });
       },
       error: (err) => console.error('Fehler beim Speichern:', err),
     });
   }
 
+  saveEditedTask(): Observable<Task> {
+    const updatedTask = {
+      ...this.taskService.generateTask(),
+      title: this.editedTask.title,
+      description: this.editedTask.description,
+      due_date: this.editedTask.due_date,
+      priority: this.prioStatus,
+    };
 
-  saveEditedTask(): Observable<Task> { 
-    const updatedTask = this.taskService.generateTask();
     this.taskService.updateGeneralTaskState(updatedTask);
-  
-    return this.taskService.patchData(updatedTask.id!, updatedTask).pipe(
-      tap(() => console.log('Aufgabe erfolgreich aktualisiert!'))
-    );
-  }
 
-  showSuccessMessage(): void {
-    console.log('Aufgabe wurde erfolgreich editiert.');
+    return this.taskService
+      .patchData(updatedTask.id!, updatedTask)
+      .pipe(tap(() => console.log('Aufgabe erfolgreich aktualisiert!')));
   }
-  
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();

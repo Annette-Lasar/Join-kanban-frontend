@@ -81,7 +81,6 @@ export class CategoriesDropdownComponent implements OnInit {
     this.filterCategories();
   }
 
-  // Hier wird die ausgewählte Kategorie an den TaskService geschickt!!
   setSelectedCategory(newCategory: Category): void {
     this.selectedCategory = newCategory;
     this.taskService.setSelectedCategory(newCategory);
@@ -233,6 +232,7 @@ export class CategoriesDropdownComponent implements OnInit {
       if (this.selectedCategory?.id === categoryId) {
         this.selectedCategory = null;
       }
+      this.infoBoxService.setInfoBox({ isVisible: false });
     }
   }
 

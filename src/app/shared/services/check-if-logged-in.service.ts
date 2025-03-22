@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from './local-storage.service';
-import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +9,6 @@ export class CheckIfLoggedInService {
 
   checkIfLoggedIn(): boolean {
     const userType = this.localStorageService.getUserTypeFromLocalStorage();
-    return  !!userType;
+    return !!userType;
   }
 }

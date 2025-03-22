@@ -51,7 +51,11 @@ header {
   z-index: 20;
 }
 
-@media (min-width: 50em) {
+/* ===============================================
+MEDIA QUERIES
+=================================================*/
+
+@media (min-width: 64em) {
   .header-wrapper {
     margin-inline: 0;
     max-width: unset;

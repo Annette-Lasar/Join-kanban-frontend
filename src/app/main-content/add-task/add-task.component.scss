@@ -1,5 +1,5 @@
-@import '../../../scss_files/variables.scss';
-@import '../../../scss_files/mixins.scss';
+@import "../../../scss_files/variables.scss";
+@import "../../../scss_files/mixins.scss";
 
 .inner-content-header {
   height: 72px;
@@ -25,22 +25,6 @@
   }
 }
 
-/* .desktop-clear-task-button {
-  display: none;
-} */
-
 .info-required {
   font-size: clamp(0.75rem, 1vw, 1.1rem);
 }
-
-
-
-/* @media (min-width: 50em) {
-  .mobile-clear-task-button {
-    display: none;
-  }
-
-  .desktop-clear-task-button {
-    display: block;
-  }
-} */

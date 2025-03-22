@@ -57,7 +57,6 @@ export class TaskCreationService {
   }
 
   getCurrentTask(): Partial<Task> {
-    // return this.newTaskSubject.getValue();
     const currentTask = this.newTaskSubject.getValue();
     console.log('Current Task im getCurrentTask: ', currentTask);
 

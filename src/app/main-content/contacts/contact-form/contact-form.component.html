@@ -40,7 +40,11 @@
           >
             Please enter just one first and one last name.
           </div>
-
+          @if (currentContact?.email === currentUser?.username) {
+          <p>
+            {{ currentContact?.email }}
+          </p>
+          } @else {
           <div class="mail">
             <input
               type="email"
@@ -52,13 +56,14 @@
             />
             <img src="assets/icons/mail.svg" alt="" />
           </div>
-          
+
           <div
             class="warning-message"
             [ngStyle]="{ opacity: !emailIsValid && email.touched ? 1 : 0 }"
           >
             Please enter a correct email address.
           </div>
+          }
 
           <div class="phone">
             <input
@@ -83,7 +88,9 @@
           <join-button
             class="mobile-clear-contact-button"
             [buttonIcon]="true"
-            [actionType]="'clearInputFields'"
+            [actionMessage]="{
+              actionType: 'clearInputFields'
+            }"
             [imgSrc]="'assets/icons/close.svg'"
             [buttonClass]="'light-square-button-blue-hover-completely '"
             [width]="'30px'"
@@ -95,7 +102,9 @@
             class="desktop-clear-contact-button"
             [buttonCaptionFirst]="true"
             [buttonIcon]="true"
-            [actionType]="'clearInputFields'"
+            [actionMessage]="{
+              actionType: 'clearInputFields'
+            }"
             [imgSrc]="'assets/icons/close.svg'"
             [caption]="'Clear'"
             [buttonClass]="'light-square-button-blue-hover-completely '"
@@ -108,7 +117,9 @@
             class="create-contact-button"
             [buttonIcon]="true"
             [buttonCaptionFirst]="true"
-            [actionType]="'createNewContact'"
+            [actionMessage]="{
+              actionType: 'createNewContact'
+            }"
             [caption]="'Create contact'"
             [imgSrc]="'assets/icons/check_white.svg'"
             [imgClass]="'check-icon'"
@@ -118,14 +129,18 @@
             [padding]="'0'"
           />
           } @else {
+          <!-- Hier fehlen noch Eigenschaften in actionMessage -->
           <join-button
             [caption]="'Delete'"
             [buttonClass]="'light-square-button-blue-hover-completely '"
-            [actionType]="'openSecurityInfo'"
+            [actionMessage]="{
+              actionType: 'handleInfoAndSuccessMessages'
+            }"
             [width]="'80px'"
             [height]="'32px'"
             [padding]="'0'"
           />
+          <!-- Hier fehlt noch die Funktionalität -->
           <join-button
             class="create-contact-button"
             [buttonIcon]="true"

@@ -27,11 +27,6 @@ export class ButtonPropertyService {
   deleteContactButtonClicked$: Observable<boolean> =
     this.deleteContactButtonClicked.asObservable();
 
-  // AUSLAGERN IN INFOSERVICE??
-  private successMessage = new BehaviorSubject<string | undefined>('');
-  successMessage$: Observable<string | undefined> =
-    this.successMessage.asObservable();
-
   private loginStatusSubject = new BehaviorSubject<boolean>(true); // Wieder auf true setzen!!
   loginStatus$ = this.loginStatusSubject.asObservable();
 
@@ -79,10 +74,6 @@ export class ButtonPropertyService {
 
   setDeleteContactButtonStatus(status: boolean): void {
     this.deleteContactButtonClicked.next(status);
-  }
-
-  setOnSuccessMessageStatus(message?: string): void {
-    this.successMessage.next(message);
   }
 
   toggleLoginStatus(): void {

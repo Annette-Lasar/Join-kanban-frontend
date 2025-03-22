@@ -5,7 +5,9 @@
         class="desktop-add-contact-button"
         [buttonCaptionFirst]="true"
         [buttonIcon]="true"
-        [actionType]="'showAddContactForm'"
+        [actionMessage]="{
+          actionType: 'showAddContactForm'
+        }"
         [caption]="'Add new contact'"
         [imgSrc]="'assets/icons/person_add.svg'"
         [buttonClass]="'dark-square-button'"
@@ -23,7 +25,7 @@
             {{ group.key }}
           </li>
           <div class="alphabet-separator"></div>
-          @for (contact of group.value; track contact) {
+          @for (contact of group.value; track contact.id) {
           <li
             class="list-item"
             [class.current]="contact === currentContact"
@@ -50,7 +52,9 @@
       <join-button
         class="mobile-add-contact-button"
         [buttonIcon]="true"
-        [actionType]="'showContactDetailOptions'"
+        [actionMessage]="{
+          actionType: 'showContactDetailOptions'
+        }"
         [imgSrc]="'assets/icons/vertical_dots_white.svg'"
         [buttonClass]="'dark-round-button'"
         [width]="'48px'"
@@ -64,7 +68,9 @@
       <join-button
         class="mobile-add-contact-button"
         [buttonIcon]="true"
-        [actionType]="'showAddContactForm'"
+        [actionMessage]="{
+          actionType: 'showAddContactForm'
+        }"
         [imgSrc]="'assets/icons/person_add.svg'"
         [buttonClass]="'dark-round-button'"
         [width]="'48px'"
@@ -94,7 +100,4 @@
   > -->
 </div>
 <join-contact-form [contacts]="contacts" [currentContact]="currentContact" />
-<join-info
-  [infoText]="'Contact successfully created'"
-  [infoMessageClass]="'success-message'"
-/>
+

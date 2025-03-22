@@ -6,7 +6,9 @@
     [buttonCaptionSecond]="true"
     [buttonIcon]="true"
     [imgSrc]="'assets/icons/edit_dark.svg'"
-    [actionType]="'showEditContactForm'"
+    [actionMessage]="{
+      actionType: 'showEditContactForm'
+    }"
     [caption]="'Edit'"
     [buttonClass]="'context-button-light-top'"
     [width]="'100%'"
@@ -16,7 +18,9 @@
   <join-button
     [buttonCaptionSecond]="true"
     [buttonIcon]="true"
-    [actionType]="'openSecurityInfo'"
+    [actionMessage]="{
+      actionType: 'openSecurityInfo'
+    }"
     [imgSrc]="'assets/icons/delete.svg'"
     [caption]="'Delete'"
     [buttonClass]="'context-button-light-bottom'"

@@ -157,16 +157,32 @@
           (click)="toggleEditCategory(category, $event)"
         />
         <div class="separator"></div>
+        <!-- möglicherweise 2 ids nötig; category.id -->
+        <!-- ÜBERARBEITEN!! -->
         <join-button
           [buttonIcon]="true"
           [buttonClass]="'gray-button'"
           [imgSrc]="'assets/icons/delete.svg'"
-          [actionType]="'openSecurityInfo'"
+          [actionMessage]="{
+            securityQuestion: true,
+            alertTitle: 'Alert',
+            infoQuestion:
+              'Are you sure you want to delete this category permanently?',
+            infoText: 'This process is irreversible.',
+            imageSrc: 'assets/icons/join_logo_white.svg',
+            imageSrc2: 'assets/icons/close_white.svg',
+            actionType: 'handleInfoAndSuccessMessages',
+            nextActionType: 'deleteCategory',
+            caption1: 'Yes, proceed',
+            caption2: 'No, preserve',
+            id: selectedCategory?.id,
+            isVisible: true,
+            persistent: true
+          }"
           [alt]="'Delete category.'"
           [height]="'20px'"
           [width]="'20px'"
           [padding]="'0'"
-          [id]="category.id"
         />
       </div>
       } }
@@ -175,8 +191,14 @@
   </ul>
   }
 </div>
-<div class="category-warning red" [style.opacity]="selectedCategory ? '0' : '1'">Please select a category</div>
-} @if(isWarningMessageVisible) {
+<div
+  class="category-warning red"
+  [style.opacity]="selectedCategory ? '0' : '1'"
+>
+  Please select a category
+</div>
+}
+<!-- @if(isWarningMessageVisible) {
 <join-info
   [alertTitle]="'Alert'"
   [infoQuestion]="'Are you sure you want to delete this category permanently?'"
@@ -190,4 +212,4 @@
   [caption2]="'No, preserve.'"
   [id]="selectedCategoryToDelete!"
 />
-}
+} -->
