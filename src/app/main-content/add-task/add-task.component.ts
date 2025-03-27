@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, NgModel, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { AddTaskContentComponent } from '../../shared/components/add-task-content/add-task-content.component';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { DataLoaderService } from '../../shared/services/data-loader.service';
 import { TaskService } from '../../shared/services/task.service';
-import { CategoryService } from '../../shared/services/category.service';
-import { ContactService } from '../../shared/services/contact.service';
 import { TaskCreationService } from '../../shared/services/task-creation.service';
 import { ActionService } from '../../shared/services/action.service';
 import { Task } from '../../shared/interfaces/task.interface';
@@ -32,16 +30,20 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   contacts: Contact[] = [];
   newTask: Partial<Task> = {};
   selectedCategory: Category | null = null;
+
+  titleIsValid = false;
+  dueDateIsValid = false;
+  categoryIsValid = false;
+  categoryTouched = false;
   isFormValid: boolean = false;
-  subscriptions = new Subscription();
   isDesktop: boolean = false;
+  
+  private subscriptions: Subscription = new Subscription();
   private resizeObserver!: ResizeObserver;
 
   constructor(
     private dataLoaderService: DataLoaderService,
     private taskService: TaskService,
-    private categoryService: CategoryService,
-    private contactService: ContactService,
     private taskCreationService: TaskCreationService,
     private cdr: ChangeDetectorRef,
     private actionService: ActionService
@@ -53,6 +55,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     this.subscribeToSelectedCategory();
     this.subscribeToAssignedContacts();
     this.subscribeToResetNewTaskEvent();
+    this.subscribeToCategoryTouched();
   }
 
   loadAllData(): void {
@@ -84,6 +87,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       (category) => {
         if (category) {
           this.newTask = { ...this.newTask, category };
+          this.updateButtonState();
         }
       }
     );
@@ -117,6 +121,16 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     this.subscriptions.add(subscription);
   }
 
+  subscribeToCategoryTouched(): void {
+    const subscription = this.taskService.categoryTouched$.subscribe(
+      (touched) => {
+        this.categoryTouched = touched;
+        // this.validateForm();
+      }
+    );
+    this.subscriptions.add(subscription);
+  }
+
   resetNewTask(): void {
     this.taskCreationService.clearNewTask();
     this.taskService.setSelectedCategory(null);
@@ -133,6 +147,14 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     }
 
     this.taskCreationService.startTaskCreation('toDo', taskData);
+  }
+
+  updateValidationStatus(): void {
+    this.isFormValid = this.titleIsValid && this.dueDateIsValid && this.categoryIsValid;
+  }
+
+  updateButtonState(): void {
+    // this.disableCreateButton = this.categoryTouched && !this.selectedCategory;
   }
 
   ngOnDestroy(): void {

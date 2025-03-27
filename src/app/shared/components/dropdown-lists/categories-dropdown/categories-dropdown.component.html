@@ -157,8 +157,6 @@
           (click)="toggleEditCategory(category, $event)"
         />
         <div class="separator"></div>
-        <!-- möglicherweise 2 ids nötig; category.id -->
-        <!-- ÜBERARBEITEN!! -->
         <join-button
           [buttonIcon]="true"
           [buttonClass]="'gray-button'"
@@ -198,18 +196,4 @@
   Please select a category
 </div>
 }
-<!-- @if(isWarningMessageVisible) {
-<join-info
-  [alertTitle]="'Alert'"
-  [infoQuestion]="'Are you sure you want to delete this category permanently?'"
-  [infoText]="'This process is irreversible.'"
-  [imageSrc]="'assets/icons/join_logo_white.svg'"
-  [imageSrc2]="'assets/icons/close_white.svg'"
-  [infoMessageClass]="'security-info-box'"
-  [securityQuestion]="true"
-  [actionType]="'deleteCategory'"
-  [caption1]="'Yes, proceed.'"
-  [caption2]="'No, preserve.'"
-  [id]="selectedCategoryToDelete!"
-/>
-} -->
+

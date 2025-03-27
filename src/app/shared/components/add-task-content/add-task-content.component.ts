@@ -13,6 +13,7 @@ import { Task } from '../../interfaces/task.interface';
 import { Category } from '../../interfaces/category.interface';
 import { Contact } from '../../interfaces/contact.interface';
 import { SubtasksComponent } from '../subtasks/subtasks.component';
+import { TaskService } from '../../services/task.service';
 import { TaskCreationService } from '../../services/task-creation.service';
 import { Subscription } from 'rxjs';
 
@@ -44,7 +45,9 @@ export class AddTaskContentComponent implements OnInit, OnDestroy {
   subscriptions = new Subscription();
 
 
-  constructor(private taskCreationService: TaskCreationService) {}
+  constructor(
+    private taskService: TaskService,
+    private taskCreationService: TaskCreationService) {}
 
   ngOnInit(): void {
     this.subscribeToNewTask();
@@ -67,14 +70,30 @@ export class AddTaskContentComponent implements OnInit, OnDestroy {
   }
 
 
-  updateTaskData(): void {
+/*   updateTaskData(): void {
     this.taskCreationService.updateNewTask({
       title: this.title,
       description: this.description,
       due_date: this.due_date,
       priority: this.prioStatus,
     });
-  }
+  } */
+
+    updateTaskData(): void {
+      const trimmedTitle = this.title.trim();
+      const isValidTitle = trimmedTitle.length > 2;
+      const isValidDueDate = !!this.due_date;
+      
+      this.taskService.setTitleIsValid(isValidTitle); 
+      this.taskService.setDueDateIsValid(isValidDueDate);
+    
+      this.taskCreationService.updateNewTask({
+        title: trimmedTitle,
+        description: this.description,
+        due_date: this.due_date,
+        priority: this.prioStatus,
+      });
+    }
 
   toggleCategoryList(event: Event): void {
     event.stopPropagation();

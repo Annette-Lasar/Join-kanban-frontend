@@ -2,9 +2,12 @@ import { Injectable } from '@angular/core';
 import { TaskService } from './task.service';
 import { Task } from '../interfaces/task.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { LocalStorageService } from './local-storage.service';
 import { BoardListService } from './board-list.service';
 import { BoardStatusService } from './board-status.service';
+import { ActionService } from './action.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +21,9 @@ export class TaskCreationService {
     private boardListService: BoardListService,
     private boardStatusService: BoardStatusService,
     private localStorageService: LocalStorageService,
+    private actionService: ActionService,
+    private router: Router,
+    private location: Location
   ) {}
 
   startTaskCreation(boardListName: string, taskData: Partial<Task>): void {
@@ -32,6 +38,8 @@ export class TaskCreationService {
         this.taskService.clearSelectedCategory();
         this.taskService.clearAssignedContacts();
         this.boardStatusService.setBoardTaskOverlayOpenStatus(false);
+        this.showSuccessMessage();
+        this.directToBoard();
       },
       error: (err) => console.error('Error creating task:', err),
     });
@@ -71,20 +79,6 @@ export class TaskCreationService {
     const boardListId =
       this.boardListService.getBoardListIdByName(boardListName) ?? 1;
 
-    console.log('%cKontakte als Objekte: ', 'color: blue;', taskData.contacts);
-    console.log(
-      '%cKontakt-IDs: ',
-      'color: orchid;',
-      taskData.contacts
-        ?.map((c) => c.id)
-        .filter((id): id is number => id !== undefined)
-    );
-
-    console.log(
-      'fürs Backend vorbereitete Kategorie: ',
-      this.taskService.getSelectedCategory()
-    );
-
     return {
       title: taskData.title ?? '',
       description: taskData.description ?? '',
@@ -102,5 +96,20 @@ export class TaskCreationService {
       board: 1,
       created_by: userId,
     };
+  }
+
+  showSuccessMessage(): void {
+    this.actionService.handleInfoContainers({
+      infoText: 'Task successfully created!',
+      isVisible: true,
+      persistent: false,
+    });
+  }
+
+  directToBoard(): void {
+    const currentUrl = this.location.path();
+    if (currentUrl.includes('/main-content/add-task')) {
+      this.router.navigate(['/main-content/board']);
+    }
   }
 }

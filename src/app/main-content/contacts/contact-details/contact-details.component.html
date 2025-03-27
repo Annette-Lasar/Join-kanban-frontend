@@ -35,18 +35,53 @@
   </div>
   } @else {
   <div class="name-wrapper">
-    <div class="initials" [style.backgroundColor]="contact.color">
+    <div
+      class="initials"
+      [style.backgroundColor]="contact.color"
+      [style.color]="contact.color_brightness ? '#000000' : '#ffffff'"
+    >
       {{ contact.name.charAt(0) }}{{ contact.name.split(" ").pop()?.charAt(0) }}
     </div>
     <div class="name bold_600">{{ contact.name }}</div>
-    <div class="edit" (click)="isFormStatusChanged()">
-      <img src="assets/icons/edit_dark.svg" alt="" />
-      <span>Edit</span>
-    </div>
-    <div class="delete" (click)="showWarningMessage()">
-      <img src="assets/icons/delete.svg" alt="" />
-      <span>Delete</span>
-    </div>
+    <join-button
+      [buttonIcon]="true"
+      [buttonCaptionSecond]="true"
+      [caption]="'Edit'"
+      [imgSrc]="'assets/icons/edit_dark.svg'"
+      [alt]="'Edit contact'"
+      [buttonClass]="'light-button-with-icon'"
+      [height]="'28px'"
+      [width]="'80px'"
+      [padding]="'0'"
+      [actionMessage]="{
+        actionType: 'showAddOrEditContactForm',
+        infoText: 'edit'
+      }"
+    />
+    <join-button
+    [buttonCaptionSecond]="true"
+    [buttonIcon]="true"
+    [actionMessage]="{
+      securityQuestion: true,
+      alertTitle: 'Alert',
+      infoQuestion: 'Are you sure you want to delete this contact permanently?',
+      infoText: 'This process is irreversible.',
+      imageSrc: 'assets/icons/join_logo_white.svg',
+      actionType: 'handleInfoAndSuccessMessages',
+      nextActionType: 'deleteContact',
+      caption1: 'Yes, proceed',
+      caption2: 'No, preserve',
+      id: contact.id,
+      isVisible: true,
+      persistent: true
+    }"
+    [imgSrc]="'assets/icons/delete.svg'"
+    [caption]="'Delete'"
+    [buttonClass]="'light-button-with-icon'"
+    [width]="'80px'"
+    [height]="'28px'"
+    [padding]="'0'"
+  />
   </div>
   <div class="information-wrapper">
     <div class="contact-information">Contact Information</div>
@@ -61,4 +96,3 @@
   </div>
   } }
 </div>
-

@@ -4,7 +4,7 @@ import {
   ElementRef,
   OnInit,
   OnDestroy,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -123,15 +123,16 @@ export class BoardComponent implements OnInit, OnDestroy {
     );
   }
 
-
-
   subscribeToTasks(): void {
     const subscription = this.taskService.tasks$.subscribe((tasks) => {
       this.tasks = tasks;
       // this.filteredTasks = [...tasks];
       const newFiltered = [...tasks];
-      if (this.filteredTasks.length === 0 ||
-        !this.arraysAreEqual(this.filteredTasks, tasks)) {
+      console.log('filtered Tasks: ', newFiltered);
+      if (
+        this.filteredTasks.length === 0 ||
+        !this.arraysAreEqual(this.filteredTasks, tasks)
+      ) {
         this.filteredTasks = [...tasks];
       }
       this.tasksByBoardList = this.taskService.getTasksByBoardList(tasks);
@@ -139,7 +140,6 @@ export class BoardComponent implements OnInit, OnDestroy {
     });
     this.subscriptions.add(subscription);
   }
-
 
   private loadAllData(): void {
     this.subscriptions.add(
@@ -249,15 +249,14 @@ export class BoardComponent implements OnInit, OnDestroy {
         container.data.length
       );
     }
-  
+
     this.taskService.updateGeneralTaskState({
       id: movedTask.id,
       board_list_id: targetList.id,
     });
-  
+
     this.cdr.detectChanges();
   }
-  
 
   logRender(title: string): string {
     console.log('Render Task:', title);
@@ -373,37 +372,46 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.filteredTasksByBoardList = updated;
   } */
 
-    filterTasks(): void {
-      const term = this.searchTerm.toLowerCase().trim();
-      const filteredTasks = this.taskService.getTasks().filter((task) =>
-        task.title.toLowerCase().includes(term) ||
-        task.description.toLowerCase().includes(term)
+  filterTasks(): void {
+    const term = this.searchTerm.toLowerCase().trim();
+    const filteredTasks = this.taskService
+      .getTasks()
+      .filter(
+        (task) =>
+          task.title.toLowerCase().includes(term) ||
+          task.description.toLowerCase().includes(term)
       );
-      this.filteredTasks = filteredTasks;
-    
-      const newFilteredByList = this.taskService.getTasksByBoardList(filteredTasks);
-    
-      let changed = false;
-      const updated: { [key: string]: Task[] } = { ...this.filteredTasksByBoardList };
-    
-      for (const key of this.connectedDropLists) {
-        const newList = newFilteredByList[key] || [];
-        const oldList = this.filteredTasksByBoardList[key] || [];
-    
-        const sameLength = oldList.length === newList.length;
-        const sameContent = sameLength && oldList.every((t, i) => t.id === newList[i].id);
-    
-        if (!sameContent) {
-          updated[key] = newList;
-          changed = true;
-        }
-      }
-    
-      if (changed) {
-        this.filteredTasksByBoardList = updated;
+    this.filteredTasks = filteredTasks;
+
+    const newFilteredByList =
+      this.taskService.getTasksByBoardList(filteredTasks);
+
+    let changed = false;
+    const updated: { [key: string]: Task[] } = {
+      ...this.filteredTasksByBoardList,
+    };
+
+    for (const key of this.connectedDropLists) {
+      const newList = newFilteredByList[key] || [];
+      const oldList = this.filteredTasksByBoardList[key] || [];
+
+      const sameLength = oldList.length === newList.length;
+      const sameContent =
+        sameLength &&
+        oldList.every(
+          (t, i) => JSON.stringify(t) === JSON.stringify(newList[i])
+        );
+
+      if (!sameContent) {
+        updated[key] = newList;
+        changed = true;
       }
     }
-    
+
+    if (changed) {
+      this.filteredTasksByBoardList = updated;
+    }
+  }
 
   isSearchActive(): boolean {
     return (

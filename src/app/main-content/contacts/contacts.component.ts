@@ -9,7 +9,7 @@ import { OutsideClickDirective } from '../../shared/directives/outside-click.dir
 import { CommonModule } from '@angular/common';
 import { GroupContactsService } from '../../shared/services/group-contacts.service';
 import { ContactStatusService } from '../../shared/services/contact-status.service';
-import { ButtonPropertyService } from '../../shared/services/button-propertys.service';
+import { ActionService } from '../../shared/services/action.service';
 import { InfoBoxService } from '../../shared/services/info-box.service';
 import { switchMap, Subscription } from 'rxjs';
 
@@ -50,27 +50,21 @@ export class ContactsComponent implements OnInit, OnDestroy {
     private contactService: ContactService,
     private groupContactsService: GroupContactsService,
     private contactStatusService: ContactStatusService,
-    private buttonPropertyService: ButtonPropertyService,
-    private infoBoxService: InfoBoxService,
+    private actionService: ActionService,
+    private infoBoxService: InfoBoxService
   ) {}
 
   ngOnInit(): void {
     this.loadContacts();
     this.checkViewport();
     this.subscribeToCurrentContactSubject();
-    // this.initializeContactsValue();
-    // this.updateContactsList();
-    // this.groupContacts();
     this.getGroupedContacts();
     this.updateShowDetails();
     this.getUpdatedShowDetailsStatus();
-    this.getUpdatedContactFormStatus();
-    this.getUpdatedIsAddContactModeStatus();
-    // this.getUpdatedDeleteContactStatus();
+    this.getContactFormState();
     this.getUpdatedDetailFormStatus();
-    this.getUpdatedButtonPropertyStatus();
-    this.getUpdatedSuccessStatus();
     this.getUpdatedInfoBoxStatus();
+    this.subscribeToDeleteContact();
   }
 
   ngOnDestroy(): void {
@@ -83,7 +77,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   checkViewport() {
-    this.isMobile = window.innerWidth < 800;
+    this.isMobile = window.innerWidth < 1024;
   }
 
   loadContacts(): void {
@@ -101,15 +95,14 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.subscriptions?.add(subscription);
   }
 
-  setNewContactFormStatus(newStatus: boolean): void {
-    this.contactStatusService.setContactFormStatus(newStatus);
-    this.getUpdatedContactFormStatus();
-  }
-
-  getUpdatedContactFormStatus(): void {
-    this.contactStatusService.contactFormStatus$.subscribe((status) => {
-      this.contactFormStatus = status;
-    });
+  getContactFormState(): void {
+    const subscription = this.contactStatusService.contactFormStatus$.subscribe(
+      (state) => {
+        this.contactFormStatus = state.visible;
+        this.isAddContactMode = state.mode === 'add';
+      }
+    );
+    this.subscriptions?.add(subscription);
   }
 
   subscribeToCurrentContactSubject(): void {
@@ -122,66 +115,41 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   getUpdatedShowDetailsStatus(): void {
-    this.contactStatusService.showDetailsStatus$.subscribe((status) => {
-      this.showDetails = status;
-    });
-  }
-
-  getUpdatedIsAddContactModeStatus(): void {
-    this.contactStatusService.isAddContactModeStatus$.subscribe((status) => {
-      this.isAddContactMode = status;
-    });
+    const subscription = this.contactStatusService.showDetailsStatus$.subscribe(
+      (status) => {
+        this.showDetails = status;
+      }
+    );
+    this.subscriptions?.add(subscription);
   }
 
   getUpdatedDetailFormStatus(): void {
-    this.contactStatusService.contactDetailFormStatus$.subscribe((status) => {
-      this.contactDetailFormStatus = status;
-    });
-  }
-
-  getUpdatedButtonPropertyStatus(): void {
-    this.buttonPropertyService.isAddContactButtonClicked$.subscribe(
-      (status) => {
-        this.contactStatusService.setContactFormStatus(status);
-      }
-    );
-  }
-
-  getUpdatedSuccessStatus() {
-    this.contactStatusService.contactSuccessStatus$.subscribe((status) => {
-      this.successStatus = status;
-    });
+    const subscription =
+      this.contactStatusService.contactDetailFormStatus$.subscribe((status) => {
+        this.contactDetailFormStatus = status;
+      });
+    this.subscriptions?.add(subscription);
   }
 
   getUpdatedInfoBoxStatus() {
-    this.infoBoxService.infoBoxStatus$.subscribe((status) => {
-      this.infoBoxStatus = status;
-    });
-  }
-
-  setNewIsAddContactModeStatus(newStatus: boolean): void {
-    this.contactStatusService.setIsAddContactModeStatus(newStatus);
-  }
-
-  /*   getUpdatedDeleteContactStatus() {
-    this.contactStatusService.deleteContactStatus$.subscribe((status) => {
-      if (!this.isInitialLoad && status) {
-        this.deleteContactStatus = status;
-        this.deleteContactFromList();
+    const subscription = this.infoBoxService.infoBoxStatus$.subscribe(
+      (status) => {
+        this.infoBoxStatus = status;
       }
-      this.isInitialLoad = false;
-    });
-  } */
+    );
+    this.subscriptions?.add(subscription);
+  }
 
   groupContacts() {
     this.groupContactsService.groupContactsAlphabetically(this.contacts);
   }
 
   getGroupedContacts() {
-    this.groupContactsService.groupContactsSubject$.subscribe((groups) => {
-      // console.log('Gruppierte Kontakte: ', this.groupedContacts);
-      this.groupedContacts = this.sortLetters(groups);
-    });
+    const subscription =
+      this.groupContactsService.groupContactsSubject$.subscribe((groups) => {
+        this.groupedContacts = this.sortLetters(groups);
+      });
+    this.subscriptions?.add(subscription);
   }
 
   sortLetters(groups: any) {
@@ -191,47 +159,57 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   updateShowDetails() {
-    this.subscriptions = this.contactStatusService.showDetailsStatus$.subscribe(
+    const subscription = this.contactStatusService.showDetailsStatus$.subscribe(
       (value) => {
         this.showDetails = value;
       }
     );
+    this.subscriptions?.add(subscription);
   }
 
   showContactDetails(contact: Contact) {
     this.contactStatusService.setShowDetailsStatus(true);
-    this.contactStatusService.setIsAddContactModeStatus(false);
     this.currentContact = contact;
     this.contactService.setCurrentContact(contact);
     this.contactIsActive = true;
-  }
-
-  changeContactFormStatus() {
-    this.setNewContactFormStatus(true);
-    this.getUpdatedContactFormStatus();
   }
 
   hideContextMenu() {
     this.contactStatusService.setContactDetailFormStatus(false);
   }
 
-  /* deleteContactFromList() {
-    console.log('Kontakte: ', this.dummyContacts);
-    let currentContactIndex = this.dummyContacts?.findIndex((oneContact) => {
-      return this.currentContact
-        ? oneContact.name === this.currentContact.name
-        : false;
+  subscribeToDeleteContact(): void {
+    const subscription = this.actionService.deleteContactEvent.subscribe(() => {
+      const contactId: number | undefined = this.currentContact?.id;
+      if (contactId === undefined) return;
+      this.sendDeletedContactToServer(contactId);
     });
-    console.log('currentContactIndex: ', currentContactIndex);
-    if (currentContactIndex !== undefined && currentContactIndex !== -1) {
-      console.log('Ich werde ausgeführt.');
-      this.dummyContacts?.splice(currentContactIndex, 1);
-      console.log('Kontakt', this.currentContact?.name, 'gelöscht.');
-      console.log('Kontakte: ', this.dummyContacts);
-    }
-    this.updateContactsList();
-    this.updateShowDetails();
-  } */
+    this.subscriptions?.add(subscription);
+  }
+
+  sendDeletedContactToServer(contactId: number): void {
+    const subscription = this.contactService.deleteData(contactId).subscribe({
+      next: () => {
+        this.groupContactsService.groupContactsAlphabetically(this.contacts);
+        this.contactService.setCurrentContact(null); // Detailansicht zurücksetzen
+        this.contactStatusService.setShowDetailsStatus(false); // Detailansicht schließen
+        this.actionService.handleInfoContainers({
+          infoText: 'Contact successfully deleted!',
+          isVisible: true,
+          persistent: false,
+        });
+      },
+      error: (err) => {
+        console.error('Fehler beim Löschen des Kontakts:', err);
+        this.actionService.handleInfoContainers({
+          infoText: 'Error: Could not delete contact.',
+          isVisible: true,
+          persistent: false,
+        });
+      },
+    });
+    this.subscriptions?.add(subscription);
+  }
 
   setSuccessStatus(newStatus: boolean) {
     this.successStatus = newStatus;

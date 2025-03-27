@@ -7,7 +7,8 @@
     [buttonIcon]="true"
     [imgSrc]="'assets/icons/edit_dark.svg'"
     [actionMessage]="{
-      actionType: 'showEditContactForm'
+      actionType: 'showAddOrEditContactForm',
+      infoText: 'edit'
     }"
     [caption]="'Edit'"
     [buttonClass]="'context-button-light-top'"
@@ -19,7 +20,18 @@
     [buttonCaptionSecond]="true"
     [buttonIcon]="true"
     [actionMessage]="{
-      actionType: 'openSecurityInfo'
+      securityQuestion: true,
+      alertTitle: 'Alert',
+      infoQuestion: 'Are you sure you want to delete this contact permanently?',
+      infoText: 'This process is irreversible.',
+      imageSrc: 'assets/icons/join_logo_white.svg',
+      actionType: 'handleInfoAndSuccessMessages',
+      nextActionType: 'deleteContact',
+      caption1: 'Yes, proceed',
+      caption2: 'No, preserve',
+      id: currentContact?.id,
+      isVisible: true,
+      persistent: true
     }"
     [imgSrc]="'assets/icons/delete.svg'"
     [caption]="'Delete'"

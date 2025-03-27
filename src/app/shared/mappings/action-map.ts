@@ -18,27 +18,24 @@ export function createActionMap(
       (infoMessage) => actionService.handleInfoContainers(infoMessage),
     ],
     [
-      'showAddContactForm',
-      () => buttonPropertyService.setIsAddContactButtonStatus(true),
+      'showAddOrEditContactForm',
+      (infoMessage) => actionService.showAddOrEditContactForm(infoMessage),
     ],
     [
       'showContactDetailOptions',
       () => contactStatusService.setContactDetailFormStatus(true),
     ],
-    [
-      'showEditContactForm',
-      () => contactStatusService.setContactFormStatus(true),
-    ],
+    ['closeContactForm', () => actionService.closeContactForm()],
     ['createNewContact', () => actionService.onCreateContactClick()],
     ['clearInputFields', () => buttonPropertyService.setClearInputStatus(true)],
-    [
+/*     [
       'openSecurityInfo',
       (infoMessage?) =>
         actionService.organizeSecurityQuestion(
           infoMessage!.id!,
           'setItemToDelete'
         ),
-    ],
+    ], */
     [
       'openDeleteTaskSecurityInfo',
       (infoMessage) =>
@@ -135,6 +132,7 @@ export function createActionMap(
       (infoMessage) => actionService.openAddTaskOverlay(infoMessage.infoText!),
     ],
     ['closeAddTaskOverlay', () => actionService.closeAddTaskOverlay()],
+
     // add further actions here if necessary.
   ]);
 }

@@ -36,6 +36,7 @@ export class ActionService {
   openAddTaskOverlayEvent = new EventEmitter<string>();
   closeAddTaskOverlayEvent = new EventEmitter<void>();
   infoBoxEvent = new EventEmitter<void>();
+  closeContactFormEvent = new EventEmitter<void>();
 
   private setItemToDeleteSubject = new BehaviorSubject<number | null>(null);
   setItemToDelete$: Observable<number | null> =
@@ -93,11 +94,6 @@ export class ActionService {
   handleInfoContainers(message?: InfoMessage): void {
     if (message) {
       this.infoBoxService.setInfoBox(message);
-      /*       console.log(
-        '%cDaten aus der Infobox: ',
-        'color: orange;',
-        this.infoBoxService.getInfoBoxData()
-      ); */
       this.infoBoxEvent.emit();
     }
   }
@@ -177,6 +173,18 @@ export class ActionService {
 
   closeAddTaskOverlay(): void {
     this.closeAddTaskOverlayEvent.emit();
+  }
+
+  showAddOrEditContactForm(infoMessage: InfoMessage): void {
+    // this.contactStatusService.setShowDetailsStatus(false);
+    this.contactStatusService.setContactFormStatus({
+      visible: true,
+      mode: (infoMessage.infoText as 'add' | 'edit') ?? 'add',
+    });
+  }
+
+  closeContactForm(): void {
+    this.closeContactFormEvent.emit();
   }
 
   prepareDeleteAction(id: number, actionType: string): void {

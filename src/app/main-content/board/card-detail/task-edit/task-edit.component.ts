@@ -11,7 +11,6 @@ import { Category } from '../../../../shared/interfaces/category.interface';
 import { ActionService } from '../../../../shared/services/action.service';
 import { TaskService } from '../../../../shared/services/task.service';
 import { ButtonPropertyService } from '../../../../shared/services/button-propertys.service';
-import { InfoBoxService } from '../../../../shared/services/info-box.service';
 import { Subscription, Observable, tap } from 'rxjs';
 
 @Component({
@@ -40,23 +39,39 @@ export class TaskEditComponent implements OnInit, OnDestroy {
   pathPrefix: string = 'assets/icons/prio_';
   prioStatus: string = 'medium';
   today: string = new Date().toISOString().split('T')[0];
+  titleIsValid = false;
+  dueDateIsValid = false;
+  categoryTouched = false;
+
   private subscriptions = new Subscription();
 
   constructor(
     private actionService: ActionService,
     private taskService: TaskService,
-    private buttonPropertyService: ButtonPropertyService,
-    private infoBoxService: InfoBoxService
+    private buttonPropertyService: ButtonPropertyService
   ) {}
 
   ngOnInit(): void {
-    if (this.task) {
-      this.taskService.setCurrentTask(this.task);
-    }
+    this.initializeTask();
     this.initializeEditedTask();
+    this.taskService.setTitleIsValid(true);
+    this.taskService.setDueDateIsValid(true);
     this.initializeSelectedCategory();
     this.subscribeToSelectedCategory();
     this.subscribeToEditedTaskEvent();
+    this.subscribeToTitleValidation();
+    this.subscribeToDueDateValidation();
+    this.validateForm();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  initializeTask(): void {
+    if (this.task) {
+      this.taskService.setCurrentTask(this.task);
+    }
   }
 
   initializeEditedTask(): void {
@@ -86,11 +101,25 @@ export class TaskEditComponent implements OnInit, OnDestroy {
     this.prioStatus = status;
   }
 
+  subscribeToTitleValidation(): void {
+    const subscription = this.taskService.titleIsValid$.subscribe((valid) => {
+      this.titleIsValid = valid;
+      this.validateForm();
+    });
+    this.subscriptions.add(subscription);
+  }
+
+  subscribeToDueDateValidation(): void {
+    const subscription = this.taskService.dueDateIsValid$.subscribe((valid) => {
+      this.dueDateIsValid = valid;
+      this.validateForm();
+    });
+    this.subscriptions.add(subscription);
+  }
+
   validateForm(): void {
     this.isFormValid =
-      !!this.editedTask.title?.trim() &&
-      !!this.editedTask.due_date &&
-      !!this.selectedCategory;
+      this.titleIsValid && this.dueDateIsValid && !!this.selectedCategory;
   }
 
   onFieldChange(): void {
@@ -102,6 +131,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
       (category) => {
         console.log('Kategorie: ', category);
         this.selectedCategory = category;
+        this.validateForm();
       }
     );
     this.subscriptions.add(subscription);
@@ -136,7 +166,8 @@ export class TaskEditComponent implements OnInit, OnDestroy {
     this.actionService.saveEditedTaskEvent.emit(this.editedTask.id);
 
     this.saveEditedTask().subscribe({
-      next: () => {
+      next: (updatedTask) => {
+        console.log('Backend-Response:', updatedTask);
         this.taskService.clearSelectedCategory();
         this.taskService.clearAssignedContacts();
         this.actionService.handleInfoContainers({
@@ -163,9 +194,5 @@ export class TaskEditComponent implements OnInit, OnDestroy {
     return this.taskService
       .patchData(updatedTask.id!, updatedTask)
       .pipe(tap(() => console.log('Aufgabe erfolgreich aktualisiert!')));
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
   }
 }

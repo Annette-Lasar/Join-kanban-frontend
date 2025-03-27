@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Contact } from '../interfaces/contact.interface';
 import { DataService } from './data.service';
+import { GroupContactsService } from './group-contacts.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,9 @@ export class ContactService {
   private currentContactSubject = new BehaviorSubject<Contact | null>(null);
   currentContact$ = this.currentContactSubject.asObservable();
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService,
+    private groupContactsService: GroupContactsService
+  ) {}
 
   fetchData(): Observable<Contact[]> {
     return this.dataService.fetchData<Contact>(
@@ -26,7 +29,6 @@ export class ContactService {
     return this.dataService.addData<Contact>(
       'contacts',
       contact,
-      this.contactsSubject
     );
   }
 
@@ -62,4 +64,43 @@ export class ContactService {
   setCurrentContact(contact: Contact | null) {
     this.currentContactSubject.next(contact);
   }
+
+  addContactOptimistically(contact: Omit<Contact, 'id'>): void {
+    const currentContacts = this.contactsSubject.getValue();
+    const optimisticContact = {
+      ...contact,
+      id: -1, 
+    } as Contact;
+
+    const updatedContacts = [...currentContacts, optimisticContact];
+  
+    this.contactsSubject.next(updatedContacts);
+    this.groupContactsService.groupContactsAlphabetically(updatedContacts);
+  }
+
+  updateContactListAfterAdd(confirmedContact: Contact): void {
+    const currentContacts = this.contactsSubject.getValue();
+  
+    const filteredContacts = currentContacts.filter(c => c.id !== -1);
+  
+    const updatedContacts = [...filteredContacts, confirmedContact];
+    this.contactsSubject.next(updatedContacts);
+  
+    this.groupContactsService.groupContactsAlphabetically(updatedContacts);
+  }
+
+
+  updateContactListAfterEdit(updatedContact: Contact): void {
+    const currentContacts = this.contactsSubject.getValue();
+  
+    const updatedContacts = currentContacts.map((contact) =>
+      contact.id === updatedContact.id ? updatedContact : contact
+    );
+  
+    this.contactsSubject.next(updatedContacts);
+    this.groupContactsService.groupContactsAlphabetically(updatedContacts);
+  }
+  
+  
+  
 }

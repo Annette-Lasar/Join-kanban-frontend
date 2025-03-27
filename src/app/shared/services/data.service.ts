@@ -30,11 +30,11 @@ export class DataService {
   addData<T>(
     endpoint: string,
     item: T,
-    subject: BehaviorSubject<T[]>
+    subject?: BehaviorSubject<T[]>
   ): Observable<T> {
     return this.http
       .post<T>(`${BASE_URL}/${endpoint}/`, item, { headers: this.getHeaders() })
-      .pipe(tap((newItem) => subject.next([...subject.value, newItem])));
+      .pipe(tap((newItem) => subject?.next([...(subject?.value ?? []), newItem])));
   }
 
   updateData<T>(

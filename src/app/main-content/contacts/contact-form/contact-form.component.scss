@@ -5,6 +5,7 @@
   width: 80%;
   max-width: 300px;
   height: calc(100vh - $header-height - $mobile-navbar-height);
+  max-height: 600px;
   position: fixed;
   left: 50%;
   transform: translate(-50%, 150%);
@@ -17,7 +18,7 @@
 
 .outer-contact-form-wrapper.show {
   visibility: visible;
-  transform: translate(-50%, -100%);
+  transform: translate(-50%, -110%);
   transition: transform 0.5s;
 }
 
@@ -53,8 +54,7 @@
   background-color: $darkblue;
   @include flex-container($justify: flex-start);
   .headline-wrapper {
-    height: 72px;
-    @include flex-container($direction: column, $align: flex-start);
+    @include flex-container($direction: column, $align: flex-start, $justify: center, $gap: 8px);
     img {
       display: none;
     }
@@ -73,17 +73,16 @@
   padding: 38px 1em 0.5em;
   grid-area: form-body;
   form {
-    height: 100%;
+    height: 95%;
     @include flex-container($direction: column, $align: flex-start);
   }
 }
 
 .input-wrapper {
   width: 100%;
-  .name,
-  .mail,
-  .phone {
-    @include flex-container($gap: 4px);
+  .name-wrapper,
+  .mail-wrapper,
+  .phone-wrapper {
     border: $bordergray 1px solid;
     border-radius: 4px;
     &:focus-within {
@@ -91,20 +90,35 @@
     }
   }
   .name {
+    .name-wrapper {
+      width: 100%;
+      @include flex-container($gap: 8px);
+    }
     img {
       height: 20px;
     }
-    .mail {
-      img {
-        height: 17px;
-      }
+  }
+
+  .mail {
+    .mail-wrapper {
+      width: 100%;
+      @include flex-container($gap: 8px);
     }
-    .phone {
-      img {
-        height: 17px;
-      }
+    img {
+      height: 17px;
     }
   }
+
+  .phone {
+    .phone-wrapper {
+      width: 100%;
+      @include flex-container($gap: 8px);
+    }
+    img {
+      height: 17px;
+    }
+  }
+
   input {
     height: 24px;
     flex: 1 1 0;
@@ -116,7 +130,6 @@
     margin: 0.25em 0 0.5em;
     font-size: 0.5rem;
     color: $red;
-    // opacity: 0;
   }
 }
 

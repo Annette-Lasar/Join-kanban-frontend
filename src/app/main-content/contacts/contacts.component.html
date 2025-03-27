@@ -6,7 +6,8 @@
         [buttonCaptionFirst]="true"
         [buttonIcon]="true"
         [actionMessage]="{
-          actionType: 'showAddContactForm'
+          actionType: 'showAddOrEditContactForm',
+          infoText: 'add'
         }"
         [caption]="'Add new contact'"
         [imgSrc]="'assets/icons/person_add.svg'"
@@ -17,7 +18,7 @@
       />
       <div class="inner-list-wrapper">
         @if (showDetails && isMobile && currentContact) {
-        <join-contact-details [contact]="currentContact" />
+        <join-contact-details />
         } @else {
         <ul class="contact-list">
           @for (group of groupedContacts; track group) {
@@ -69,14 +70,14 @@
         class="mobile-add-contact-button"
         [buttonIcon]="true"
         [actionMessage]="{
-          actionType: 'showAddContactForm'
+          actionType: 'showAddOrEditContactForm',
+          infoText: 'add'
         }"
         [imgSrc]="'assets/icons/person_add.svg'"
         [buttonClass]="'dark-round-button'"
         [width]="'48px'"
         [height]="'48px'"
         [padding]="'0'"
-        (isAddContactButtonClicked)="changeContactFormStatus()"
       />
       }
     </div>
@@ -89,15 +90,7 @@
       <join-contact-details />
     </div>
   </div>
-  <!-- <span class="white" style="font-size: xx-small"
-    >contactForm: {{ contactFormStatus }}
-  </span>
-  <span class="white" style="font-size: xx-small"
-    >showDetails: {{ showDetails }}
-  </span>
-  <span class="white" style="font-size: xx-small"
-    >addContactMode: {{ isAddContactMode }}</span
-  > -->
 </div>
+@if (contactFormStatus) {
 <join-contact-form [contacts]="contacts" [currentContact]="currentContact" />
-
+}

@@ -1,21 +1,34 @@
-<div class="outer-contact-form-wrapper" [ngClass]="{ show: contactFormStatus }">
+<div class="outer-contact-form-wrapper" [ngClass]="{ show: showAnimation }">
   <div class="inner-contact-form-wrapper">
     <div class="close-wrapper">
-      <img
-        [src]="
+      <join-button
+        [buttonIcon]="true"
+        [imgSrc]="
           isMobile ? 'assets/icons/close_white.svg' : 'assets/icons/close.svg'
         "
-        alt=""
-        (click)="clearInputFields(contactForm); closeContactForm()"
+        [buttonClass]="isMobile ? 'white-button' : 'gray-button'"
+        [alt]="'Close edit contact'"
+        [padding]="'0'"
+        [height]="'24px'"
+        [width]="'24px'"
+        [actionMessage]="{
+          actionType: 'closeContactForm'
+        }"
       />
     </div>
     <div class="form-header">
       <div class="headline-wrapper">
         <img src="assets/icons/join_logo_white.svg" alt="" />
         <h1 class="white bold_700">
-          {{ isAddContactMode ? "Add contact" : "Edit contact" }}
+          {{
+            isAddContactMode || !newContact.name
+              ? "Add contact"
+              : "Edit contact"
+          }}
         </h1>
+        @if (isAddContactMode) {
         <div class="slogan white">Tasks are better with a team</div>
+        }
         <div class="blue-separator-line"></div>
       </div>
     </div>
@@ -23,64 +36,78 @@
       <form (ngSubmit)="onSubmit()" #contactForm="ngForm" novalidate>
         <div class="input-wrapper">
           <div class="name">
-            <input
-              type="text"
-              placeholder="Name*"
-              [(ngModel)]="newContact.name"
-              (ngModelChange)="validateName($event)"
-              name="name"
-              #name="ngModel"
-              required
-            />
-            <img src="assets/icons/person.svg" alt="" />
-          </div>
-          <div
-            class="warning-message"
-            [ngStyle]="{ opacity: !nameIsValid && name.touched ? 1 : 0 }"
-          >
-            Please enter just one first and one last name.
-          </div>
-          @if (currentContact?.email === currentUser?.username) {
-          <p>
-            {{ currentContact?.email }}
-          </p>
-          } @else {
-          <div class="mail">
-            <input
-              type="email"
-              placeholder="Email"
-              [(ngModel)]="newContact.email"
-              (ngModelChange)="validateEmail($event)"
-              name="email"
-              #email="ngModel"
-            />
-            <img src="assets/icons/mail.svg" alt="" />
+            <div class="name-wrapper">
+              <input
+                type="text"
+                placeholder="Name*"
+                [(ngModel)]="newContact.name"
+                (ngModelChange)="validateName($event)"
+                name="name"
+                #name="ngModel"
+                required
+              />
+              <img src="assets/icons/person.svg" alt="" />
+            </div>
+
+            <div
+              class="warning-message"
+              [ngStyle]="{ opacity: !nameIsValid && name.touched ? 1 : 0 }"
+            >
+              Please enter just one first and one last name.
+            </div>
           </div>
 
-          <div
-            class="warning-message"
-            [ngStyle]="{ opacity: !emailIsValid && email.touched ? 1 : 0 }"
-          >
-            Please enter a correct email address.
+          @if (currentContact?.email === currentUser?.username) {
+          <div>
+            <p class="mail-text">
+              {{ currentContact?.email }}
+            </p>
+            <div class="warning-message">
+              You can't change your own username.
+            </div>
+          </div>
+
+          } @else {
+
+          <div class="mail">
+            <div class="mail-wrapper">
+              <input
+                type="email"
+                placeholder="Email"
+                [(ngModel)]="newContact.email"
+                (ngModelChange)="validateEmail($event)"
+                name="email"
+                #email="ngModel"
+              />
+              <img src="assets/icons/mail.svg" alt="" />
+            </div>
+            <div
+              class="warning-message"
+              [ngStyle]="{ opacity: !emailIsValid && email.touched ? 1 : 0 }"
+            >
+              Please enter a correct email address.
+            </div>
           </div>
           }
 
           <div class="phone">
-            <input
-              type="tel"
-              placeholder="Phone"
-              [(ngModel)]="newContact.phone_number"
-              (ngModelChange)="validatePhone($event)"
-              name="phone"
-              #phone="ngModel"
-            />
-            <img src="assets/icons/phone.svg" alt="" />
-          </div>
-          <div
-            class="warning-message"
-            [ngStyle]="{ opacity: !phoneIsValid && phone.touched ? 1 : 0 }"
-          >
-            Please enter a correct phone number.
+            <div class="phone-wrapper">
+              <input
+                type="tel"
+                placeholder="Phone"
+                [(ngModel)]="newContact.phone_number"
+                (ngModelChange)="validatePhone($event)"
+                name="phone"
+                #phone="ngModel"
+              />
+              <img src="assets/icons/phone.svg" alt="" />
+            </div>
+            <div
+              class="warning-message"
+              [ngStyle]="{ opacity: !phoneIsValid && phone.touched ? 1 : 0 }"
+            >
+              Please enter a correct phone number.
+            </div>
           </div>
         </div>
         <div class="button-wrapper">
@@ -145,6 +172,7 @@
             class="create-contact-button"
             [buttonIcon]="true"
             [buttonCaptionFirst]="true"
+            [type]="'submit'"
             [caption]="'Save'"
             [imgSrc]="'assets/icons/check_white.svg'"
             [imgClass]="'check-icon'"
@@ -153,14 +181,24 @@
             [height]="'32px'"
             [padding]="'0'"
           />
-
           }
         </div>
       </form>
       <div class="icon-wrapper desktop">
+        @if (isAddContactMode) {
         <div class="inner-icon-wrapper">
           <img src="assets/icons/person_white.svg" alt="" />
         </div>
+        } @else {
+        <div
+          class="inner-icon-wrapper"
+          [style.backgroundColor]="newContact.color"
+          [style.color]="newContact.color_brightness ? '#000000' : '#ffffff'"
+        >
+          {{ newContact.name ? newContact.name.charAt(0) : ""
+          }}{{ newContact.name.split(" ").pop()?.charAt(0) }}
+        </div>
+        }
       </div>
     </div>
     <div class="icon-wrapper mobile">

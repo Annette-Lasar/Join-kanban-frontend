@@ -27,10 +27,8 @@ export class ButtonComponent {
   @Input() defaultSrc: string = '';
   @Input() disabled: boolean = false;
   @Input() height: string = '75px';
-  // @Input() id?: number;
   @Input() imgClass: string = '';
   @Input() imgSrc: string = '';
-  // @Input() infoMessage: string = '';
   @Input() isPrioButton: boolean = false;
   @Input() padding: string = '1em 1.5em';
   @Input() prioClass: string = '';
@@ -70,7 +68,6 @@ export class ButtonComponent {
 
   onClick(event: Event): void {
     console.log('%cAction-Message: ', 'color: green', this.actionMessage);
-    console.log('%cAction-Message-ID: ', 'color: pink', this.actionMessage?.id);
     if (!this.actionMessage?.actionType) {
       console.warn('Kein actionType definiert!');
       return;

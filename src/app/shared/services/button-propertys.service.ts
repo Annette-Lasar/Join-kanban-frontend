@@ -9,11 +9,11 @@ export class ButtonPropertyService {
   toggleContainer$: Observable<string | null> =
     this.toggleContainerSubject.asObservable();
 
-  private isAddContactButtonClickedSubject = new BehaviorSubject<boolean>(
+/*   private isAddContactButtonClickedSubject = new BehaviorSubject<boolean>(
     false
   );
   isAddContactButtonClicked$: Observable<boolean> =
-    this.isAddContactButtonClickedSubject.asObservable();
+    this.isAddContactButtonClickedSubject.asObservable(); */
 
   private createNewContactClicked = new BehaviorSubject<boolean>(false);
   createNewContactClicked$: Observable<boolean> =
@@ -60,9 +60,9 @@ export class ButtonPropertyService {
     this.toggleContainerSubject.next(message);
   }
 
-  setIsAddContactButtonStatus(status: boolean): void {
+/*   setIsAddContactButtonStatus(status: boolean): void {
     this.isAddContactButtonClickedSubject.next(status);
-  }
+  } */
 
   setCreateNewContactStatus(status: boolean): void {
     this.createNewContactClicked.next(status);

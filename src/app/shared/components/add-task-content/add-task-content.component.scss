@@ -136,7 +136,7 @@ MEDIA QUERIES
 
 @media (min-width: 64em) {
   .add-task-grid {
-    height: calc(100vh - $header-height - 80px - 60px);
+    height: calc(100vh - 400px);
     max-width: unset;
     grid-template-columns: 1fr 2px 1fr;
     grid-template-areas:

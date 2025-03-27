@@ -12,7 +12,7 @@
     100vh - $header-height - $mobile-navbar-height - 80px - 48px
   );
   padding-inline: 0.5em;
-  background-color: verylightgray;
+  background-color: $verylightgray;
 }
 
 .add-task-button-wrapper {

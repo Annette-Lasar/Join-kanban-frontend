@@ -8,26 +8,24 @@ import {
 import { Contact } from '../../../shared/interfaces/contact.interface';
 import { ContactService } from '../../../shared/services/contact.service';
 import { Subscription } from 'rxjs';
-import { InfoComponent } from '../../../shared/components/info/info.component';
 import { ContactStatusService } from '../../../shared/services/contact-status.service';
 import { InfoBoxService } from '../../../shared/services/info-box.service';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 @Component({
   selector: 'join-contact-details',
   standalone: true,
-  imports: [InfoComponent],
+  imports: [ButtonComponent],
   templateUrl: './contact-details.component.html',
   styleUrl: './contact-details.component.scss',
 })
 export class ContactDetailsComponent implements OnInit, OnDestroy {
-  @Input() contact: Contact | null = null;
-
+  contact: Contact | null = null;
 
   isMobile: boolean = false;
   showContactDetails: boolean = false;
-  
-  private subscription: Subscription | null = null;
 
+  private subscription: Subscription | null = null;
 
   constructor(
     private contactService: ContactService,
@@ -47,7 +45,7 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
   }
 
   checkViewport() {
-    this.isMobile = window.innerWidth < 800;
+    this.isMobile = window.innerWidth < 1024;
   }
 
   getUpdatedShowContactDetails() {
@@ -68,15 +66,10 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
 
   onBackButtonClick() {
     this.contactStatusService.setShowDetailsStatus(false);
-    this.contactStatusService.setIsAddContactModeStatus(true);
-  }
-
-  isFormStatusChanged() {
-    this.contactStatusService.setContactFormStatus(true);
-  }
-
-  showWarningMessage() {
-    this.infoBoxService.setInfoBoxStatus(true);
+    this.contactStatusService.setContactFormStatus({
+      visible: false,
+      mode: 'add',
+    });
   }
 
   ngOnDestroy(): void {

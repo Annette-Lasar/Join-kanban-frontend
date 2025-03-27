@@ -1,11 +1,4 @@
-import {
-  Component,
-  Input,
-  HostListener,
-  OnInit,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Input, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Task } from '../../../interfaces/task.interface';
 import { Category } from '../../../interfaces/category.interface';
@@ -13,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { CategoryService } from '../../../services/category.service';
 import { RandomColorService } from '../../../services/random-color.service';
 import { ButtonComponent } from '../../button/button.component';
-import { InfoComponent } from '../../info/info.component';
 import { InfoBoxService } from '../../../services/info-box.service';
 import { ActionService } from '../../../services/action.service';
 import { TaskService } from '../../../services/task.service';
@@ -26,7 +18,7 @@ type NewCategoryAction = 'show' | 'hide';
 @Component({
   selector: 'join-categories-dropdown',
   standalone: true,
-  imports: [CommonModule, FormsModule, ButtonComponent, InfoComponent],
+  imports: [CommonModule, FormsModule, ButtonComponent],
   templateUrl: './categories-dropdown.component.html',
   styleUrl: './categories-dropdown.component.scss',
 })
@@ -79,6 +71,10 @@ export class CategoriesDropdownComponent implements OnInit {
     this.isCategoriesListVisible = !this.isCategoriesListVisible;
     event.stopPropagation();
     this.filterCategories();
+
+    if (!this.isCategoriesListVisible && !this.selectedCategory) {
+      this.taskService.setCategoryTouched(true);
+    }
   }
 
   setSelectedCategory(newCategory: Category): void {
@@ -177,7 +173,8 @@ export class CategoriesDropdownComponent implements OnInit {
       this.filteredCategories = [...this.categories];
     }
 
-    updatedCategory.color_brightness = this.colorBrightnessService.isColorBright(updatedCategory.color);
+    updatedCategory.color_brightness =
+      this.colorBrightnessService.isColorBright(updatedCategory.color);
     this.taskService.updateCategoryInTasks(updatedCategory);
 
     this.resetEditMode();

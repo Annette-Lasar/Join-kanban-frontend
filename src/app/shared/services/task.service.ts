@@ -13,23 +13,42 @@ import { InfoBoxService } from './info-box.service';
 export class TaskService {
   private tasksSubject = new BehaviorSubject<Task[]>([]);
   tasks$: Observable<Task[]> = this.tasksSubject.asObservable();
+
   private subtasksSubject = new BehaviorSubject<Subtask[]>([]);
   subtasks$: Observable<Subtask[]> = this.subtasksSubject.asObservable();
+
   private currentTaskSubject = new BehaviorSubject<Task | null>(null);
   currentTask$: Observable<Task | null> =
     this.currentTaskSubject.asObservable();
+
   private selectedCategorySubject = new BehaviorSubject<Category | null>(null);
   selectedCategorySubject$: Observable<Category | null> =
     this.selectedCategorySubject.asObservable();
+
+  private categoryTouchedSubject = new BehaviorSubject<boolean>(false);
+  categoryTouched$: Observable<boolean> =
+    this.categoryTouchedSubject.asObservable();
+
   private assignedContactsSubject = new BehaviorSubject<Contact[]>([]);
   assignedContactsSubject$: Observable<Contact[]> =
     this.assignedContactsSubject.asObservable();
+
   private newSubtasksSubject = new BehaviorSubject<Subtask[]>([]);
   newSubtasksSubject$: Observable<Subtask[]> =
     this.newSubtasksSubject.asObservable();
+
   private assignedSubtasksSubject = new BehaviorSubject<Subtask[]>([]);
   assignedSubtasksSubject$: Observable<Subtask[]> =
     this.assignedSubtasksSubject.asObservable();
+
+  private titleIsValidSubject = new BehaviorSubject<boolean>(false);
+  titleIsValid$ = this.titleIsValidSubject.asObservable();
+
+  private dueDateIsValidSubject = new BehaviorSubject<boolean>(false);
+  dueDateIsValid$ = this.dueDateIsValidSubject.asObservable();
+
+  private categoryIsValidSubject = new BehaviorSubject<boolean>(false);
+  categoryIsValid$ = this.categoryIsValidSubject.asObservable();
 
   constructor(
     private dataService: DataService,
@@ -135,6 +154,10 @@ export class TaskService {
     );
   }
 
+  setCategoryTouched(touched: boolean): void {
+    this.categoryTouchedSubject.next(touched);
+  }
+
   setAssignedContacts(contacts: Contact[]): void {
     this.assignedContactsSubject.next(contacts);
   }
@@ -156,19 +179,24 @@ export class TaskService {
     this.assignedSubtasksSubject.next(subtasks);
   }
 
+  setTitleIsValid(status: boolean): void {
+    this.titleIsValidSubject.next(status);
+  }
+  
+  setDueDateIsValid(status: boolean): void {
+    this.dueDateIsValidSubject.next(status);
+  }
+  
+  setCategoryIsValid(status: boolean): void {
+    this.categoryIsValidSubject.next(status);
+  }
+
+
   /* =====================================================================
   Methods to interact with frontend for new or changed task data
   ========================================================================= */
-  /*   updateGeneralTaskState(updatedTask: Partial<Task>): void {
-    const tasks = this.tasksSubject.getValue();
-    const updatedTasks = tasks.map((task) =>
-      task.id === updatedTask.id ? { ...task, ...updatedTask } : task
-    );
-
-    this.tasksSubject.next(updatedTasks);
-  } */
-
   updateGeneralTaskState(updatedTask: Partial<Task>): void {
+    console.log('🔎 UPDATED TASK:', updatedTask);
     const tasks = this.tasksSubject.getValue();
     let hasChanges = false;
 
@@ -188,9 +216,13 @@ export class TaskService {
         hasChanges = true;
         return { ...task, ...updatedTask };
       }
+
+      
     });
 
     if (hasChanges) {
+      // console.log('%cOptimistic UI:  Updating task list', 'color: red; font-weight: 700');
+      console.log('%cUpdated TASK: ', 'color: red; font-weight: 700', updatedTask);
       this.tasksSubject.next(updatedTasks);
     }
   }
