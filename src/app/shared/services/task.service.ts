@@ -47,9 +47,6 @@ export class TaskService {
   private dueDateIsValidSubject = new BehaviorSubject<boolean>(false);
   dueDateIsValid$ = this.dueDateIsValidSubject.asObservable();
 
-  private categoryIsValidSubject = new BehaviorSubject<boolean>(false);
-  categoryIsValid$ = this.categoryIsValidSubject.asObservable();
-
   constructor(
     private dataService: DataService,
     private localStorageService: LocalStorageService,
@@ -182,15 +179,10 @@ export class TaskService {
   setTitleIsValid(status: boolean): void {
     this.titleIsValidSubject.next(status);
   }
-  
+
   setDueDateIsValid(status: boolean): void {
     this.dueDateIsValidSubject.next(status);
   }
-  
-  setCategoryIsValid(status: boolean): void {
-    this.categoryIsValidSubject.next(status);
-  }
-
 
   /* =====================================================================
   Methods to interact with frontend for new or changed task data
@@ -216,13 +208,9 @@ export class TaskService {
         hasChanges = true;
         return { ...task, ...updatedTask };
       }
-
-      
     });
 
     if (hasChanges) {
-      // console.log('%cOptimistic UI:  Updating task list', 'color: red; font-weight: 700');
-      console.log('%cUpdated TASK: ', 'color: red; font-weight: 700', updatedTask);
       this.tasksSubject.next(updatedTasks);
     }
   }

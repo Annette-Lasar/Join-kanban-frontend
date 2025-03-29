@@ -43,7 +43,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
   dueDateIsValid = false;
   categoryTouched = false;
 
-  private subscriptions = new Subscription();
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private actionService: ActionService,

@@ -28,14 +28,6 @@ export function createActionMap(
     ['closeContactForm', () => actionService.closeContactForm()],
     ['createNewContact', () => actionService.onCreateContactClick()],
     ['clearInputFields', () => buttonPropertyService.setClearInputStatus(true)],
-/*     [
-      'openSecurityInfo',
-      (infoMessage?) =>
-        actionService.organizeSecurityQuestion(
-          infoMessage!.id!,
-          'setItemToDelete'
-        ),
-    ], */
     [
       'openDeleteTaskSecurityInfo',
       (infoMessage) =>

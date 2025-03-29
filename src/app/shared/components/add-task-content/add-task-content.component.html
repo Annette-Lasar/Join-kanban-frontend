@@ -4,12 +4,19 @@
       <div class="bold_600 headword">Title<span class="red">*</span></div>
       <input
         type="text"
+        name="title"
         placeholder="Enter a title"
         [(ngModel)]="title"
         (ngModelChange)="updateTaskData()"
         required
+        #titleInput="ngModel"
       />
-      <div class="warning-info">Please enter a title.</div>
+      <div
+        class="warning-info"
+        [style.opacity]="titleInput.invalid && titleInput.touched ? 1 : 0"
+      >
+        Please enter a title.
+      </div>
     </div>
     <div class="description add-task-item">
       <div class="bold_600 headword">Description</div>
@@ -81,12 +88,19 @@
       <div class="bold_600 headword">Due date</div>
       <input
         type="date"
+        name="date"
         [min]="today"
         [(ngModel)]="due_date"
         (ngModelChange)="updateTaskData()"
         required
+        #dueDateInput="ngModel"
       />
-      <div class="warning-info">Please pick a date.</div>
+      <div
+        class="warning-info"
+        [style.opacity]="dueDateInput.invalid && dueDateInput.touched ? 1 : 0"
+      >
+        Please pick a date.
+      </div>
     </div>
     <div class="category add-task-item">
       <div class="bold_600 headword">
@@ -94,7 +108,7 @@
       </div>
       <join-categories-dropdown
         class="category-item"
-        [isNewTask]="true"
+        [isNewTask]="isNewTask"
         [categories]="categories"
       />
     </div>
@@ -102,14 +116,14 @@
       <div class="bold_600 headword">Contacts</div>
       <join-contacts-dropdown
         class="contact-item"
-        [isNewTask]="true"
+        [isNewTask]="isNewTask"
         [contacts]="contacts"
       />
     </div>
 
     <div class="subtasks add-task-item">
       <div class="bold_600 headword">Subtasks</div>
-      <join-subtasks [isNewTask]="true" />
+      <join-subtasks [isNewTask]="isNewTask" />
     </div>
     <div class="separator-line"></div>
   </div>

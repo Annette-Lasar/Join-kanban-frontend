@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../../shared/components/button/button.component';
-import { FormsModule, NgModel, NgForm } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { RegistrationService } from '../../shared/services/registration.service';
 import { ValidateInputFieldsService } from '../../shared/services/validateInputFields.service';
 import { ButtonPropertyService } from '../../shared/services/button-propertys.service';
@@ -30,6 +30,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   @Output() toggleLogIn = new EventEmitter<boolean>();
   @Output() registrationSuccess = new EventEmitter<void>();
   @Output() showSuccessMessage: boolean = false;
+
   name: string = '';
   email: string = '';
   password: string = '';
@@ -44,7 +45,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
   passwordIcon: string = 'assets/icons/lock.svg';
   confirmPasswordIcon: string = 'assets/icons/lock.svg';
   backendError: any = {};
-  subscriptions = new Subscription();
+
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private registrationService: RegistrationService,
@@ -58,6 +60,10 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.subscribeToEmailValidation();
     this.subscribeToPasswordValidation();
     this.subscribeToPasswordMatch();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   onSuccessfulSignUp(): void {
@@ -209,7 +215,5 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.buttonPropertyService.toggleLoginStatus();
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
+
 }

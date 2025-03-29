@@ -39,6 +39,12 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
     this.updateContactObject();
   }
 
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     this.checkViewport();
@@ -72,9 +78,5 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
+
 }

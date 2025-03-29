@@ -21,7 +21,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
   passwordVisible: boolean = false;
   passwordIcon: string = 'assets/icons/lock.svg';
-  subscriptions = new Subscription();
+  
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private authService: AuthService,
@@ -31,6 +32,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setOffGuestLogin();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   togglePasswordVisibility(): void {
@@ -99,7 +104,5 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.errorMessage = '';
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
+
 }

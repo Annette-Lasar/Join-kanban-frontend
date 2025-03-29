@@ -25,9 +25,11 @@ import { ButtonPropertyService } from '../../services/button-propertys.service';
 export class SubtasksComponent implements OnInit, OnDestroy, OnChanges {
   @Input() task!: Task;
   @Input() isNewTask: boolean = false;
+  
   get subtasks(): SubtaskUI[] {
     return (this.task?.subtasks ?? []) as SubtaskUI[];
   }
+
   newSubtasks: SubtaskUI[] = [];
   isCancelAddSubtaskVisible: boolean = false;
   subtaskTitle: string = '';
@@ -35,7 +37,7 @@ export class SubtasksComponent implements OnInit, OnDestroy, OnChanges {
   editSubtask: boolean = false;
   isMouseDown: boolean = false;
 
-  subscriptions = new Subscription();
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private actionService: ActionService,
@@ -56,6 +58,10 @@ export class SubtasksComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(): void {
     this.initializeSubtasks();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   initializeSubtasks(): void {
@@ -253,8 +259,6 @@ export class SubtasksComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   startEditingSubtaskInNewTask(id?: number) {
-    console.log('Neue Subtasks in der Komponente: ', this.newSubtasks);
-    console.log('Aufgabe kann jetzt bearbeitet werden');
     const subtask = this.newSubtasks.find((subtask) => subtask.tempId === id);
     if (subtask) {
       this.editedSubtaskTitle = subtask.title;
@@ -339,7 +343,5 @@ export class SubtasksComponent implements OnInit, OnDestroy, OnChanges {
     this.subscriptions.add(subscription);
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
+
 }

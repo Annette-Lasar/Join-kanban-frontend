@@ -5,10 +5,15 @@
       <h1>Add Task</h1>
     </div>
     <form (ngSubmit)="onSubmit()">
-      <join-add-task-content [categories]="categories" [contacts]="contacts" />
+      <join-add-task-content
+        [categories]="categories"
+        [contacts]="contacts"
+        [isNewTask]="isNewTask"
+      />
       <div class="add-task-button-wrapper">
         <div class="info-required">
           <span class="red">*</span>This field is required.
+          <span>{{ isFormValid }}</span>
         </div>
         <div class="button-wrapper">
           <join-button
@@ -37,6 +42,7 @@
             [width]="'110px'"
             [height]="'32px'"
             [padding]="'0'"
+            [disabled]="!isFormValid"
           />
         </div>
       </div>

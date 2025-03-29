@@ -19,7 +19,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   infoMessage: InfoMessage | null = null;
 
-  private subscriptions = new Subscription();
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private infoBoxService: InfoBoxService,

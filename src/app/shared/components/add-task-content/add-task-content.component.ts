@@ -35,6 +35,8 @@ export class AddTaskContentComponent implements OnInit, OnDestroy {
   @Input() task: Task | null = null;
   @Input() categories: Category[] = [];
   @Input() contacts: Contact[] = [];
+  @Input() isNewTask: boolean = false;
+  
   prioStatus: string = 'medium';
   isCategoryListVisible = false;
   isContactsListVisible = false;
@@ -42,7 +44,8 @@ export class AddTaskContentComponent implements OnInit, OnDestroy {
   title = '';
   description = '';
   due_date = '';
-  subscriptions = new Subscription();
+  
+  private subscriptions: Subscription = new Subscription();
 
 
   constructor(
@@ -51,6 +54,10 @@ export class AddTaskContentComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscribeToNewTask();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   subscribeToNewTask(): void {
@@ -69,15 +76,6 @@ export class AddTaskContentComponent implements OnInit, OnDestroy {
     this.prioStatus = newStatus;
   }
 
-
-/*   updateTaskData(): void {
-    this.taskCreationService.updateNewTask({
-      title: this.title,
-      description: this.description,
-      due_date: this.due_date,
-      priority: this.prioStatus,
-    });
-  } */
 
     updateTaskData(): void {
       const trimmedTitle = this.title.trim();
@@ -109,7 +107,5 @@ export class AddTaskContentComponent implements OnInit, OnDestroy {
     this.isCategoryListVisible = false;
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
+
 }

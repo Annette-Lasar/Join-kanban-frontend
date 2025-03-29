@@ -5,7 +5,6 @@
       <h1>Board</h1>
       <div class="board-task-button-wrapper">
         <join-button
-          (toggleContainer)="toggleContainerVisibility($event)"
           class="board-add-task info-button global-info"
           [actionMessage]="{
             actionType: 'handleInfoAndSuccessMessages',
@@ -78,7 +77,6 @@
           @if (board_list.name !== 'done') {
           <div class="inner-task-button-wrapper">
             <join-button
-              (toggleContainer)="toggleContainerVisibility($event)"
               class="list-add-task info-button"
               [actionMessage]="{
                 infoText:

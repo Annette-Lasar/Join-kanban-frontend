@@ -15,13 +15,18 @@ import { Subscription } from 'rxjs';
 export class UserGreetingComponent implements OnInit, OnDestroy {
   salutation: string = '';
   user: User | null = null;
-  subscriptions = new Subscription();
+  
+  private subscriptions: Subscription = new Subscription();
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.defineUser();
     this.getSalutation();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   defineUser(): void {
@@ -47,7 +52,5 @@ export class UserGreetingComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
+
 }

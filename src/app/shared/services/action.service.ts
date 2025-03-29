@@ -67,11 +67,6 @@ export class ActionService {
     );
   }
 
-  /*   private actionMap: Map<
-    string,
-    (message?: string, id?: number, event?: Event) => void
-  >; */
-
   private actionMap: Map<
     string,
     (infoMessage: InfoMessage, event?: Event) => void
@@ -92,6 +87,13 @@ export class ActionService {
   }
 
   handleInfoContainers(message?: InfoMessage): void {
+    if (
+      message?.infoQuestion ===
+      'Are you sure you want to delete this contact permanently?'
+    ) {
+      this.contactStatusService.setContactDetailFormStatus(false);
+    }
+
     if (message) {
       this.infoBoxService.setInfoBox(message);
       this.infoBoxEvent.emit();
@@ -176,7 +178,10 @@ export class ActionService {
   }
 
   showAddOrEditContactForm(infoMessage: InfoMessage): void {
-    // this.contactStatusService.setShowDetailsStatus(false);
+    if (infoMessage.infoText === 'edit') {
+      this.contactStatusService.setContactDetailFormStatus(false);
+    }
+
     this.contactStatusService.setContactFormStatus({
       visible: true,
       mode: (infoMessage.infoText as 'add' | 'edit') ?? 'add',

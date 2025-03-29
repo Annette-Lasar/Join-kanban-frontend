@@ -38,7 +38,8 @@ export class CategoriesDropdownComponent implements OnInit {
   randomCategoryColor: string = this.createRandomColor();
   searchTerm: string = '';
   isWarningMessageVisible: boolean = false;
-  private subscriptions = new Subscription();
+  categoryTouched: boolean = false;
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private categoryService: CategoryService,
@@ -54,7 +55,12 @@ export class CategoriesDropdownComponent implements OnInit {
     this.getPrepareDeleteCategorySubjectFromService();
     this.subscribeToDeleteCategorySubject();
     this.getUpdatedWarningBoxStatus();
-    this.filteredCategories = [...this.categories];
+    this.completeFilteredCategories();
+    this.subscribeToCategoryValidation();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   initializeSelectedCategory(): void {
@@ -67,14 +73,16 @@ export class CategoriesDropdownComponent implements OnInit {
     this.subscriptions.add(subscription);
   }
 
+  completeFilteredCategories(): void {
+    this.filteredCategories = [...this.categories];
+  }
+
   toggleCategoriesList(event: Event) {
+    this.taskService.setCategoryTouched(true);
     this.isCategoriesListVisible = !this.isCategoriesListVisible;
     event.stopPropagation();
     this.filterCategories();
 
-    if (!this.isCategoriesListVisible && !this.selectedCategory) {
-      this.taskService.setCategoryTouched(true);
-    }
   }
 
   setSelectedCategory(newCategory: Category): void {
@@ -155,6 +163,15 @@ export class CategoriesDropdownComponent implements OnInit {
         next: (updatedCategory) => this.handleSuccessfulUpdate(updatedCategory),
         error: (err) => console.error('Fehler beim Speichern:', err),
       });
+  }
+
+  subscribeToCategoryValidation(): void {
+    const subscription = this.taskService.categoryTouched$.subscribe(
+      (touched) => {
+        this.categoryTouched = touched;
+      }
+    );
+    this.subscriptions.add(subscription);
   }
 
   private getUpdatedCategory(): Required<Pick<Category, 'name' | 'color'>> {
@@ -300,7 +317,5 @@ export class CategoriesDropdownComponent implements OnInit {
     this.subscriptions.add(subscription);
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
+
 }

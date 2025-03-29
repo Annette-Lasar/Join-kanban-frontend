@@ -219,7 +219,7 @@ MEDIA QUERIES
 
   .outer-summary-wrapper {
     width: 100%;
-    height: calc(100vh - $header-height - 60px - 16px);
+    height: calc(100% - $header-height);
     max-width: unset;
     @include flex-container($align: center, $justify: space-between);
     border: blue 2px solid;
@@ -227,6 +227,7 @@ MEDIA QUERIES
       width: 60%;
       height: 80%;
       margin: 0;
+      grid-auto-rows: 44px;
       align-content: center;
     }
   }

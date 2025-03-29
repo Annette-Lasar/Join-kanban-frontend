@@ -37,7 +37,8 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   categoryTouched = false;
   isFormValid: boolean = false;
   isDesktop: boolean = false;
-  
+  isNewTask: boolean = true;
+
   private subscriptions: Subscription = new Subscription();
   private resizeObserver!: ResizeObserver;
 
@@ -55,7 +56,17 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     this.subscribeToSelectedCategory();
     this.subscribeToAssignedContacts();
     this.subscribeToResetNewTaskEvent();
+    this.subscribeToTitleValidation();
+    this.subscribeToDueDateValidation();
     this.subscribeToCategoryTouched();
+    this.validateForm();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
   }
 
   loadAllData(): void {
@@ -74,12 +85,17 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   }
 
   initializeResizeObserver(): void {
+    this.isDesktop = window.innerWidth > 1024;
+
     this.resizeObserver = new ResizeObserver(() => {
-      this.isDesktop = window.innerWidth > 800;
-      this.cdr.detectChanges();
+      const current = window.innerWidth > 1024;
+      if (this.isDesktop !== current) {
+        this.isDesktop = current;
+        this.cdr.detectChanges();
+      }
     });
+
     this.resizeObserver.observe(document.body);
-    this.isDesktop = window.innerWidth > 800;
   }
 
   subscribeToSelectedCategory(): void {
@@ -87,7 +103,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       (category) => {
         if (category) {
           this.newTask = { ...this.newTask, category };
-          this.updateButtonState();
+          this.validateForm();
         }
       }
     );
@@ -121,16 +137,6 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     this.subscriptions.add(subscription);
   }
 
-  subscribeToCategoryTouched(): void {
-    const subscription = this.taskService.categoryTouched$.subscribe(
-      (touched) => {
-        this.categoryTouched = touched;
-        // this.validateForm();
-      }
-    );
-    this.subscriptions.add(subscription);
-  }
-
   resetNewTask(): void {
     this.taskCreationService.clearNewTask();
     this.taskService.setSelectedCategory(null);
@@ -139,26 +145,46 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    if (!this.isFormValid) return;
+
     const taskData = this.taskCreationService.getCurrentTask();
-
-    if (!taskData.title?.trim()) {
-      console.error('Fehler: Titel fehlt!');
-      return;
-    }
-
     this.taskCreationService.startTaskCreation('toDo', taskData);
   }
 
-  updateValidationStatus(): void {
-    this.isFormValid = this.titleIsValid && this.dueDateIsValid && this.categoryIsValid;
+  subscribeToTitleValidation(): void {
+    const subscription = this.taskService.titleIsValid$.subscribe((valid) => {
+      this.titleIsValid = valid;
+      this.validateForm();
+    });
+    this.subscriptions.add(subscription);
   }
 
-  updateButtonState(): void {
-    // this.disableCreateButton = this.categoryTouched && !this.selectedCategory;
+  subscribeToDueDateValidation(): void {
+    const subscription = this.taskService.dueDateIsValid$.subscribe((valid) => {
+      this.dueDateIsValid = valid;
+      this.validateForm();
+    });
+    this.subscriptions.add(subscription);
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-    this.resizeObserver.disconnect();
+  subscribeToCategoryTouched(): void {
+    const subscription = this.taskService.categoryTouched$.subscribe(
+      (touched) => {
+        this.categoryTouched = touched;
+        this.validateForm();
+      }
+    );
+    this.subscriptions.add(subscription);
   }
+
+  validateForm(): void {
+    const isCategoryValid =
+      this.selectedCategory !== null ||
+      (this.isNewTask && this.categoryTouched);
+
+    this.isFormValid =
+      this.titleIsValid && this.dueDateIsValid && isCategoryValid;
+  }
+
+
 }

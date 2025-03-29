@@ -25,11 +25,13 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
   @Input() task: Task | null = null;
   @Input() contacts: Contact[] = [];
   @Input() isNewTask: boolean = false;
+  
   filteredContacts: Contact[] | undefined = this.task?.contacts;
   assignedContacts: Contact[] = [];
   searchTerm: string = '';
   isContactsListVisible: boolean = false;
-  subscriptions = new Subscription();
+  
+  private subscriptions: Subscription = new Subscription();
 
   constructor(private taskService: TaskService) {}
 
@@ -65,6 +67,10 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(): void {
     this.initializeContacts();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   toggleContactsList(event: Event): void {
@@ -127,7 +133,5 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
+
 }

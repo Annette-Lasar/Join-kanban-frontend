@@ -1,34 +1,43 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
-import { InfoComponent } from '../shared/components/info/info.component';
 import { LegalLinksComponent } from '../shared/components/legal-links/legal-links.component';
 import { ButtonPropertyService } from '../shared/services/button-propertys.service';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'join-welcome',
   standalone: true,
-  imports: [
-    CommonModule,
-    LoginComponent,
-    SignUpComponent,
-    LegalLinksComponent,
-    InfoComponent,
-  ],
+  imports: [CommonModule, LoginComponent, SignUpComponent, LegalLinksComponent],
   templateUrl: './welcome.component.html',
   styleUrl: './welcome.component.scss',
 })
 export class WelcomeComponent implements OnInit, OnDestroy {
   loginStatus: boolean = true;
   showSuccessMessage: boolean = false;
-  subscriptions = new Subscription();
+  showIntroAnimation: boolean = true;
+  isDesktop: boolean = false;
 
-  constructor(private buttonPropertyService: ButtonPropertyService) {}
+  private resizeObserver!: ResizeObserver;
+  private subscriptions: Subscription = new Subscription();
+
+  constructor(
+    private buttonPropertyService: ButtonPropertyService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.getUpdatedLoginStatus();
+    this.limitIntroAnimation();
+    this.initializeResizeObserver();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
   }
 
   getUpdatedLoginStatus(): void {
@@ -40,6 +49,26 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     this.subscriptions.add(subscription);
   }
 
+  limitIntroAnimation(): void {
+    setTimeout(() => {
+      this.showIntroAnimation = false;
+    }, 2500);
+  }
+
+  initializeResizeObserver(): void {
+    this.isDesktop = window.innerWidth > 1024;
+
+    this.resizeObserver = new ResizeObserver(() => {
+      const current = window.innerWidth > 1024;
+      if (this.isDesktop !== current) {
+        this.isDesktop = current;
+        this.cdr.detectChanges();
+      }
+    });
+
+    this.resizeObserver.observe(document.body);
+  }
+
   onRegistrationSuccess(): void {
     this.showSuccessMessage = true;
     setTimeout(() => {
@@ -47,11 +76,5 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     }, 2000);
   }
 
-  /*   onToggleShowLogin(show: boolean) {
-    this.showLogin = show;
-  } */
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
 }

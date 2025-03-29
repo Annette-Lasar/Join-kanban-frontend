@@ -1,5 +1,6 @@
 @if(task || isNewTask) {
 <div class="categories-dropdown-wrapper">
+  <span>{{ categoryTouched }}</span>
   <div
     class="categories-wrapper"
     [ngStyle]="{
@@ -191,9 +192,13 @@
 </div>
 <div
   class="category-warning red"
-  [style.opacity]="selectedCategory ? '0' : '1'"
+  [style.opacity]="
+    (isNewTask && categoryTouched && !selectedCategory) ||
+    (!isNewTask && !selectedCategory)
+      ? 1
+      : 0
+  "
 >
   Please select a category
 </div>
 }
-

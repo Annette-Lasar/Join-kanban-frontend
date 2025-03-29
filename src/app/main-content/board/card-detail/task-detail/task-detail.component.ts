@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { InfoComponent } from '../../../../shared/components/info/info.component';
 import { Task } from '../../../../shared/interfaces/task.interface';
 import { Subtask } from '../../../../shared/interfaces/task.interface';
 import { TextFormatterService } from '../../../../shared/services/text-formatter.service';
@@ -16,7 +15,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'join-task-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, ButtonComponent, InfoComponent],
+  imports: [CommonModule, FormsModule, ButtonComponent],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.scss',
 })
@@ -24,7 +23,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   @Input() task: Task | null = null;
   pathPrefix: string = 'assets/icons/prio_';
   isWarningMessageVisible: boolean = false;
-  private subscriptions = new Subscription();
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private textFormatterService: TextFormatterService,
@@ -40,6 +39,10 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.listenForOriginalTaskStatusEvent();
     this.subscribeToDeleteTaskEvent();
     this.getUpdatedWarningBoxStatus();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   getUpdatedTasksSubject() {
@@ -105,7 +108,5 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.buttonPropertyService.setIsTaskDetailVisibleStatusSubject(false);
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
+
 }

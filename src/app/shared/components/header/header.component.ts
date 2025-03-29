@@ -24,7 +24,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isMenuVisible: boolean = false;
   userInitials: string = '';
   isLoggedIn: boolean = false;
-  subscriptions = new Subscription();
+  
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -36,6 +37,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.getUserInitials();
     this.isLoggedIn = this.checkIfLoggedInService.checkIfLoggedIn();
     this.subscribeToHeaderContextMenuStatus();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   getUserInitials(): void {
@@ -72,7 +77,5 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.headerStatusService.setHeaderContextMenuStatus(false);
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
+
 }

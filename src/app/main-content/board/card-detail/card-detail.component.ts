@@ -28,7 +28,7 @@ export class CardDetailComponent implements OnInit, OnDestroy {
   @Input() contacts: Contact[] = [];
   @Input() categories: Category[] = [];
   editMode: boolean = false;
-  private subscriptions = new Subscription();
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private buttonPropertyService: ButtonPropertyService,
@@ -43,6 +43,10 @@ export class CardDetailComponent implements OnInit, OnDestroy {
     this.listenToOriginalTaskState();
     this.cancelEdit();
     this.cdr.detectChanges();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   getUpdatedEditMode() {
@@ -83,7 +87,5 @@ export class CardDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.add(subscription);
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
+
 }

@@ -74,7 +74,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   message: string = '';
 
   private resizeObserver!: ResizeObserver;
-  private subscriptions = new Subscription();
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private dataLoaderService: DataLoaderService,
@@ -105,6 +105,9 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
   }
 
   getUpdatedMessage(): void {
@@ -126,7 +129,6 @@ export class BoardComponent implements OnInit, OnDestroy {
   subscribeToTasks(): void {
     const subscription = this.taskService.tasks$.subscribe((tasks) => {
       this.tasks = tasks;
-      // this.filteredTasks = [...tasks];
       const newFiltered = [...tasks];
       console.log('filtered Tasks: ', newFiltered);
       if (
@@ -166,12 +168,17 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   initializeResizeObserver(): void {
-    this.resizeObserver = new ResizeObserver(() => {
-      this.isDesktop = window.innerWidth > 1024;
-      this.cdr.detectChanges();
-    });
-    this.resizeObserver.observe(document.body);
     this.isDesktop = window.innerWidth > 1024;
+
+    this.resizeObserver = new ResizeObserver(() => {
+      const current = window.innerWidth > 1024;
+      if (this.isDesktop !== current) {
+        this.isDesktop = current;
+        this.cdr.detectChanges();
+      }
+    });
+
+    this.resizeObserver.observe(document.body);
   }
 
   private categorizeTasksByBoardList(): void {
@@ -325,53 +332,6 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.taskService.setAssignedSubtasks([]);
   }
 
-  /*   filterTasks(): void {
-    const term = this.searchTerm.toLowerCase().trim();
-
-    this.filteredTasks = this.taskService
-      .getTasks()
-      .filter(
-        (task) =>
-          task.title.toLowerCase().includes(term) ||
-          task.description.toLowerCase().includes(term)
-      );
-    this.filteredTasksByBoardList = this.taskService.getTasksByBoardList(
-      this.filteredTasks
-    );
-  } */
-
-  /* filterTasks(): void {
-    const term = this.searchTerm.toLowerCase().trim();
-
-    const filteredTasks = this.taskService
-      .getTasks()
-      .filter(
-        (task) =>
-          task.title.toLowerCase().includes(term) ||
-          task.description.toLowerCase().includes(term)
-      );
-
-    const newFilteredByList =
-      this.taskService.getTasksByBoardList(filteredTasks);
-    const updated: { [key: string]: Task[] } = {};
-
-    for (const key of this.connectedDropLists) {
-      const newList = newFilteredByList[key] || [];
-      const oldList = this.filteredTasksByBoardList[key];
-
-      const isNew = !oldList;
-
-      const hasChanged =
-        isNew ||
-        oldList.length !== newList.length ||
-        oldList.some((task, i) => task.id !== newList[i]?.id);
-
-      updated[key] = hasChanged ? newList : oldList;
-    }
-
-    this.filteredTasksByBoardList = updated;
-  } */
-
   filterTasks(): void {
     const term = this.searchTerm.toLowerCase().trim();
     const filteredTasks = this.taskService
@@ -437,16 +397,6 @@ export class BoardComponent implements OnInit, OnDestroy {
   clearSearch(): void {
     this.searchTerm = '';
     this.filterTasks();
-  }
-
-  toggleContainerVisibility(newMessage: string) {
-    /* this.message = newMessage;
-    this.isInfoContainerVisible = !this.isInfoContainerVisible;
-    this.boardStatusService.setBoardSuccessStatus(this.isInfoContainerVisible); */
-  }
-
-  hideContainer() {
-    // this.isInfoContainerVisible = false;
   }
 
   getFormattedBoardListName(boardListName: string, action: string): string {
