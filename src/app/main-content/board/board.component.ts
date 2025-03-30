@@ -70,8 +70,15 @@ export class BoardComponent implements OnInit, OnDestroy {
   isAddTaskOverlayVisible: boolean = false;
   highlightedList: string | null = null;
   selectedTask: Task | null = null;
+  selectedCategory: Category | null = null;
   searchTerm: string = '';
   message: string = '';
+  titleIsValid = false;
+  dueDateIsValid = false;
+  categoryTouched = false;
+  isFormValid: boolean = false;
+  isNewTask: boolean = true;
+
 
   private resizeObserver!: ResizeObserver;
   private subscriptions: Subscription = new Subscription();
@@ -101,6 +108,10 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.subscribeToCloseAddTaskOverlayEvent();
     this.subscribeToInfoBoxSubject();
     this.subscribeToResetNewTaskEvent();
+    this.subscribeToTitleValidation();
+    this.subscribeToDueDateValidation();
+    this.subscribeToCategoryTouched();
+    this.validateForm();
   }
 
   ngOnDestroy(): void {
@@ -130,7 +141,6 @@ export class BoardComponent implements OnInit, OnDestroy {
     const subscription = this.taskService.tasks$.subscribe((tasks) => {
       this.tasks = tasks;
       const newFiltered = [...tasks];
-      console.log('filtered Tasks: ', newFiltered);
       if (
         this.filteredTasks.length === 0 ||
         !this.arraysAreEqual(this.filteredTasks, tasks)
@@ -265,11 +275,6 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
-  logRender(title: string): string {
-    console.log('Render Task:', title);
-    return '';
-  }
-
   private updateTaskInBackend(movedTask: Task, targetList: BoardList): void {
     const updatedTask: Task = {
       ...movedTask,
@@ -290,7 +295,6 @@ export class BoardComponent implements OnInit, OnDestroy {
         this.boardStatusService.setBoardTaskOverlayOpenStatus(true);
         this.subscribeToBoardTaskOverlayOpenStatus();
         this.currentAddTaskList = list || 'toDo';
-        console.log('Zu dieser Liste hinzufügen: ', this.currentAddTaskList);
       }
     );
     this.subscriptions.add(subscription);
@@ -301,7 +305,6 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.boardStatusService.boardTaskOverlayOpenStatus$.subscribe(
         (status) => {
           this.isAddTaskOverlayVisible = status;
-          console.log('Overlay: ', this.isAddTaskOverlayVisible);
         }
       );
     this.subscriptions.add(subscription);
@@ -441,13 +444,8 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     const taskData = this.taskCreationService.getCurrentTask();
-    console.log('Task Data:', taskData);
-
-    if (!taskData.title?.trim()) {
-      console.error('Fehler: Titel fehlt!');
-      return;
-    }
-
+    if (!this.isFormValid) return;
+    
     const boardListId = this.boardListService.getBoardListIdByName(
       this.currentAddTaskList
     );
@@ -464,6 +462,46 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.currentAddTaskList,
       taskData
     );
+    this.resetAddTaskForm();
+  }
+
+  subscribeToTitleValidation(): void {
+    const subscription = this.taskService.titleIsValid$.subscribe((valid) => {
+      this.titleIsValid = valid;
+      this.validateForm();
+    });
+    this.subscriptions.add(subscription);
+  }
+
+  subscribeToDueDateValidation(): void {
+    const subscription = this.taskService.dueDateIsValid$.subscribe((valid) => {
+      this.dueDateIsValid = valid;
+      this.validateForm();
+    });
+    this.subscriptions.add(subscription);
+  }
+
+  subscribeToCategoryTouched(): void {
+    const subscription = this.taskService.categoryTouched$.subscribe(
+      (touched) => {
+        this.categoryTouched = touched;
+        this.validateForm();
+      }
+    );
+    this.subscriptions.add(subscription);
+  }
+
+  validateForm(): void {
+    const isCategoryValid =
+      this.selectedCategory !== null ||
+      (this.isNewTask && this.categoryTouched);
+
+    this.isFormValid =
+      this.titleIsValid && this.dueDateIsValid && isCategoryValid;
+  }
+
+  resetAddTaskForm(): void {
+    this.taskService.setCategoryTouched(false);
   }
 
   private arraysAreEqual(a: Task[], b: Task[]): boolean {

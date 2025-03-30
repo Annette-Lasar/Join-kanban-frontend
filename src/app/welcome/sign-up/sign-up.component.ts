@@ -185,13 +185,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
     signUpForm: NgForm
   ): void {
     this.registrationService.registerUser(registrationData).subscribe({
-      next: (response: RegistrationResponse) => {
-        console.log('Registration successful: ', response);
-        this.authService.resetUserSubject();
-        this.onSuccessfulSignUp();
-        signUpForm.resetForm();
-        this.returnToLoginPage();
-      },
+      next: () => this.nextStepsAfterSignUp(signUpForm) ,
       error: (error) => {
         console.error('Registration error: ', error);
         this.backendError =
@@ -200,6 +194,13 @@ export class SignUpComponent implements OnInit, OnDestroy {
           'Registration failed. Please try again.';
       },
     });
+  }
+
+  nextStepsAfterSignUp(signUpForm: NgForm): void {
+    this.authService.resetUserSubject();
+    this.onSuccessfulSignUp();
+    signUpForm.resetForm();
+    this.returnToLoginPage();
   }
 
   isFormValid(): boolean {
@@ -214,6 +215,4 @@ export class SignUpComponent implements OnInit, OnDestroy {
   returnToLoginPage(): void {
     this.buttonPropertyService.toggleLoginStatus();
   }
-
-
 }

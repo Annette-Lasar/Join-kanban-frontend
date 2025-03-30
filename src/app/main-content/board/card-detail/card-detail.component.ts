@@ -40,7 +40,7 @@ export class CardDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getUpdatedEditMode();
-    this.listenToOriginalTaskState();
+    // this.listenToOriginalTaskState();
     this.cancelEdit();
     this.cdr.detectChanges();
   }
@@ -55,17 +55,6 @@ export class CardDetailComponent implements OnInit, OnDestroy {
         this.editMode = status;
       });
     this.subscriptions.add(getUpdatedDetailMode);
-  }
-
-  listenToOriginalTaskState(): void {
-    const subscription =
-      this.taskStatusService.originalTaskStateSubject$.subscribe(
-        (originalTask) => {
-          if (!this.task) return;
-          console.log('Orginialzustand einer Aufgabe geladen: ', originalTask);
-        }
-      );
-    this.subscriptions.add(subscription);
   }
 
   cancelEdit(): void {
@@ -86,6 +75,4 @@ export class CardDetailComponent implements OnInit, OnDestroy {
     });
     this.subscriptions.add(subscription);
   }
-
-
 }

@@ -149,6 +149,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
 
     const taskData = this.taskCreationService.getCurrentTask();
     this.taskCreationService.startTaskCreation('toDo', taskData);
+    this.resetAddTaskForm();
   }
 
   subscribeToTitleValidation(): void {
@@ -186,5 +187,8 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       this.titleIsValid && this.dueDateIsValid && isCategoryValid;
   }
 
+  resetAddTaskForm(): void {
+    this.taskService.setCategoryTouched(false);
+  }
 
 }

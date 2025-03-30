@@ -11,15 +11,18 @@ export class TaskStatusService {
     this.originalTaskStateSubject.asObservable();
 
   /* =============================================================
-  
   METHODS
-
   ================================================================  */
   setOriginalTaskStatus(task: Task | null) {
     this.originalTaskStateSubject.next(
-      task ? {...task, contacts: [...task.contacts], subtasks: [...task.subtasks]} : null
+      task
+        ? {
+            ...task,
+            contacts: [...task.contacts],
+            subtasks: [...task.subtasks],
+          }
+        : null
     );
-    console.log('Wert von BehaviorSubject gespeichert: ', this.originalTaskStateSubject.getValue());
   }
 
   getOriginalTaskStatus(): Task | null {

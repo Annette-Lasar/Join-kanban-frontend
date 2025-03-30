@@ -40,7 +40,6 @@ export class ContactStatusService {
 
   setContactFormStatus(state: ContactFormViewState): void {
     this.contactFormStatus.next(state);
-    console.log('%ccontactFormState: ', 'color: pink;', this.contactFormStatus.getValue());
   }
 
   setShowDetailsStatus(status: boolean): void {

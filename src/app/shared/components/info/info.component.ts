@@ -40,11 +40,6 @@ export class InfoComponent implements OnInit, OnDestroy {
     const subscription = this.infoBoxService.infoBoxSubject$.subscribe(
       (message) => {
         this.infoMessage = message;
-        console.log(
-          '%cInfoComponent updated: ',
-          'color: orchid;',
-          this.infoMessage
-        );
       }
     );
     this.subscriptions.add(subscription);
@@ -55,7 +50,6 @@ export class InfoComponent implements OnInit, OnDestroy {
   }
 
   onConfirmDelete(): void {
-    console.log('%c OK-Button in InfoComponent geklickt!', 'color: red;');
     this.infoBoxService.triggerDelete();
   }
 }

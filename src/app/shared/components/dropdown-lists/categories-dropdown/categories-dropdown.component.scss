@@ -17,6 +17,7 @@
   padding-inline: 0.25em;
   @include flex-container();
   cursor: pointer;
+  background-color: $white;
   .category-text {
     @include flex-container($justify: flex-start, $gap: 8px);
     flex: 1 1 0;

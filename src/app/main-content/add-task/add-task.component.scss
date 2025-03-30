@@ -18,7 +18,6 @@
 .add-task-button-wrapper {
   height: 40px;
   @include flex-container();
-  border: orchid 1px solid;
   .button-wrapper {
     @include flex-container($justify: flex-start);
     gap: 8px;

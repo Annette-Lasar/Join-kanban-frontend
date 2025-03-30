@@ -19,6 +19,5 @@ export class HelpUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoggedIn = this.checkIfLoggedInService.checkIfLoggedIn();
-    console.log('help logged in: ', this.isLoggedIn);
   }
 }

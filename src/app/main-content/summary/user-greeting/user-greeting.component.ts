@@ -33,7 +33,6 @@ export class UserGreetingComponent implements OnInit, OnDestroy {
     const subscription = 
     this.authService.userSubject$.subscribe(user => {
       this.user = user;
-      console.log('Aktueller User: ', this.user);
     });
     this.subscriptions.add(subscription);
   }

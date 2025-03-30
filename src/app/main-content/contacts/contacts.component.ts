@@ -88,7 +88,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
         next: (contacts) => {
           this.contacts = contacts;
           this.groupContacts();
-          console.log('Kontakte auf dem Board:', this.contacts);
         },
         error: (err) => console.error('Fehler beim Laden der Kontakte:', err),
       });
@@ -220,6 +219,5 @@ export class ContactsComponent implements OnInit, OnDestroy {
 
   setSecurityInfoStatus(newStatus: boolean) {
     this.infoBoxStatus = newStatus;
-    console.log('neuer Status: ', this.infoBoxStatus);
   }
 }

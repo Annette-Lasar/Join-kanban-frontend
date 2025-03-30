@@ -18,6 +18,7 @@
   height: 24px;
   padding-inline: 0.3em;
   @include flex-container();
+  background-color: $white;
 }
 .search-contact-input {
   width: 100%;
@@ -66,7 +67,6 @@
     height: 24px;
     @include flex-container($justify: center);
     font-size: 0.7rem;
-    border: black 1px solid;
     border-radius: 50%;
   }
 }

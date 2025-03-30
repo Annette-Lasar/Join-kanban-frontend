@@ -1,8 +1,38 @@
-@import "../../../../scss_files/mixins.scss#";
+@import "../../../../scss_files/variables.scss";
+@import "../../../../scss_files/mixins.scss";
 
-.greetings-container {
-  display: none;
+:host {
+  display: block;
+  width: 40%;
+  padding: 1em;
+  background-color: $verylightgray;
+  @include flex-container($justify: center);
+  opacity: 0;
+  animation: fadeIn 0.8s ease forwards;
 }
+
+:host-context(.greeting-overlay) {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  inset: 0;
+  background-color: $verylightgray;
+  z-index: 5;
+  @include flex-container($justify: center);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 /* ===================================================================
 MEDIA QUERIES
@@ -13,7 +43,6 @@ MEDIA QUERIES
     width: 100%;
     margin: 0 1em 0 0;
     @include flex-container($direction: column);
-    border: orange 2px solid;
   }
 
   .greeting {

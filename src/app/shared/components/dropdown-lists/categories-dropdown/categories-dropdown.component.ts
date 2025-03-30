@@ -82,7 +82,6 @@ export class CategoriesDropdownComponent implements OnInit {
     this.isCategoriesListVisible = !this.isCategoriesListVisible;
     event.stopPropagation();
     this.filterCategories();
-
   }
 
   setSelectedCategory(newCategory: Category): void {
@@ -216,11 +215,8 @@ export class CategoriesDropdownComponent implements OnInit {
   subscribeToDeleteCategorySubject(): void {
     const subscription = this.actionService.deleteCategoryEvent.subscribe(
       () => {
-        console.log('Button wurde geklickt. Jetzt lauschen wir auf die ID...');
-
         const categorySubscription =
           this.actionService.deleteCategorySubject$.subscribe((categoryId) => {
-            console.log('Empfange: CategoryId: ', categoryId);
             if (categoryId !== null) {
               this.markCategoryForDeletion(categoryId);
             }
@@ -241,7 +237,6 @@ export class CategoriesDropdownComponent implements OnInit {
       this.categories.splice(index, 1);
       this.filteredCategories.splice(index, 1);
       this.deletedCategoryIds.push(categoryId);
-      console.log('gelöschte Kategorien-IDs: ', this.deletedCategoryIds);
       this.infoBoxService.setInfoBoxStatus(false);
       if (this.selectedCategory?.id === categoryId) {
         this.selectedCategory = null;
@@ -252,12 +247,10 @@ export class CategoriesDropdownComponent implements OnInit {
 
   deleteMarkedCategories(): void {
     const failedDeletes: number[] = [];
-    console.log('failedDeletes: ', failedDeletes);
 
     this.deletedCategoryIds.forEach((categoryId) => {
       this.categoryService.deleteData(categoryId).subscribe({
         next: () => {
-          console.log(`Kategorie mit Id ${categoryId} erfolgreich gelöscht.`);
           this.infoBoxService.setInfoBoxStatus(false);
         },
         error: (err) => {
@@ -316,6 +309,4 @@ export class CategoriesDropdownComponent implements OnInit {
     );
     this.subscriptions.add(subscription);
   }
-
-
 }

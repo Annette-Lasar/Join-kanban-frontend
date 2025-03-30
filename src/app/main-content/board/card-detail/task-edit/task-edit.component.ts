@@ -129,7 +129,6 @@ export class TaskEditComponent implements OnInit, OnDestroy {
   subscribeToSelectedCategory() {
     const subscription = this.taskService.selectedCategorySubject$.subscribe(
       (category) => {
-        console.log('Kategorie: ', category);
         this.selectedCategory = category;
         this.validateForm();
       }
@@ -166,17 +165,18 @@ export class TaskEditComponent implements OnInit, OnDestroy {
     this.actionService.saveEditedTaskEvent.emit(this.editedTask.id);
 
     this.saveEditedTask().subscribe({
-      next: (updatedTask) => {
-        console.log('Backend-Response:', updatedTask);
-        this.taskService.clearSelectedCategory();
-        this.taskService.clearAssignedContacts();
-        this.actionService.handleInfoContainers({
-          infoText: 'Task successfully edited.',
-          isVisible: true,
-          persistent: false,
-        });
-      },
+      next: () => this.handleSuccess(),
       error: (err) => console.error('Fehler beim Speichern:', err),
+    });
+  }
+
+  handleSuccess(): void {
+    this.taskService.clearSelectedCategory();
+    this.taskService.clearAssignedContacts();
+    this.actionService.handleInfoContainers({
+      infoText: 'Task successfully edited.',
+      isVisible: true,
+      persistent: false,
     });
   }
 
@@ -191,8 +191,6 @@ export class TaskEditComponent implements OnInit, OnDestroy {
 
     this.taskService.updateGeneralTaskState(updatedTask);
 
-    return this.taskService
-      .patchData(updatedTask.id!, updatedTask)
-      .pipe(tap(() => console.log('Aufgabe erfolgreich aktualisiert!')));
+    return this.taskService.patchData(updatedTask.id!, updatedTask);
   }
 }

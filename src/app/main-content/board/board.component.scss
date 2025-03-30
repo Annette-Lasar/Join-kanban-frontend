@@ -111,10 +111,8 @@ join-info {
     "awaitFeedback"
     "done";
   gap: 1em;
-  border: green 1px solid;
   .list {
     width: 100%;
-    border: orange 1px solid;
     overflow-y: auto;
   }
   .board-list-headline-wrapper {
@@ -167,11 +165,10 @@ join-info {
   padding-inline: 0.5em;
   overflow-x: auto;
   @include flex-container($justify: flex-start, $gap: 1em);
-  border: royalblue 2px solid;
 }
 
 .task-card-wrapper {
-  min-height: 100px; /* Sicherstellen, dass leere Listen sichtbar sind */
+  min-height: 100px; 
   padding: 10px;
   border: 2px solid transparent;
   transition: border 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
@@ -205,16 +202,13 @@ join-info {
   }
   form {
     height: calc(100% - 50px);
-    border: green 2px solid;
   }
   .add-task-content {
     height: calc(100% - 48px);
     overflow-y: auto;
-    border: red 1px solid;
   }
   .info-and-add-task-button-wrapper {
     margin: 12px 0 0;
-    border: royalblue 2px solid;
     @include flex-container();
     .required-info {
       font-size: 0.6rem;

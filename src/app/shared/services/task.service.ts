@@ -145,10 +145,6 @@ export class TaskService {
 
   setSelectedCategory(category: Category | null): void {
     this.selectedCategorySubject.next(category);
-    console.log(
-      'gewählte Kategorie: ',
-      this.selectedCategorySubject.getValue()
-    );
   }
 
   setCategoryTouched(touched: boolean): void {
@@ -165,7 +161,6 @@ export class TaskService {
 
   setNewSubtasks(subtasks: Subtask[]): void {
     this.newSubtasksSubject.next(subtasks);
-    console.log('Neue Subtasks hinzugefügt: ', this.getNewSubtasks());
   }
 
   setCurrentTask(task: Task): void {
@@ -188,7 +183,6 @@ export class TaskService {
   Methods to interact with frontend for new or changed task data
   ========================================================================= */
   updateGeneralTaskState(updatedTask: Partial<Task>): void {
-    console.log('🔎 UPDATED TASK:', updatedTask);
     const tasks = this.tasksSubject.getValue();
     let hasChanges = false;
 
@@ -278,10 +272,6 @@ export class TaskService {
 
   clearSelectedCategory(): void {
     this.setSelectedCategory(null);
-    console.log(
-      'SelectedCategory zurückgesetzt: ',
-      this.selectedCategorySubject.getValue()
-    );
   }
 
   private handleUpdateError(subtaskId: number, error: any): void {
@@ -304,15 +294,7 @@ export class TaskService {
 
   deleteTaskFromBackend(taskId: number): void {
     this.deleteData(taskId).subscribe({
-      next: () => {
-        console.log('Task successfully deleted from Backend');
-        this.infoBoxService.setInfoBox({
-          isVisible: false,
-          persistent: true,
-        });
-
-        this.showSuccessMessage('Task successfully deleted!');
-      },
+      next: () => this.showSuccessMessage('Task successfully deleted!'),
       error: (err) => console.error('Issue deleting task: ', err),
     });
   }
@@ -354,7 +336,6 @@ export class TaskService {
   }
 
   showSuccessMessage(message: string) {
-    console.log('Ich werde ausgeführt');
     setTimeout(() => {
       this.infoBoxService.setInfoBox({
         isVisible: true,

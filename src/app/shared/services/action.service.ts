@@ -137,7 +137,7 @@ export class ActionService {
       this.closeEditModeEvent.emit();
       this.buttonPropertyService.setTaskEditMode(false);
     } else {
-      console.log(`Unknown status ${status}`);
+      console.warn(`Unknown status ${status}`);
     }
   }
 
@@ -233,7 +233,6 @@ export class ActionService {
 
       case DeleteAction.CONTACT:
         this.deleteContactEvent.emit();
-        console.log(`deleteContact wurde aufgerufen mit ID: ${id}`);
         this.deleteContactSubject.next(id);
         break;
 

@@ -13,7 +13,6 @@ header {
   max-width: 600px;
   margin: 0 auto;
   @include flex-container();
-  border: blue 1px solid;
   & p {
     display: none;
   }
@@ -23,12 +22,10 @@ header {
   width: 90%;
   position: relative;
   @include flex-container($justify: flex-end);
-  border: greenyellow 1px solid;
 }
 
 .header-icon-wrapper {
   @include flex-container($gap: 16px);
-  border: purple 1px solid;
   .header-help-icon {
     display: none;
   }
@@ -36,7 +33,6 @@ header {
     width: 40px;
     height: 40px;
     @include flex-container($justify: center);
-    // border: $darkblue 2px solid;
     border-radius: 50%;
     font-weight: 700;
     color: $lightblue;
@@ -61,7 +57,6 @@ MEDIA QUERIES
     max-width: unset;
     & p {
       display: block;
-      border: red 1px solid;
     }
   }
 

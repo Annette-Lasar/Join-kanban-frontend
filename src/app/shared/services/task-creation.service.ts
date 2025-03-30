@@ -32,15 +32,7 @@ export class TaskCreationService {
     const newTask = this.createNewTask(boardListName, completeTaskData) as Task;
 
     this.taskService.addData(newTask).subscribe({
-      next: (createdTask) => {
-        console.log('New task successfully created:', createdTask);
-        this.clearNewTask();
-        this.taskService.clearSelectedCategory();
-        this.taskService.clearAssignedContacts();
-        this.boardStatusService.setBoardTaskOverlayOpenStatus(false);
-        this.showSuccessMessage();
-        this.directToBoard();
-      },
+      next: () => this.nextStepsAfterTaskCreation(),
       error: (err) => console.error('Error creating task:', err),
     });
   }
@@ -66,7 +58,6 @@ export class TaskCreationService {
 
   getCurrentTask(): Partial<Task> {
     const currentTask = this.newTaskSubject.getValue();
-    console.log('Current Task im getCurrentTask: ', currentTask);
 
     return {
       ...currentTask,
@@ -96,6 +87,15 @@ export class TaskCreationService {
       board: 1,
       created_by: userId,
     };
+  }
+
+  nextStepsAfterTaskCreation(): void {
+    this.clearNewTask();
+    this.taskService.clearSelectedCategory();
+    this.taskService.clearAssignedContacts();
+    this.boardStatusService.setBoardTaskOverlayOpenStatus(false);
+    this.showSuccessMessage();
+    this.directToBoard();
   }
 
   showSuccessMessage(): void {

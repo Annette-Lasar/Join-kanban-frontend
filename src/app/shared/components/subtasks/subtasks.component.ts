@@ -25,7 +25,7 @@ import { ButtonPropertyService } from '../../services/button-propertys.service';
 export class SubtasksComponent implements OnInit, OnDestroy, OnChanges {
   @Input() task!: Task;
   @Input() isNewTask: boolean = false;
-  
+
   get subtasks(): SubtaskUI[] {
     return (this.task?.subtasks ?? []) as SubtaskUI[];
   }
@@ -92,7 +92,6 @@ export class SubtasksComponent implements OnInit, OnDestroy, OnChanges {
   subscribeToToggleAddSubtaskBox(): void {
     const subscription = this.actionService.addSubtaskEvent.subscribe(
       ({ message, id, event }) => {
-        console.log('event: ', event);
         this.handleSubtaskAction(message);
         this.subscribeToAddSubtaskBox();
       }
@@ -128,7 +127,7 @@ export class SubtasksComponent implements OnInit, OnDestroy, OnChanges {
         this.buttonPropertyService.setCancelAddSubtaskvisible(false);
         break;
       default:
-        console.log(`Unknown action: ${message}`);
+        console.warn(`Unknown action: ${message}`);
     }
   }
 
@@ -192,8 +191,6 @@ export class SubtasksComponent implements OnInit, OnDestroy, OnChanges {
       this.task.subtasks.push(newSubtask);
       this.taskService.setSubtasks([...this.task.subtasks]);
       this.cancelSubtask();
-    } else {
-      console.log('Please enter a subtask title.');
     }
   }
 
@@ -216,9 +213,7 @@ export class SubtasksComponent implements OnInit, OnDestroy, OnChanges {
     const index = this.task.subtasks.findIndex((subtask) => subtask.id === id);
     if (index !== -1) {
       this.task.subtasks.splice(index, 1);
-    } else {
-      console.log(`Subtask with the ID ${id} was not found.`);
-    }
+    } 
     this.taskService.setSubtasks([...this.task.subtasks]);
   }
 
@@ -228,9 +223,7 @@ export class SubtasksComponent implements OnInit, OnDestroy, OnChanges {
     );
     if (index !== -1) {
       this.newSubtasks.splice(index, 1);
-    } else {
-      console.log(`Subtask with the ID ${id} was not found.`);
-    }
+    } 
     this.taskService.setNewSubtasks([...this.newSubtasks]);
   }
 
@@ -336,12 +329,9 @@ export class SubtasksComponent implements OnInit, OnDestroy, OnChanges {
     const subscription =
       this.buttonPropertyService.isCancelAddSubtaskVisibleSubject$.subscribe(
         (status) => {
-          console.log('aktueller Status im Service: ', status);
           this.isCancelAddSubtaskVisible = status;
         }
       );
     this.subscriptions.add(subscription);
   }
-
-
 }

@@ -4,7 +4,6 @@ import {
   HostListener,
   OnInit,
   OnChanges,
-  SimpleChanges,
   OnDestroy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -125,7 +124,6 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
       currentContacts = currentContacts.filter((c) => c.id !== contact.id); // Kontakt entfernen
     }
 
-    console.log('%cAktuell zugewiesene Kontakte: ', 'color: red;', currentContacts);
     this.taskService.setAssignedContacts(currentContacts);
 
     if (this.task) {

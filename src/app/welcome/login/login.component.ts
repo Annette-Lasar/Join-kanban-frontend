@@ -55,10 +55,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onSubmitLogin(loginForm: NgForm): void {
-    if (!this.username || !this.password) {
-      console.log('Please enter email and password.');
-      return;
-    }
+    if (!this.username || !this.password) return;
 
     this.verifyUserInformation(loginForm);
   }
@@ -67,7 +64,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     verifyUserInformation(loginForm: NgForm) {
       this.authService.login(this.username, this.password).subscribe({
         next: () => {
-          console.log('Login erfolgreich!');
           this.router.navigate(['/main-content/summary']);
         },
         error: (err) => {

@@ -67,7 +67,6 @@ export class ButtonComponent {
   }
 
   onClick(event: Event): void {
-    console.log('%cAction-Message: ', 'color: green', this.actionMessage);
     if (!this.actionMessage?.actionType) {
       console.warn('Kein actionType definiert!');
       return;

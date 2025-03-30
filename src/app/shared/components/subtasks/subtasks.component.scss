@@ -7,6 +7,7 @@
   @include flex-container();
   border: $bordergray 1px solid;
   border-radius: 4px;
+  background-color: $white;
   input[type="text"] {
     padding: 0.25em;
     flex: 1 1 0;
@@ -18,7 +19,6 @@
   }
   .cancel-and-add-subtask-wrapper {
     @include flex-container();
-    border: red 1px solid;
     .separator {
       width: 1px;
       background-color: $bordergray;

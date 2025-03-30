@@ -16,13 +16,11 @@
     "assigned-to"
     "subtasks";
   overflow-y: auto;
-  border: green 1px solid;
 }
 
 .add-task-item {
   margin-block: 0.3em;
   padding: 0.5em 0;
-  border: blue 1px solid;
   .headword {
     margin-block: 0 0.5em;
   }
@@ -136,7 +134,7 @@ MEDIA QUERIES
 
 @media (min-width: 64em) {
   .add-task-grid {
-    height: calc(100vh - 400px);
+    height: calc(100% - 72px);
     max-width: unset;
     grid-template-columns: 1fr 2px 1fr;
     grid-template-areas:
@@ -147,10 +145,7 @@ MEDIA QUERIES
     column-gap: 12px;
   }
 
-  /*   .assigned-to,
-  .subtasks {
-    margin: 0 0 100px 0;
-  } */
+
 
   .separator-line {
     grid-row: 1 / -1;
