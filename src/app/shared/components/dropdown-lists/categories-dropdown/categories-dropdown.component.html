@@ -1,7 +1,7 @@
 @if(task || isNewTask) {
-<div class="categories-dropdown-wrapper">
+<div class="categories-dropdown-wrapper rounded-sm">
   <div
-    class="categories-wrapper"
+    class="categories-wrapper rounded-sm"
     [ngStyle]="{
       border: isCategoriesListVisible
         ? '#29abe2 1px solid'
@@ -9,7 +9,7 @@
     }"
   >
     @if(!isCategoriesListVisible) {
-    <div class="category-text-wrapper" (click)="toggleCategoriesList($event)">
+    <div class="category-text-wrapper rounded-sm cursor-pointer" (click)="toggleCategoriesList($event)">
       @if (selectedCategory) {
       <div class="category-text">
         <svg class="colored-dot" width="16" height="16">
@@ -47,7 +47,7 @@
     } @else {
     <input
       type="text"
-      class="search-category-input"
+      class="search-category-input rounded-sm"
       placeholder="Search categories ..."
       [(ngModel)]="searchTerm"
       (input)="filterCategories()"
@@ -59,17 +59,17 @@
   <ul class="categories-list">
     @if(!newCategoryMode) {
     <li
-      class="category-list-item create-new-category-wrapper"
+      class="category-list-item create-new-category-wrapper rounded-sm cursor-pointer"
       (click)="toggleNewCategoryButtons('show', $event)"
     >
       <span> New category</span>
       <img class="add-new-category" src="assets/icons/plus.svg" alt="" />
     </li>
     } @else {
-    <li class="category-list-item create-new-category-wrapper">
+    <li class="category-list-item create-new-category-wrapper rounded-sm cursor-pointer">
       <div class="new-category-input-wrapper">
         <input
-          class="color-picker"
+          class="color-picker cursor-pointer"
           type="color"
           [(ngModel)]="randomCategoryColor"
           [value]="randomCategoryColor"
@@ -83,7 +83,7 @@
           [(ngModel)]="newCategoryName"
         />
       </div>
-      <div class="new-category-button-wrapper">
+      <div class="new-category-button-wrapper cursor-pointer">
         <img
           class="abort-new-category"
           src="assets/icons/close.svg"
@@ -92,7 +92,7 @@
         />
         <div class="separator"></div>
         <img
-          class="save-new-category"
+          class="save-new-category cursor-pointer"
           src="assets/icons/check.svg"
           alt=""
           (click)="createNewCategory($event)"
@@ -100,7 +100,7 @@
       </div>
     </li>
     } @for(category of filteredCategories; track category) {
-    <li class="category-list-item" (click)="setSelectedCategory(category)">
+    <li class="category-list-item rounded-sm" (click)="setSelectedCategory(category)">
       @if (isEditingCategoryId === category.id && selectedCategoryEdit) {
       <input
         class="color-picker"
@@ -111,7 +111,7 @@
       />
 
       <input
-        class="change-category-name"
+        class="change-category-name rounded-sm"
         type="text"
         [(ngModel)]="selectedCategoryEdit.name"
         (click)="$event.stopPropagation()"
@@ -119,7 +119,7 @@
 
       <div class="category-edit-buttons">
         <img
-          class="abort-edit-category"
+          class="abort-edit-category cursor-pointer"
           src="assets/icons/close.svg"
           alt=""
           (click)="abortEditCategory($event)"
@@ -151,7 +151,7 @@
       @if (category.id === 1 || category.id === 2) { } @else {
       <div class="category-edit-wrapper">
         <img
-          class="edit-icon"
+          class="edit-icon cursor-pointer"
           src="assets/icons/edit_dark.svg"
           alt=""
           (click)="toggleEditCategory(category, $event)"
@@ -173,7 +173,7 @@
             nextActionType: 'deleteCategory',
             caption1: 'Yes, proceed',
             caption2: 'No, preserve',
-            id: selectedCategory?.id,
+            id: category?.id,
             isVisible: true,
             persistent: true
           }"

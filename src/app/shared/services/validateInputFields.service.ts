@@ -13,13 +13,13 @@ export class ValidateInputFieldsService {
   passwordMatchSubject$: Observable<boolean> =
     this.passwordMatchSubject.asObservable();
 
-  private nameIsValidSubject = new BehaviorSubject<boolean>(true);
+  private nameIsValidSubject = new BehaviorSubject<boolean>(false);
   nameIsValid$: Observable<boolean> = this.nameIsValidSubject.asObservable();
 
-  private emailIsValidSubject = new BehaviorSubject<boolean>(true);
+  private emailIsValidSubject = new BehaviorSubject<boolean>(false);
   emailIsValid$ = this.emailIsValidSubject.asObservable();
 
-  private phoneIsValidSubject = new BehaviorSubject<boolean>(true);
+  private phoneIsValidSubject = new BehaviorSubject<boolean>(false);
   phoneIsValid$: Observable<boolean> = this.phoneIsValidSubject.asObservable();
 
   private passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
@@ -28,7 +28,7 @@ export class ValidateInputFieldsService {
 
   private emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  private phoneRegex = /^[0-9+\-\/\s]*$/;
+  private phoneRegex = /^[0-9+\-\/\s()]*$/;
 
   checkIfPasswordIsValid(password: string | null): void {
     const isValid = password ? this.passwordRegex.test(password.trim()): false;

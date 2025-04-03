@@ -11,7 +11,6 @@
   transform: translate(-50%, 150%);
   background-color: $white;
   border: $bordergray 0.5px solid;
-  border-radius: 16px;
   visibility: hidden;
   transition: transform 0.5s, visibility 0s 0.5s;
 }
@@ -23,9 +22,7 @@
 }
 
 .inner-contact-form-wrapper {
-  height: 100%;
   position: relative;
-  border-radius: 16px;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 10% 35% 55%;
@@ -36,16 +33,14 @@
 }
 
 .close-wrapper {
-  width: 100%;
+  height: 101%;
   padding-inline: 1em;
   grid-area: close;
   @include flex-container($justify: flex-end);
   background-color: $darkblue;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
-  img {
-    cursor: pointer;
-  }
+  border-bottom: $darkblue 1px solid;
 }
 
 .form-header {
@@ -54,12 +49,14 @@
   background-color: $darkblue;
   @include flex-container($justify: flex-start);
   .headline-wrapper {
-    @include flex-container($direction: column, $align: flex-start, $justify: center, $gap: 8px);
+    @include flex-container(
+      $direction: column,
+      $align: flex-start,
+      $justify: center,
+      $gap: 8px
+    );
     img {
       display: none;
-    }
-    h2 {
-      font-size: 1.5rem;
     }
     .blue-separator-line {
       height: 2px;
@@ -79,19 +76,16 @@
 }
 
 .input-wrapper {
-  width: 100%;
   .name-wrapper,
   .mail-wrapper,
   .phone-wrapper {
     border: $bordergray 1px solid;
-    border-radius: 4px;
     &:focus-within {
       border: $lightblue 1px solid;
     }
   }
   .name {
     .name-wrapper {
-      width: 100%;
       @include flex-container($gap: 8px);
     }
     img {
@@ -101,7 +95,6 @@
 
   .mail {
     .mail-wrapper {
-      width: 100%;
       @include flex-container($gap: 8px);
     }
     img {
@@ -111,25 +104,17 @@
 
   .phone {
     .phone-wrapper {
-      width: 100%;
       @include flex-container($gap: 8px);
-    }
-    img {
-      height: 17px;
     }
   }
 
   input {
-    height: 24px;
     flex: 1 1 0;
     border: none;
-    border-radius: 4px;
     outline: none;
   }
   .warning-message {
     margin: 0.25em 0 0.5em;
-    font-size: 0.5rem;
-    color: $red;
   }
 }
 
@@ -143,7 +128,6 @@
 
 .icon-wrapper.mobile {
   width: 72px;
-  height: 72px;
   position: absolute;
   top: 45%;
   left: 50%;
@@ -154,8 +138,6 @@
   background-color: $white;
   @include flex-container($justify: center);
   .inner-icon-wrapper {
-    height: 100%;
-    width: 100%;
     @include flex-container($justify: center);
     background-color: $bordergray;
     border-radius: 50%;
@@ -199,9 +181,7 @@ MEDIA QUERIES
   }
 
   .inner-contact-form-wrapper {
-    height: 100%;
     position: relative;
-    border-radius: 16px;
     display: grid;
     grid-template-columns: 2fr 3fr;
     grid-template-rows: 10% 90%;
@@ -213,7 +193,8 @@ MEDIA QUERIES
 
   .close-wrapper {
     border-top-left-radius: unset;
-    background-color: white;
+    background-color: $white;
+    border-bottom: $white 1px solid;
   }
 
   .form-header {
@@ -225,9 +206,6 @@ MEDIA QUERIES
         width: 36px;
         height: 36px;
         display: unset;
-      }
-      .slogan {
-        font-size: 0.9rem;
       }
     }
   }
@@ -250,11 +228,6 @@ MEDIA QUERIES
   .input-wrapper {
     height: 45%;
     @include flex-container($direction: column, $align: flex-start);
-    .name,
-    .mail,
-    .phone {
-      width: 100%;
-    }
   }
 
   .icon-wrapper.mobile {
@@ -263,7 +236,6 @@ MEDIA QUERIES
 
   .icon-wrapper.desktop {
     width: 72px;
-    height: 72px;
     margin: 0 0 24px;
     grid-area: icon;
     align-self: center;
@@ -273,8 +245,6 @@ MEDIA QUERIES
     background-color: $white;
     @include flex-container($justify: center);
     .inner-icon-wrapper {
-      height: 100%;
-      width: 100%;
       @include flex-container($justify: center);
       background-color: $bordergray;
       border-radius: 50%;

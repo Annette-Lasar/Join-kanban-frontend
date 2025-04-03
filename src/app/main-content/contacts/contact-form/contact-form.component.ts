@@ -46,8 +46,9 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
   detailStatus: boolean = false;
   isInitialLoad: boolean = true;
   nameIsValid: boolean = false;
-  emailIsValid: boolean = true;
-  phoneIsValid: boolean = true;
+  emailIsValid: boolean = false;
+  phoneIsValid: boolean = false;
+  isFormValid: boolean = false;
   showAnimation = true;
 
   newContact: Omit<Contact, 'id'> = {
@@ -83,6 +84,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
     this.subscribeToCloseContactFormEvent();
     this.subscribeToValidNameField();
     this.subscribeToValidEmailField();
+    this.subscribeToValidPhoneField();
   }
 
   ngOnChanges(): void {
@@ -108,6 +110,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
         color_brightness: false,
         created_by: this.currentUser?.id ?? 4,
       };
+      this.validatePhone('');
     } else if (this.currentContact) {
       this.newContact = {
         ...this.currentContact,
@@ -118,17 +121,6 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
   checkViewport(): void {
     this.isMobile = window.innerWidth < 1024;
   }
-
-  /*   updateContactList(): void {
-    const subscription = this.contactService.currentContact$.subscribe(
-      (contact) => {
-        if (contact) {
-          this.newContact = { ...contact };
-        }
-      }
-    );
-    this.subscriptions.add(subscription);
-  } */
 
   updateContactList(): void {
     const subscription = this.contactService.currentContact$.subscribe(
@@ -144,7 +136,6 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
   getContactFormStatus(): void {
     const subscription = this.contactStatusService.contactFormStatus$.subscribe(
       (state) => {
-        // this.contactFormStatus = state.visible;
         this.isAddContactMode = state.mode === 'add';
         this.prepareFormMode();
       }
@@ -193,6 +184,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
     const subscription = this.validateInputFieldsService.nameIsValid$.subscribe(
       (isValid) => {
         this.nameIsValid = isValid;
+        this.validateForm();
       }
     );
     this.subscriptions.add(subscription);
@@ -206,6 +198,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
     const subscription =
       this.validateInputFieldsService.emailIsValid$.subscribe((isValid) => {
         this.emailIsValid = isValid;
+        this.validateForm();
       });
     this.subscriptions.add(subscription);
   }
@@ -218,6 +211,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
     const subscription =
       this.validateInputFieldsService.phoneIsValid$.subscribe((isValid) => {
         this.phoneIsValid = isValid;
+        this.validateForm();
       });
     this.subscriptions.add(subscription);
   }
@@ -274,7 +268,8 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onSubmit(): void {
-    if (this.nameIsValid && this.emailIsValid && this.phoneIsValid) {
+    this.validateForm();
+    if (this.isFormValid) {
       if (this.isAddContactMode) {
         this.handleAddContact();
       } else if (this.currentContact) {
@@ -321,6 +316,11 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
         });
       },
     });
+  }
+
+  validateForm(): void {
+    this.isFormValid =
+    this.nameIsValid && this.emailIsValid && this.phoneIsValid;
   }
 
   handleEditContact(): void {

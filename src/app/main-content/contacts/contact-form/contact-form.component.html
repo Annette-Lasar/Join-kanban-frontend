@@ -1,6 +1,6 @@
-<div class="outer-contact-form-wrapper" [ngClass]="{ show: showAnimation }">
-  <div class="inner-contact-form-wrapper">
-    <div class="close-wrapper">
+<div class="outer-contact-form-wrapper rounded-lg" [ngClass]="{ show: showAnimation }">
+  <div class="inner-contact-form-wrapper h-full rounded-lg">
+    <div class="close-wrapper w-full">
       <join-button
         [buttonIcon]="true"
         [imgSrc]="
@@ -27,17 +27,18 @@
           }}
         </h1>
         @if (isAddContactMode) {
-        <div class="slogan white">Tasks are better with a team</div>
+        <div class="slogan white text-sm">Tasks are better with a team</div>
         }
         <div class="blue-separator-line"></div>
       </div>
     </div>
     <div class="form-body">
       <form (ngSubmit)="onSubmit()" #contactForm="ngForm" novalidate>
-        <div class="input-wrapper">
-          <div class="name">
-            <div class="name-wrapper">
+        <div class="input-wrapper h-full w-full">
+          <div class="name w-full">
+            <div class="name-wrapper rounded-sm w-full">
               <input
+                class="h-24 rounded-sm"
                 type="text"
                 placeholder="Name*"
                 [(ngModel)]="newContact.name"
@@ -50,10 +51,10 @@
             </div>
 
             <div
-              class="warning-message"
+              class="warning-message red text-xs"
               [ngStyle]="{ opacity: !nameIsValid && name.touched ? 1 : 0 }"
             >
-              Please enter just one first and one last name.
+              Please enter one first and one last name.
             </div>
           </div>
 
@@ -62,27 +63,29 @@
             <p class="mail-text">
               {{ currentContact?.email }}
             </p>
-            <div class="warning-message">
+            <div class="warning-message red text-xs">
               You can't change your own username.
             </div>
           </div>
 
           } @else {
 
-          <div class="mail">
-            <div class="mail-wrapper">
+          <div class="mail w-full">
+            <div class="mail-wrapper rounded-sm w-full">
               <input
+                class="rounded-sm h-24"
                 type="email"
-                placeholder="Email"
+                placeholder="Email*"
                 [(ngModel)]="newContact.email"
                 (ngModelChange)="validateEmail($event)"
                 name="email"
                 #email="ngModel"
+                required
               />
               <img src="assets/icons/mail.svg" alt="" />
             </div>
             <div
-              class="warning-message"
+              class="warning-message red text-xs"
               [ngStyle]="{ opacity: !emailIsValid && email.touched ? 1 : 0 }"
             >
               Please enter a correct email address.
@@ -90,9 +93,10 @@
           </div>
           }
 
-          <div class="phone">
-            <div class="phone-wrapper">
+          <div class="phone w-full">
+            <div class="phone-wrapper rounded-sm w-full">
               <input
+                class="rounded-sm h-24"
                 type="tel"
                 placeholder="Phone"
                 [(ngModel)]="newContact.phone_number"
@@ -100,11 +104,12 @@
                 name="phone"
                 #phone="ngModel"
               />
-              <img src="assets/icons/phone.svg" alt="" />
+              <img src="assets/icons/phone.svg" alt="" class="h-24"/>
+              
             </div>
             <div
-              class="warning-message"
-              [ngStyle]="{ opacity: !phoneIsValid && phone.touched ? 1 : 0 }"
+              class="warning-message red text-xs"
+              [ngStyle]="{ opacity: !phoneIsValid && phone.value && phone.touched ? 1 : 0 }"
             >
               Please enter a correct phone number.
             </div>
@@ -154,9 +159,9 @@
             [width]="'150px'"
             [height]="'32px'"
             [padding]="'0'"
+            [disabled]="!isFormValid"
           />
           } @else {
-          <!-- Hier fehlen noch Eigenschaften in actionMessage -->
           <join-button
             [caption]="'Delete'"
             [buttonClass]="'light-square-button-blue-hover-completely '"
@@ -167,7 +172,6 @@
             [height]="'32px'"
             [padding]="'0'"
           />
-          <!-- Hier fehlt noch die Funktionalität -->
           <join-button
             class="create-contact-button"
             [buttonIcon]="true"
@@ -180,18 +184,19 @@
             [width]="'100px'"
             [height]="'32px'"
             [padding]="'0'"
+            [disabled]="!isFormValid"
           />
           }
         </div>
       </form>
-      <div class="icon-wrapper desktop">
+      <div class="icon-wrapper desktop h-72">
         @if (isAddContactMode) {
-        <div class="inner-icon-wrapper">
+        <div class="inner-icon-wrapper h-full w-full">
           <img src="assets/icons/person_white.svg" alt="" />
         </div>
         } @else {
         <div
-          class="inner-icon-wrapper"
+          class="inner-icon-wrapper h-full w-full"
           [style.backgroundColor]="newContact.color"
           [style.color]="newContact.color_brightness ? '#000000' : '#ffffff'"
         >
@@ -201,14 +206,14 @@
         }
       </div>
     </div>
-    <div class="icon-wrapper mobile">
+    <div class="icon-wrapper mobile h-72">
       @if (isAddContactMode) {
-      <div class="inner-icon-wrapper">
+      <div class="inner-icon-wrapper h-full w-full">
         <img src="assets/icons/person_white.svg" alt="" />
       </div>
       } @else {
       <div
-        class="inner-icon-wrapper"
+        class="inner-icon-wrapper h-full w-full"
         [style.backgroundColor]="newContact.color"
         [style.color]="newContact.color_brightness ? '#000000' : '#ffffff'"
       >

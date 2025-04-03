@@ -167,6 +167,7 @@ export class BoardComponent implements OnInit, OnDestroy {
           this.categories = categories;
           this.contacts = contacts;
           this.filterTasks();
+          console.log('Alle Kategorien: ', this.categories);
         },
         error: (err) => console.error('Error loading data: ', err),
       })

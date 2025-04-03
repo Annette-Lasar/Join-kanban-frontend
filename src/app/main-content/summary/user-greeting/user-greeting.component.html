@@ -1,11 +1,12 @@
-
-
 <div class="greetings-container">
   @if (user) {
   <span class="greeting bold_600">{{ salutation }},</span> <br />
   <span class="user-name blue bold_700">
-    {{user.userType === 'User' ? (user.firstname + ' ' + user.lastname): 'Guest'}}
+    {{
+      user.userType === "User" ? user.firstname + " " + user.lastname : "Guest"
+    }}
   </span>
   }
 </div>
+
 

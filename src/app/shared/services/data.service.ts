@@ -100,4 +100,18 @@ export class DataService {
       Authorization: `Token ${token}`,
     });
   }
+
+  resetGuestContacts(): Observable<any> {
+    return this.http.post(`${BASE_URL}/reset-guest-contacts/`, null, {
+      headers: this.getHeaders(),
+    });
+  }
+
+  
+  resetGuestTasks(): Observable<any> {
+    return this.http.post(`${BASE_URL}/reset-guest-tasks/`, null, {
+      headers: this.getHeaders(),
+    });
+  }
+  
 }

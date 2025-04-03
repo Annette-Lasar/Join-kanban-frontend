@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { BASE_URL } from '../constants/global-constants.data';
 import { User } from '../interfaces/user.interface';
 import { LocalStorageService } from './local-storage.service';
+import { DataService } from './data.service';
+
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +26,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private dataService: DataService
   ) {}
 
   guestLogin(): Observable<Partial<User>> {
@@ -88,7 +91,57 @@ export class AuthService {
     return userType === 'User' || userType === 'Guest';
   }
 
-  logout(): void {
+/*   logout(): void {
+    const userType = this.localStorageService.getUserTypeFromLocalStorage();
+    const userId = this.localStorageService.getUserIdFromLocalStorage();
+  
+    if (userType === 'Guest' && userId === 4) {
+      forkJoin([
+        this.dataService.resetGuestContacts(),
+        this.dataService.resetGuestTasks()
+      ]).subscribe({
+        next: () => {
+          console.log('Guest data reset complete.');
+          this.doLogout();
+        },
+        error: (err) => {
+          console.error('Reset failed:', err);
+          this.doLogout(); 
+        }
+      });
+    } else {
+      this.doLogout();
+    }
+  } */
+
+    logout(): void {
+      const userType = this.localStorageService.getUserTypeFromLocalStorage();
+      const userId = this.localStorageService.getUserIdFromLocalStorage();
+    
+      if (userType === 'Guest' && userId === 4) {
+        this.resetGuestData();
+      } else {
+        this.doLogout();
+      }
+    }
+  
+    resetGuestData(): void {
+      forkJoin([
+        this.dataService.resetGuestContacts(),
+        this.dataService.resetGuestTasks()
+      ]).subscribe({
+        next: () => {
+          console.log('Guest data reset complete.');
+          this.doLogout();
+        },
+        error: (err) => {
+          console.error('Reset failed:', err);
+          this.doLogout(); 
+        }
+      });
+    }
+
+  private doLogout(): void {
     this.localStorageService.clearLocalStorage();
     this.userSubject.next(null);
   }

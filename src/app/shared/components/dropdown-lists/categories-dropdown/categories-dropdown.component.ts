@@ -218,6 +218,7 @@ export class CategoriesDropdownComponent implements OnInit {
         const categorySubscription =
           this.actionService.deleteCategorySubject$.subscribe((categoryId) => {
             if (categoryId !== null) {
+              console.log('Zu löschende Kat-Observable: ', categoryId)
               this.markCategoryForDeletion(categoryId);
             }
           });
@@ -230,6 +231,9 @@ export class CategoriesDropdownComponent implements OnInit {
   }
 
   markCategoryForDeletion(categoryId: number): void {
+
+    console.log('Zum Löschen markierte Kategorie: ', categoryId);
+    
     const index = this.categories.findIndex(
       (category) => category.id === categoryId
     );
@@ -247,6 +251,7 @@ export class CategoriesDropdownComponent implements OnInit {
 
   deleteMarkedCategories(): void {
     const failedDeletes: number[] = [];
+
 
     this.deletedCategoryIds.forEach((categoryId) => {
       this.categoryService.deleteData(categoryId).subscribe({

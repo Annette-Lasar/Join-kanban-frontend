@@ -4,11 +4,6 @@
 .categories-dropdown-wrapper {
   width: 100%;
   position: relative;
-  border-radius: 4px;
-}
-
-.categories-wrapper {
-  border-radius: 4px;
 }
 
 .category-text-wrapper {
@@ -16,7 +11,6 @@
   height: 20px;
   padding-inline: 0.25em;
   @include flex-container();
-  cursor: pointer;
   background-color: $white;
   .category-text {
     @include flex-container($justify: flex-start, $gap: 8px);
@@ -29,7 +23,6 @@
   height: 20px;
   padding-inline: 0.25em;
   border: none;
-  border-radius: 4px;
   outline: none;
   &::placeholder {
     font-size: 0.75rem;
@@ -43,7 +36,7 @@
   padding: 0 0.5em;
   background-color: $white;
   position: absolute;
-  top: 12px;
+  top: 8px;
   left: 0;
   z-index: 20;
   border-bottom-left-radius: 12px;
@@ -54,9 +47,7 @@
     padding-inline: 0.5em;
     @include flex-container();
     list-style-type: none;
-    border-radius: 4px;
     background-color: $extremelightgray;
-    cursor: pointer;
     &:hover {
       background-color: $verylightgray;
     }
@@ -69,16 +60,11 @@
       @include flex-container($gap: 4px);
       .edit-icon {
         height: 20px;
-        cursor: pointer;
       }
       .separator {
         width: 1px;
         height: 16px;
         background-color: $bordergray;
-      }
-      .delete-icon {
-        height: 16px;
-        cursor: pointer;
       }
     }
 
@@ -91,7 +77,6 @@
       border-radius: 50%;
       outline: none;
       box-shadow: none;
-      cursor: pointer;
       appearance: none;
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -107,7 +92,6 @@
     .change-category-name {
       width: 60%;
       border: $bordergray 1px solid;
-      border-radius: 4px;
       outline: none;
       &:focus {
         border: $lightblue 1px solid;
@@ -119,7 +103,6 @@
   }
   .create-new-category-wrapper {
     @include flex-container();
-    cursor: pointer;
     .new-category-input-wrapper {
       width: 75%;
       @include flex-container($justify: flex-start, $gap: 8px);
@@ -142,7 +125,6 @@
       @include flex-container($gap: 4px);
       .abort-new-category {
         height: 16px;
-        cursor: pointer;
       }
       .separator {
         width: 1px;
@@ -151,7 +133,6 @@
       }
       .save-new-category {
         height: 18px;
-        cursor: pointer;
       }
     }
   }
@@ -161,7 +142,6 @@
   @include flex-container($justify: center, $gap: 4px);
   img {
     height: 20px;
-    cursor: pointer;
   }
 
   .separator {
