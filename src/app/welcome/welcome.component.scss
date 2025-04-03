@@ -10,7 +10,7 @@
 }
 
 .change-background-color {
-  animation: changeBackground 2.5s ease-out forwards;
+  animation: changeBackground 0.75s ease-out forwards;
 }
 
 @keyframes changeBackground {
@@ -35,7 +35,7 @@
 .change-logo-color #path_o,
 .change-logo-color #path_i,
 .change-logo-color #path_n {
-  animation: changeLogoColor 2.5s forwards;
+  animation: changeLogoColor 0.75s forwards;
 }
 
 @keyframes changeLogoColor {
@@ -49,7 +49,7 @@
 }
 
 .animate-logo {
-  animation: moveLogo 2.5s forwards;
+  animation: moveLogo 0.75s forwards;
 }
 
 @keyframes moveLogo {
@@ -72,7 +72,7 @@
   position: relative;
   @include flex-container(column, center, flex-end);
   opacity: 0;
-  transition: opacity 2.5s ease-in;
+  transition: opacity 0.75s ease-in;
 }
 
 .section-wrapper.fade-in {

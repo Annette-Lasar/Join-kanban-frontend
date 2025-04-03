@@ -131,7 +131,6 @@ export class AuthService {
         this.dataService.resetGuestTasks()
       ]).subscribe({
         next: () => {
-          console.log('Guest data reset complete.');
           this.doLogout();
         },
         error: (err) => {

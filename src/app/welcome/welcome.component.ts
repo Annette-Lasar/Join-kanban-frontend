@@ -52,7 +52,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
   limitIntroAnimation(): void {
     setTimeout(() => {
       this.showIntroAnimation = false;
-    }, 2500);
+    }, 750);
   }
 
   initializeResizeObserver(): void {
