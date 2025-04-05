@@ -42,7 +42,7 @@
       <div class="contacts-wrapper">
         <div class="assigned-to bold_700">Assigned to:</div>
         <ul class="contact-list">
-          @for (contact of task.contacts; track contact) {
+          @for (contact of task.contacts; track contact.id) {
           <li class="contact-item">
             <div
               class="contact-icon"
@@ -70,7 +70,7 @@
       <div class="subtasks-wrapper">
         <div class="subtasks bold_700">Subtasks:</div>
         <ul class="subtasks-list">
-          @for (subtask of task.subtasks; track subtask) {
+          @for (subtask of task.subtasks; track subtask.id) {
           <label [for]="'subtask-' + subtask.id">
             <li class="subtask-item">
               <input

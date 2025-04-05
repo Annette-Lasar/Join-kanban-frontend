@@ -21,7 +21,7 @@
         <join-contact-details />
         } @else {
         <ul class="contact-list">
-          @for (group of groupedContacts; track group) {
+          @for (group of groupedContacts; track group.key) {
           <li class="alphabet-header bold_600">
             {{ group.key }}
           </li>

@@ -45,4 +45,9 @@ export class BoardService {
       this.boardsSubject
     );
   }
+
+  getBasicBoardId(): number | undefined {
+    const boards = this.boardsSubject.getValue();
+    return boards.length > 0 ? boards[0].board_id : undefined;
+  }
 }

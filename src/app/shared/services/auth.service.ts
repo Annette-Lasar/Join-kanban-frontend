@@ -7,7 +7,6 @@ import { User } from '../interfaces/user.interface';
 import { LocalStorageService } from './local-storage.service';
 import { DataService } from './data.service';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -15,8 +14,7 @@ export class AuthService {
   private userSubject = new BehaviorSubject<User | null>(
     this.loadUserFromStorage()
   );
-  userSubject$: Observable<User | null> =
-    this.userSubject.asObservable();
+  userSubject$: Observable<User | null> = this.userSubject.asObservable();
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(
     this.hasToken()
@@ -91,56 +89,8 @@ export class AuthService {
     return userType === 'User' || userType === 'Guest';
   }
 
-/*   logout(): void {
-    const userType = this.localStorageService.getUserTypeFromLocalStorage();
-    const userId = this.localStorageService.getUserIdFromLocalStorage();
-  
-    if (userType === 'Guest' && userId === 4) {
-      forkJoin([
-        this.dataService.resetGuestContacts(),
-        this.dataService.resetGuestTasks()
-      ]).subscribe({
-        next: () => {
-          console.log('Guest data reset complete.');
-          this.doLogout();
-        },
-        error: (err) => {
-          console.error('Reset failed:', err);
-          this.doLogout(); 
-        }
-      });
-    } else {
-      this.doLogout();
-    }
-  } */
 
-    logout(): void {
-      const userType = this.localStorageService.getUserTypeFromLocalStorage();
-      const userId = this.localStorageService.getUserIdFromLocalStorage();
-    
-      if (userType === 'Guest' && userId === 4) {
-        this.resetGuestData();
-      } else {
-        this.doLogout();
-      }
-    }
-  
-    resetGuestData(): void {
-      forkJoin([
-        this.dataService.resetGuestContacts(),
-        this.dataService.resetGuestTasks()
-      ]).subscribe({
-        next: () => {
-          this.doLogout();
-        },
-        error: (err) => {
-          console.error('Reset failed:', err);
-          this.doLogout(); 
-        }
-      });
-    }
-
-  private doLogout(): void {
+  logout(): void {
     this.localStorageService.clearLocalStorage();
     this.userSubject.next(null);
   }

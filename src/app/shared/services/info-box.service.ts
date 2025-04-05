@@ -20,13 +20,13 @@ export class InfoBoxService {
   private successMessage = new BehaviorSubject<string | undefined>('');
   successMessage$: Observable<string | undefined> =
     this.successMessage.asObservable();
-  /* =============================================================
-  
-  METHODS
 
+
+  /* =============================================================
+  METHODS
   ================================================================  */
 
-  setInfoBox(message: Partial<InfoMessage>, duration: number = 3000): void {
+  setInfoBox(message: Partial<InfoMessage>, duration: number = 1000): void {
     this.infoBoxSubject.next(message);
   
     if (!message.persistent) {
@@ -44,14 +44,6 @@ export class InfoBoxService {
     return this.infoBoxSubject.getValue();
   }
   
-  
-  
-  
-  
-  /*  setSuccessStatus(status: boolean): void {
-    this.successStatus.next(status);
-  } */
-
   setInfoBoxStatus(status: boolean): void {
     this.infoBoxStatus.next(status);
   }

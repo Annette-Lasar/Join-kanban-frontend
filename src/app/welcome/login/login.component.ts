@@ -5,6 +5,8 @@ import { ButtonComponent } from '../../shared/components/button/button.component
 import { FormsModule, NgForm } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
 import { ActionService } from '../../shared/services/action.service';
+import { ContactService } from '../../shared/services/contact.service';
+import { TaskService } from '../../shared/services/task.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -27,7 +29,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private actionService: ActionService
+    private actionService: ActionService,
+    private contactService: ContactService,
+    private taskService: TaskService
   ) {}
 
   ngOnInit(): void {
@@ -72,7 +76,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     
           setTimeout(() => {
             loginForm.resetForm();
-          }, 2000);
+          }, 1000);
         },
       });
     }
@@ -89,6 +93,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authService.guestLogin().subscribe({
       next: () => {
         this.router.navigate(['/main-content/summary']);
+        this.contactService.fetchData();
+        this.taskService.fetchData();
       },
       error: (err) => {
         console.error('Guest login failed:', err);

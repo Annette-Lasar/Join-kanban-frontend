@@ -37,7 +37,7 @@
     @if(task.contacts.length > 0) {
 
     <div class="contacts-wrapper">
-      @for (oneContact of task.contacts; track oneContact) {
+      @for (oneContact of task.contacts; track oneContact.id) {
       <div
         class="contact-initial-icon"
         [ngStyle]="{

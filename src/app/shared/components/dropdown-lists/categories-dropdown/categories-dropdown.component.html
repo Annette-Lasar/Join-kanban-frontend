@@ -9,7 +9,10 @@
     }"
   >
     @if(!isCategoriesListVisible) {
-    <div class="category-text-wrapper rounded-sm cursor-pointer" (click)="toggleCategoriesList($event)">
+    <div
+      class="category-text-wrapper rounded-sm cursor-pointer"
+      (click)="toggleCategoriesList($event)"
+    >
       @if (selectedCategory) {
       <div class="category-text">
         <svg class="colored-dot" width="16" height="16">
@@ -66,7 +69,9 @@
       <img class="add-new-category" src="assets/icons/plus.svg" alt="" />
     </li>
     } @else {
-    <li class="category-list-item create-new-category-wrapper rounded-sm cursor-pointer">
+    <li
+      class="category-list-item create-new-category-wrapper rounded-sm cursor-pointer"
+    >
       <div class="new-category-input-wrapper">
         <input
           class="color-picker cursor-pointer"
@@ -99,8 +104,11 @@
         />
       </div>
     </li>
-    } @for(category of filteredCategories; track category) {
-    <li class="category-list-item rounded-sm" (click)="setSelectedCategory(category)">
+    } @for(category of filteredCategories; track category.id) {
+    <li
+      class="category-list-item rounded-sm"
+      (click)="setSelectedCategory(category)"
+    >
       @if (isEditingCategoryId === category.id && selectedCategoryEdit) {
       <input
         class="color-picker"
@@ -148,7 +156,9 @@
           {{ category.name }}
         </span>
       </div>
-      @if (category.id === 1 || category.id === 2) { } @else {
+      @if (!category.is_deletable) {
+        <img src="assets/icons/lock.svg" alt="" class="h-16">
+       } @else {
       <div class="category-edit-wrapper">
         <img
           class="edit-icon cursor-pointer"

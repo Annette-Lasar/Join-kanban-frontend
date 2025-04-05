@@ -214,7 +214,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.successStatus = newStatus;
     setTimeout(() => {
       this.successStatus = false;
-    }, 3000);
+    }, 1000);
   }
 
   setSecurityInfoStatus(newStatus: boolean) {

@@ -57,6 +57,7 @@ export class CategoriesDropdownComponent implements OnInit {
     this.getUpdatedWarningBoxStatus();
     this.completeFilteredCategories();
     this.subscribeToCategoryValidation();
+    console.log('Kategorien vom Backend: ', this.categories);
   }
 
   ngOnDestroy(): void {

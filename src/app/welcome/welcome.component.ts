@@ -73,7 +73,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     this.showSuccessMessage = true;
     setTimeout(() => {
       this.showSuccessMessage = false;
-    }, 2000);
+    }, 1000);
   }
 
 

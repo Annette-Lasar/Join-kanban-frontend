@@ -5,29 +5,6 @@
   position: relative;
 }
 
-/* .greeting-animation {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  @include flex-container($justify: center);
-  opacity: 0;
-  animation: fadeIn 0.8s ease forwards;
-  background-color: $verylightgray;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-} */
-
 .inner-headline-box {
   height: 87px;
   display: grid;
@@ -121,7 +98,8 @@ h1 {
   gap: 8px;
 }
 
-.todo .info-icon {
+.todo .info-icon,
+.done .info-icon {
   @include flex-container($justify: center);
   border: $white 1px solid;
 }
@@ -278,5 +256,10 @@ MEDIA QUERIES
     position: static;
     width: 35%;
     margin: 0;
+  }
+
+  .info-item:hover {
+    background-color: $darkblue;
+    color: $white;
   }
 }

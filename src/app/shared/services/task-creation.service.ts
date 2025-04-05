@@ -8,6 +8,7 @@ import { LocalStorageService } from './local-storage.service';
 import { BoardListService } from './board-list.service';
 import { BoardStatusService } from './board-status.service';
 import { ActionService } from './action.service';
+import { BoardService } from './board.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,7 @@ export class TaskCreationService {
 
   constructor(
     private taskService: TaskService,
+    private boardService: BoardService,
     private boardListService: BoardListService,
     private boardStatusService: BoardStatusService,
     private localStorageService: LocalStorageService,
@@ -69,6 +71,7 @@ export class TaskCreationService {
     const userId = this.localStorageService.getUserIdFromLocalStorage() ?? 4;
     const boardListId =
       this.boardListService.getBoardListIdByName(boardListName) ?? 1;
+    const boardId = this.boardService.getBasicBoardId() ?? 1;
 
     return {
       title: taskData.title ?? '',
@@ -84,7 +87,7 @@ export class TaskCreationService {
       completed_subtasks: 0,
       board_list: { id: boardListId, name: boardListName },
       board_list_id: boardListId,
-      board: 1,
+      board: boardId,
       created_by: userId,
     };
   }

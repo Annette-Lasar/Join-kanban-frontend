@@ -3,6 +3,6 @@ export interface Category {
     name: string;
     color: string;
     color_brightness?: boolean;
-    deletable?: boolean;
+    is_deletable?: boolean;
     created_by?: number | null; 
   }

@@ -35,7 +35,7 @@
 
   @if (isContactsListVisible) {
   <ul class="contacts-list">
-    @for(contact of filteredContacts; track contact) {
+    @for(contact of filteredContacts; track contact.id) {
     <li class="contact-list-item">
       <label [for]="'contact_checkbox_' + contact.id" class="contact-label">
         <div class="contact-initials-and-text-wrapper">
