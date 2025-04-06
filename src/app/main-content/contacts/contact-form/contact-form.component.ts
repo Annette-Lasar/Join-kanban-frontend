@@ -41,7 +41,6 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
   isCreateContactClicked: boolean = false;
   isClearInputFieldClicked: boolean = false;
   mode: 'add' | 'edit' = 'add';
-  // isAddContactMode: boolean = true;
   contactFormStatus: boolean = false;
   detailStatus: boolean = false;
   isInitialLoad: boolean = true;
@@ -99,7 +98,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
     this.checkViewport();
   }
 
-  prepareFormMode(): void {
+/*   prepareFormMode(): void {
     if (this.mode === 'add') {
       this.newContact = {
         name: '',
@@ -107,7 +106,6 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
         phone_number: '',
         color: '',
         color_brightness: false,
-        created_by: this.currentUser?.id ?? 4,
       };
       this.validatePhone('');
     } else if (this.currentContact) {
@@ -115,7 +113,29 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
         ...this.currentContact,
       };
     }
-  }
+  } */
+
+    prepareFormMode(): void {
+      if (this.mode === 'add') {
+        this.newContact = {
+          name: '',
+          email: '',
+          phone_number: '',
+          color: '',
+          color_brightness: false
+        };
+        this.validatePhone('');
+      } else if (this.currentContact) {
+        this.newContact = { ...this.currentContact };
+    
+        this.validateName(this.newContact.name);
+        this.validateEmail(this.newContact.email ?? '');
+        this.validatePhone(this.newContact.phone_number ?? '');
+      }
+    
+      this.validateForm();
+    }
+    
 
   checkViewport(): void {
     this.isMobile = window.innerWidth < 1024;
@@ -227,7 +247,6 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
       email: '',
       phone_number: '',
       color: '',
-      created_by: null,
     };
   }
 
