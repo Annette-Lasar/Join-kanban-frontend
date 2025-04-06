@@ -124,12 +124,19 @@
         required
       />
       <label for="privacyPolicy">
-        I accept the <a routerLink="/main-content/privacy-policy">Privacy Policy</a>
+        I accept the
+        <a routerLink="/main-content/privacy-policy">Privacy Policy</a>
       </label>
     </div>
     <join-button
       [caption]="'Sign up'"
       [type]="'submit'"
+      [actionMessage]="{
+        infoText: 'You signed up successfully.',
+        actionType: 'handleInfoAndSuccessMessages',
+        isVisible: true,
+        persistent: false
+      }"
       [buttonClass]="'dark-square-button'"
       [padding]="'0'"
       [width]="'100px'"

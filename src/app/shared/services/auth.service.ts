@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, forkJoin } from 'rxjs';
+import { Observable, BehaviorSubject} from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { BASE_URL } from '../constants/global-constants.data';
 import { User } from '../interfaces/user.interface';
 import { LocalStorageService } from './local-storage.service';
-import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +24,6 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private localStorageService: LocalStorageService,
-    private dataService: DataService
   ) {}
 
   guestLogin(): Observable<Partial<User>> {

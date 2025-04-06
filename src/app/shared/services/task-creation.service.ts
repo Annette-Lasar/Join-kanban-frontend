@@ -72,6 +72,10 @@ export class TaskCreationService {
     const boardListId =
       this.boardListService.getBoardListIdByName(boardListName) ?? 1;
     const boardId = this.boardService.getBasicBoardId() ?? 1;
+    const subtasks = this.taskService.getAssignedSubtasks().map(sub => ({
+      title: sub.title,
+      checked_status: sub.checked_status ?? false,
+    }));
 
     return {
       title: taskData.title ?? '',
@@ -83,7 +87,7 @@ export class TaskCreationService {
         taskData.contacts
           ?.map((c) => c.id)
           .filter((id): id is number => id !== undefined) ?? [],
-      subtasks: [],
+      subtasks,
       completed_subtasks: 0,
       board_list: { id: boardListId, name: boardListName },
       board_list_id: boardListId,

@@ -135,6 +135,10 @@ export class TaskService {
     return this.newSubtasksSubject.getValue();
   }
 
+  getAssignedSubtasks(): Subtask[] {
+    return this.assignedSubtasksSubject.getValue();
+  }
+
   getCurrentTask(): Task | null {
     return this.currentTaskSubject.getValue();
   }
