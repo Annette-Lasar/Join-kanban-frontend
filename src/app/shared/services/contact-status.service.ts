@@ -25,18 +25,11 @@ export class ContactStatusService {
   deleteContactStatus$: Observable<boolean> =
     this.deleteContactStatus.asObservable();
 
-/*   private contactSuccessStatus = new BehaviorSubject<boolean>(false);
-  contactSuccessStatus$ = this.contactSuccessStatus.asObservable(); */
-
-  /*   private infoBoxStatus = new BehaviorSubject<boolean>(false);
-  infoBoxStatus$ = this.infoBoxStatus.asObservable(); */
-
   /* =============================================================
   
   METHODS
 
   ================================================================  */
-
 
   setContactFormStatus(state: ContactFormViewState): void {
     this.contactFormStatus.next(state);
@@ -53,12 +46,4 @@ export class ContactStatusService {
   setDeleteContactStatus(status: boolean): void {
     this.deleteContactStatus.next(status);
   }
-
-/*   setContactSuccessStatus(status: boolean): void {
-    this.contactSuccessStatus.next(status);
-  } */
-
-  /*   setInfoBoxStatus(status: boolean): void {
-    this.infoBoxStatus.next(status);
-  } */
 }

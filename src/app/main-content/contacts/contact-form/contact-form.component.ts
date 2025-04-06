@@ -15,7 +15,6 @@ import { User } from '../../../shared/interfaces/user.interface';
 import { RandomColorService } from '../../../shared/services/random-color.service';
 import { ColorBrightnessService } from '../../../shared/services/color-brightness.service';
 import { ContactService } from '../../../shared/services/contact.service';
-import { GroupContactsService } from '../../../shared/services/group-contacts.service';
 import { ValidateInputFieldsService } from '../../../shared/services/validateInputFields.service';
 import { ContactStatusService } from '../../../shared/services/contact-status.service';
 import { ButtonPropertyService } from '../../../shared/services/button-propertys.service';
@@ -41,7 +40,8 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
   isInputName: boolean = false;
   isCreateContactClicked: boolean = false;
   isClearInputFieldClicked: boolean = false;
-  isAddContactMode: boolean = true;
+  mode: 'add' | 'edit' = 'add';
+  // isAddContactMode: boolean = true;
   contactFormStatus: boolean = false;
   detailStatus: boolean = false;
   isInitialLoad: boolean = true;
@@ -65,7 +65,6 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private contactService: ContactService,
     private contactStatusService: ContactStatusService,
-    private groupContactsService: GroupContactsService,
     private randomColorService: RandomColorService,
     private colorBrightnessService: ColorBrightnessService,
     private buttonPropertyService: ButtonPropertyService,
@@ -101,7 +100,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   prepareFormMode(): void {
-    if (this.isAddContactMode) {
+    if (this.mode === 'add') {
       this.newContact = {
         name: '',
         email: '',
@@ -125,7 +124,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
   updateContactList(): void {
     const subscription = this.contactService.currentContact$.subscribe(
       (contact) => {
-        if (contact && !this.isAddContactMode) {
+        if (contact && this.mode === 'edit') {
           this.newContact = { ...contact };
         }
       }
@@ -136,7 +135,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
   getContactFormStatus(): void {
     const subscription = this.contactStatusService.contactFormStatus$.subscribe(
       (state) => {
-        this.isAddContactMode = state.mode === 'add';
+        this.mode = state.mode;
         this.prepareFormMode();
       }
     );
@@ -237,14 +236,14 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
       document.activeElement.blur();
     }
 
-    if (form && this.isAddContactMode) {
+    if (form && this.mode === 'add') {
       form.resetForm();
-    } else if (this.contactForm && this.isAddContactMode) {
+    } else if (this.contactForm && this.mode === 'add') {
       this.contactForm.controls['name'].markAsPristine();
       this.contactForm.controls['name'].markAsUntouched();
     }
 
-    if (this.isAddContactMode) {
+    if (this.mode === 'add') {
       this.resetForm();
     }
   }
@@ -270,7 +269,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
   onSubmit(): void {
     this.validateForm();
     if (this.isFormValid) {
-      if (this.isAddContactMode) {
+      if (this.mode === 'add') {
         this.handleAddContact();
       } else if (this.currentContact) {
         this.handleEditContact();
@@ -320,7 +319,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
 
   validateForm(): void {
     this.isFormValid =
-    this.nameIsValid && this.emailIsValid && this.phoneIsValid;
+      this.nameIsValid && this.emailIsValid && this.phoneIsValid;
   }
 
   handleEditContact(): void {

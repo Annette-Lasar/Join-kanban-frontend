@@ -21,12 +21,12 @@
         <img src="assets/icons/join_logo_white.svg" alt="" />
         <h1 class="white bold_700">
           {{
-            isAddContactMode || !newContact.name
+            (mode === 'add') || !newContact.name
               ? "Add contact"
               : "Edit contact"
           }}
         </h1>
-        @if (isAddContactMode) {
+        @if (mode === 'add') {
         <div class="slogan white text-sm">Tasks are better with a team</div>
         }
         <div class="blue-separator-line"></div>
@@ -58,7 +58,7 @@
             </div>
           </div>
 
-          @if (currentContact?.email === currentUser?.username) {
+          @if (mode === 'edit' && currentContact?.email === currentUser?.username) {
           <div>
             <p class="mail-text">
               {{ currentContact?.email }}
@@ -116,7 +116,7 @@
           </div>
         </div>
         <div class="button-wrapper">
-          @if (isAddContactMode) {
+          @if (mode === 'add') {
           <join-button
             class="mobile-clear-contact-button"
             [buttonIcon]="true"
@@ -190,7 +190,7 @@
         </div>
       </form>
       <div class="icon-wrapper desktop h-72">
-        @if (isAddContactMode) {
+        @if (mode === 'add') {
         <div class="inner-icon-wrapper h-full w-full">
           <img src="assets/icons/person_white.svg" alt="" />
         </div>
@@ -207,7 +207,7 @@
       </div>
     </div>
     <div class="icon-wrapper mobile h-72">
-      @if (isAddContactMode) {
+      @if (mode === 'add') {
       <div class="inner-icon-wrapper h-full w-full">
         <img src="assets/icons/person_white.svg" alt="" />
       </div>
