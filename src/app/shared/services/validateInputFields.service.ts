@@ -22,7 +22,7 @@ export class ValidateInputFieldsService {
   private phoneIsValidSubject = new BehaviorSubject<boolean>(false);
   phoneIsValid$: Observable<boolean> = this.phoneIsValidSubject.asObservable();
 
-  private passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+  private passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$%&()\-_\?\!\=\*\^]{6,}$/;
 
   private nameRegex = /^[A-Za-zÄÖÜäöüß]{2,}(\s[A-Za-zÄÖÜäöüß]{2,})?$/;
 
