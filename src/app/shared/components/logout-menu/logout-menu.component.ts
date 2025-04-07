@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { HeaderStatusService } from '../../services/header-status.service';
+import { ContactService } from '../../services/contact.service';
 
 @Component({
   selector: 'join-logout-menu',
@@ -20,12 +21,14 @@ export class LogoutMenuComponent {
   @Input() boardListName: string | undefined = '';
 
   constructor(private authService: AuthService, private router: Router,
-    private headerStatusService: HeaderStatusService
+    private headerStatusService: HeaderStatusService,
+    private contactService: ContactService
   ) {}
 
   logout() {
     this.authService.logout();
     this.router.navigate(['']);
+    this.contactService.setCurrentContact(null);
     this.headerStatusService.setHeaderContextMenuStatus(false);
   }
 }
