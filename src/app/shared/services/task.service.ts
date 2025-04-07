@@ -307,7 +307,7 @@ export class TaskService {
     const currentTask = this.getCurrentTask();
     const selectedCategory = this.getSelectedCategory();
     const assignedContacts = this.getAssignedContacts();
-    const subtasks = this.getSubtasks();
+    const subtasks = this.getAssignedSubtasks();
     const userId = this.localStorageService.getUserIdFromLocalStorage() ?? 4;
     if (!currentTask) throw new Error('Keine Aufgabe vorhanden!');
 
