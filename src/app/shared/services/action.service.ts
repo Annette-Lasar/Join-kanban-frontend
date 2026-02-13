@@ -74,7 +74,7 @@ export class ActionService {
 
   executeAction(infoMessage: InfoMessage, event?: Event) {
     if (!infoMessage) {
-      console.warn('infoMessage ist null und kann nicht verarbeitet werden.');
+      console.warn('infoMessage is null and cannot be processed.');
       return;
     }
     const action = this.actionMap.get(infoMessage.actionType!);

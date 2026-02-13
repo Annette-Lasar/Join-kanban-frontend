@@ -68,7 +68,7 @@ export class ButtonComponent {
 
   onClick(event: Event): void {
     if (!this.actionMessage?.actionType) {
-      console.warn('Kein actionType definiert!');
+      // Some buttons intentionally bypass actionService.
       return;
     }
 
