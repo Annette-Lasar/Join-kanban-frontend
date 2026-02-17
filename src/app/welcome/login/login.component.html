@@ -36,11 +36,13 @@
               (click)="togglePasswordVisibility()"
             />
           </div>
-          <div class="incorrect-data">
-            {{ errorMessage }}
-          </div>
         </div>
       </div>
+      @if (loginForm.invalid) {
+        <div class="incorrect-data">
+          {{ errorMessage }}
+        </div>
+      }
       <div class="login-button-wrapper">
         <join-button
           [caption]="'Log in'"
@@ -59,7 +61,7 @@
             [height]="'48px'"
             [padding]="''"
             [actionMessage]="{
-              actionType: 'guestLogin'
+              actionType: 'guestLogin',
             }"
           ></join-button>
         </a>
@@ -76,7 +78,7 @@
         [width]="'104px'"
         [height]="'48px'"
         [actionMessage]="{
-          actionType: 'onToggleShowLogin'
+          actionType: 'onToggleShowLogin',
         }"
       ></join-button>
     </div>

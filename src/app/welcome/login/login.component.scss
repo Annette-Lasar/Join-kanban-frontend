@@ -51,15 +51,10 @@ form {
     @include flex-container(
       $direction: column,
       $justify: space-between,
-      $gap: 2.5em
+      $gap: 2em
     );
   }
-  .incorrect-data {
-    padding-inline: 8px;
-    align-self: flex-start;
-    font-size: 1rem;
-    color: $red;
-  }
+
   .email-wrapper,
   .password-wrapper {
     width: 100%;
@@ -87,6 +82,13 @@ form {
       cursor: pointer;
     }
   }
+}
+
+.incorrect-data {
+  padding-inline: 8px;
+  align-self: flex-start;
+  font-size: 1rem;
+  color: $red;
 }
 
 .login-button-wrapper {
