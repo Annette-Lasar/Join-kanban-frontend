@@ -1,5 +1,4 @@
-@import "../../../../../scss_files/variables.scss";
-@import "../../../../../scss_files/mixins.scss";
+@use "../../../../../scss_files/index.scss" as *;
 
 .task-detail-wrapper {
   height: 100%;
@@ -120,7 +119,6 @@ h1 {
   font-size: 0.8rem;
   color: $gray;
 }
-
 
 join-info {
   position: absolute;

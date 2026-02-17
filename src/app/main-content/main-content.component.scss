@@ -1,4 +1,4 @@
-@import "../../scss_files/variables.scss";
+@use "../../scss_files/index.scss" as *;
 
 .section-wrapper {
   width: 100%;

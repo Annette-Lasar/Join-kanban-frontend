@@ -1,5 +1,4 @@
-@import "../../scss_files/variables.scss";
-@import "../../scss_files/mixins.scss";
+@use "../../scss_files/index.scss" as *;
 
 h2 {
   padding: 1.5em 0 1em;

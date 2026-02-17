@@ -1,5 +1,4 @@
-@import "../scss_files/variables.scss";
-@import "../scss_files/mixins.scss";
+@use "../scss_files/index.scss" as *;
 
 #page {
   height: 100vh;
