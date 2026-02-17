@@ -80,7 +80,7 @@ h1 {
   align-self: center;
   background-color: $white;
   border-radius: 20px;
-  border: $lightgray 1px solid;
+  border: 1px solid $lightgray ;
   box-shadow: 0.25px 0.25px 0.25px 0.25px $mediumgray;
 }
 
@@ -100,7 +100,7 @@ h1 {
 .todo .info-icon,
 .done .info-icon {
   @include flex-container($justify: center);
-  border: $white 1px solid;
+  border: 1px solid $white ;
 }
 
 .todo .info-icon img {

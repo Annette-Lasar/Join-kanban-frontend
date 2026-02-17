@@ -40,27 +40,24 @@
             {{ errorMessage }}
           </div>
         </div>
-        <div class="remember">
-          <input type="checkbox" name="" id="" />
-          <span>Remember me</span>
-        </div>
       </div>
       <div class="login-button-wrapper">
         <join-button
           [caption]="'Log in'"
           [type]="'submit'"
           [buttonClass]="'dark-square-button'"
-          [width]="'120px'"
-          [height]="'32px'"
-          [padding]="'0'"
+          [width]="'180px'"
+          [height]="'48px'"
+          [padding]="''"
+          [disabled]="loginForm.invalid ?? true"
         ></join-button>
         <a routerLink="/main-content">
           <join-button
             [caption]="'Guest Login'"
             [buttonClass]="'light-square-button-blue-hover'"
-            [width]="'120px'"
-            [height]="'32px'"
-            [padding]="'0'"
+            [width]="'180px'"
+            [height]="'48px'"
+            [padding]="''"
             [actionMessage]="{
               actionType: 'guestLogin'
             }"
@@ -71,13 +68,13 @@
   </div>
   <div class="sign-up-button-wrapper">
     <div class="inner-sign-up-button-wrapper">
-      <span>Not a join user?</span>
+      <span class="not-a-join-user">Not a join user?</span>
       <join-button
         [caption]="'Sign up'"
         [buttonClass]="'dark-square-button'"
-        [padding]="'0'"
-        [width]="'100px'"
-        [height]="'32px'"
+        [padding]="''"
+        [width]="'104px'"
+        [height]="'48px'"
         [actionMessage]="{
           actionType: 'onToggleShowLogin'
         }"

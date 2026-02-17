@@ -25,8 +25,10 @@
 .dark-square-button {
   background-color: $darkblue;
   color: $white;
-  border: $darkblue 1px solid;
-  border-radius: 4px;
+  border: 1px solid $darkblue ;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
   .check {
     height: 10px;
   }
@@ -34,12 +36,14 @@
 
 .dark-square-button:disabled,
 .dark-square-button:disabled:hover {
-  border: $darkbluepale 1px solid;
+  border: 1px solid $darkbluepale ;
   background-color: $darkbluepale;
   color: rgba(255, 255, 255, 0.6);
   cursor: not-allowed;
   opacity: 0.5;
-  transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  transition:
+    background-color 0.2s ease-in-out,
+    opacity 0.2s ease-in-out;
   box-shadow: none;
   & img {
     opacity: 0.6;
@@ -63,21 +67,23 @@
 
 .dark-square-button:hover {
   background-color: $lightblue;
-  border: $lightblue 1px solid;
+  border: 1px solid $lightblue;
   box-shadow: 2px 2px 2px 1px $gray;
 }
 
 .light-square-button-blue-hover,
 .light-square-button {
   background-color: $white;
-  color: $anthracite;
-  border: $bordergray 1px solid;
-  border-radius: 4px;
+  color: $darkblue;
+  font-size: 1rem;
+  font-weight: 700;
+  border: 2px solid $darkblue;
+  border-radius: 8px;
 }
 
 .light-square-button-blue-hover-completely {
-  border: $anthracite 1.5px solid;
-  border-radius: 4px;
+  border: 1.5px solid $anthracite ;
+  border-radius: 8px;
   &:hover {
     color: $lightblue;
     border-color: $lightblue;
@@ -90,7 +96,7 @@
 
 .light-square-button-blue-hover:hover {
   color: $lightblue;
-  border: $lightblue 1px solid;
+  border: 2px solid $lightblue ;
   box-shadow: 2px 2px 2px 1px $gray;
 }
 
@@ -126,7 +132,7 @@
     padding: 0.7em;
   }
   &:hover {
-    border: $lightblue 2px solid;
+    border: 2px solid $lightblue ;
     background-color: $lightblue;
   }
 }

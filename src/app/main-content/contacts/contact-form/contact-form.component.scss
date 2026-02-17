@@ -9,7 +9,7 @@
   left: 50%;
   transform: translate(-50%, 150%);
   background-color: $white;
-  border: $bordergray 0.5px solid;
+  border: 0.5px solid $bordergray ;
   visibility: hidden;
   transition: transform 0.5s, visibility 0s 0.5s;
 }
@@ -78,9 +78,9 @@
   .name-wrapper,
   .mail-wrapper,
   .phone-wrapper {
-    border: $bordergray 1px solid;
+    border: 1px solid $bordergray ;
     &:focus-within {
-      border: $lightblue 1px solid;
+      border: 1px solid $lightblue ;
     }
   }
   .name {
@@ -132,7 +132,7 @@
   left: 50%;
   z-index: 5;
   transform: translate(-50%, -50%);
-  border: $white 2px solid;
+  border: 2px solid $white ;
   border-radius: 50%;
   background-color: $white;
   @include flex-container($justify: center);
@@ -168,7 +168,7 @@ MEDIA QUERIES
     max-height: 400px;
     top: 50%;
     transform: translate(150%, -50%);
-    border: $bordergray 1px solid;
+    border: 1px solid $bordergray ;
     visibility: hidden;
     transition: transform 0.5s, visibility 0s 0.5s;
   }
@@ -239,7 +239,7 @@ MEDIA QUERIES
     grid-area: icon;
     align-self: center;
     justify-self: center;
-    border: $white 2px solid;
+    border: 2px solid $white ;
     border-radius: 50%;
     background-color: $white;
     @include flex-container($justify: center);

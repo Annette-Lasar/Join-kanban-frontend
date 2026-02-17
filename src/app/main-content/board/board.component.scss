@@ -45,10 +45,10 @@ h1 {
   grid-area: search;
   @include flex-container($align: center, $justify: space-between);
   background-color: $white;
-  border: $bordergray 1.5px solid;
+  border: 1.5px solid $bordergray;
   border-radius: 8px;
   &:focus-within {
-    border: $lightblue 1.5px solid;
+    border: 1.5px solid $lightblue;
   }
   input {
     width: 95%;
@@ -92,10 +92,10 @@ join-info {
 
 .plus-button-dark {
   background-color: $darkblue;
-  border: $darkblue 2px solid;
+  border: 2px solid $darkblue;
   border-radius: 8px;
   &:hover {
-    border: $lightblue 2px solid;
+    border: 2px solid $lightblue;
     background-color: $lightblue;
   }
 }
@@ -128,7 +128,7 @@ join-info {
     color: $darkgray;
     font-size: 0.75rem;
     background-color: $lightgray;
-    border: $gray 2px dashed;
+    border: 2px dashed $gray;
     border-radius: 8px;
   }
 }
@@ -166,11 +166,14 @@ join-info {
   overflow-x: auto;
   @include flex-container($align: flex-start, $justify: flex-start, $gap: 1em);
   border: 2px solid transparent;
-  transition: border 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    border 0.3s ease,
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .task-card-wrapper.highlight {
-  border: $progressblue 2px dashed;
+  border: 2px dashed $progressblue;
   background-color: #f0f8ff;
   box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
 }
@@ -187,7 +190,7 @@ join-info {
   z-index: 10;
   transform: translate(-50%, -50%);
   background-color: $white;
-  border: $darkblue 1px solid;
+  border: 1px solid $darkblue ;
   border-radius: 20px;
   overflow-y: auto;
   .add-task-title-wrapper {

@@ -90,10 +90,10 @@
     }
     .change-category-name {
       width: 60%;
-      border: $bordergray 1px solid;
+      border: 1px solid $bordergray ;
       outline: none;
       &:focus {
-        border: $lightblue 1px solid;
+        border: 1px solid $lightblue ;
       }
     }
   }
@@ -109,10 +109,10 @@
         width: 80%;
         height: 24px;
         font-size: 0.6rem;
-        border: $bordergray 1px solid;
+        border: 1px solid $bordergray ;
         outline: none;
         &:focus {
-          border: $lightblue 1px solid;
+          border: 1px solid $lightblue ;
         }
         &::placeholder {
           font-size: 0.6rem;

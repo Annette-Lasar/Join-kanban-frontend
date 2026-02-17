@@ -28,7 +28,7 @@
     width: 100%;
     padding: 0.5em;
     outline: none;
-    border: $bordergray 1px solid;
+    border: 1px solid $bordergray;
     border-radius: 4px;
   }
   textarea {
@@ -38,7 +38,7 @@
   }
   input:focus,
   textarea:focus {
-    border: $lightblue 1px solid;
+    border: 1px solid $lightblue;
   }
   .warning-info {
     margin: 0.5em 0 0;
@@ -87,7 +87,7 @@ join-categories-dropdown {
     .contacts-wrapper {
       padding: 0.5em;
       @include flex-container();
-      border: $anthracite 1px solid;
+      border: 1px solid $anthracite;
       border-radius: 4px;
       background-color: $white;
       cursor: pointer;
@@ -111,12 +111,12 @@ join-categories-dropdown {
   .subtask-wrapper {
     padding: 0 0.5em 0 0;
     @include flex-container();
-    border: $anthracite 1px solid;
+    border: 1px solid $anthracite;
     border-radius: 4px;
     background-color: $white;
   }
   .subtask-wrapper:focus-within {
-    border: $lightblue 1px solid;
+    border: 1px solid $lightblue;
   }
   img {
     cursor: pointer;
@@ -143,8 +143,6 @@ MEDIA QUERIES
       "assigned-to separator subtasks";
     column-gap: 12px;
   }
-
-
 
   .separator-line {
     grid-row: 1 / -1;
