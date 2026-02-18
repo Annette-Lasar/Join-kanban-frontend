@@ -1,0 +1,64 @@
+@use "./variables" as *;
+
+h1 {
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  font-size: 2rem;
+  font-weight: 700;
+  color: $darkblue;
+}
+
+.text-xs {
+  font-size: 0.5rem;
+}
+
+.text-sm {
+  font-size: 0.9rem;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.h-16 {
+  height: 16px;
+}
+
+.h-24 {
+  height: 24px;
+}
+
+.h-72 {
+  height: 72px;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.blue {
+  color: $lightblue;
+}
+
+.red {
+  color: $red;
+}
+
+.bold_600 {
+  font-weight: 600;
+}
+
+.bold_700 {
+  font-weight: 700;
+}
+
+.rounded-sm {
+  border-radius: 4px;
+}
+
+.rounded-lg {
+  border-radius: 16px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
