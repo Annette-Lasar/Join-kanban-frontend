@@ -1,12 +1,13 @@
 @use "../../scss_files/index.scss" as *;
 
-h2 {
+h2,
+.enjoy {
   padding: 1.5em 0 1em;
   font-size: 1.2rem;
   font-weight: 700;
 }
 
-h2:last-of-type {
+.enjoy {
   text-align: center;
 }
 
@@ -37,13 +38,12 @@ h2:last-of-type {
 }
 
 p {
-  font-size: 0.75rem;
   line-height: 1.2;
 }
 
 ol {
   padding-inline: 14px 0;
-  font-size: 0.75rem;
+
   li {
     margin: 0 0 0.5em;
   }

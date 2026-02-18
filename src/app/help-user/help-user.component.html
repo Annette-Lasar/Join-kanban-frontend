@@ -3,7 +3,11 @@
     <div class="inner-content-wrapper">
       <div class="title-wrapper">
         <h1>Help</h1>
-        <a routerLink="../summary" class="back-to-summary" [ngClass]="{'inactive': !isLoggedIn}">
+        <a
+          routerLink="../summary"
+          class="back-to-summary"
+          [ngClass]="{ inactive: !isLoggedIn }"
+        >
           <img src="../../assets/icons/arrow_left_line_default.svg" alt="" />
         </a>
       </div>
@@ -82,11 +86,14 @@
               <span class="blue">Join</span> effectively requires consistent
               updates from you and your team to ensure the board reflects the
               current state of your project. Have more questions about
-              <span class="blue">Join</span>? Feel free to contact us at info&commat;annette-lasar.de. We're here to help you!
             </p>
           </li>
         </ol>
-        <h2>Enjoy using Join!</h2>
+        <p>
+          <span class="blue">Join</span>? Feel free to contact us at
+          info&commat;developerakademie.com. We're here to help you!
+        </p>
+        <p class="enjoy">Enjoy using Join!</p>
       </div>
     </div>
   </div>

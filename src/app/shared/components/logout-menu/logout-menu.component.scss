@@ -16,16 +16,20 @@
     @include flex-container($justify: flex-start);
     background-color: transparent;
     border: none;
-    color: $white;
+    color: $bordergray;
     cursor: pointer;
     &:first-of-type {
       border-radius: 20px 0 0 0;
+      &:hover {
+        border-top-left-radius: 20px;
+      }
     }
     &:last-of-type {
       border: none;
       border-radius: 0 0 20px 20px;
     }
     &:hover {
+      color: $white;
       border: none;
       background-color: $verydarkblue;
     }
@@ -60,6 +64,9 @@ MEDIA QUERIES
     button {
       &:first-of-type {
         display: none;
+      }
+      &:nth-of-type(2):hover {
+        border-top-left-radius: 20px;
       }
     }
   }
