@@ -9,12 +9,6 @@ export class ButtonPropertyService {
   toggleContainer$: Observable<string | null> =
     this.toggleContainerSubject.asObservable();
 
-/*   private isAddContactButtonClickedSubject = new BehaviorSubject<boolean>(
-    false
-  );
-  isAddContactButtonClicked$: Observable<boolean> =
-    this.isAddContactButtonClickedSubject.asObservable(); */
-
   private createNewContactClicked = new BehaviorSubject<boolean>(false);
   createNewContactClicked$: Observable<boolean> =
     this.createNewContactClicked.asObservable();
@@ -27,7 +21,7 @@ export class ButtonPropertyService {
   deleteContactButtonClicked$: Observable<boolean> =
     this.deleteContactButtonClicked.asObservable();
 
-  private loginStatusSubject = new BehaviorSubject<boolean>(true); // Wieder auf true setzen!!
+  private loginStatusSubject = new BehaviorSubject<boolean>(false); // Wieder auf true setzen!!
   loginStatus$ = this.loginStatusSubject.asObservable();
 
   private isTaskDetailVisibleStatusSubject = new BehaviorSubject<boolean>(

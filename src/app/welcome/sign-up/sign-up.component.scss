@@ -4,7 +4,7 @@
   width: 90%;
   max-width: 500px;
   height: 95%;
-  max-height: 600px;
+  max-height: 500px;
   padding-block: 24px;
   @include flex-container(column, center, space-between);
   background-color: $white;
@@ -22,16 +22,18 @@
   position: relative;
   @include flex-container($align: center);
   h1 {
+    margin: 0 0 8px;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    margin: 0;
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 700;
   }
 }
 
 .separator {
   margin: 8px 0 0;
-  width: 60px;
+  width: 30%;
   height: 3px;
   align-self: center;
   background-color: $lightblue;
@@ -45,8 +47,8 @@ form {
 
 .sign-up-content {
   width: 100%;
-  height: 70%;
-  @include flex-container(column, center, space-between);
+  height: 60%;
+  @include flex-container($direction: column);
   .input-message-wrapper {
     width: 100%;
   }
@@ -55,7 +57,7 @@ form {
     margin: 0 0 0.3em;
     padding-inline: 8px;
     @include flex-container($align: center, $justify: space-between);
-    border: 1px solid $bordergray ;
+    border: 1px solid $bordergray;
     border-radius: 8px;
     &:focus-within {
       outline: $lightblue 1px solid;
@@ -71,22 +73,19 @@ form {
     flex: 1 1 0;
     border: none;
     outline: none;
+    &::placeholder {
+      font-size: 1.1rem;
+      color: $bordergray;
+    }
   }
   .warning-message-wrapper {
     width: 100%;
     @include flex-container($align: flex-start);
-    .warning-message:first-of-type {
-      width: 60%;
-    }
-
-    .warning-message:last-of-type {
-      width: 40%;
-      text-align: right;
-    }
   }
   .warning-message {
+    margin: 0 0 0.5em;
     padding: 0 0 0 0.25em;
-    font-size: 0.6rem;
+    font-size: 0.9rem;
   }
 }
 

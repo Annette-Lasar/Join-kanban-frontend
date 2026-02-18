@@ -9,7 +9,7 @@
         [height]="''"
         [buttonClass]="'arrow-button'"
         [actionMessage]="{
-          actionType: 'onToggleShowLogin'
+          actionType: 'onToggleShowLogin',
         }"
       />
       <h1>Sign up</h1>
@@ -35,7 +35,7 @@
           class="warning-message red"
           [style.opacity]="nameInput.touched && !nameIsValid ? 1 : 0"
         >
-          Enter a first and a last name with at least two characters each.
+          Enter a first and a last name.
         </div>
       </div>
       <div class="input-message-wrapper">
@@ -77,6 +77,14 @@
             (click)="togglePasswordVisibility('password')"
           />
         </div>
+        <div
+          class="warning-message red password"
+          [style.opacity]="passwordInput.touched && !passwordIsValid ? 1 : 0"
+        >
+          6 characters, 1 letter and 1 number.
+        </div>
+      </div>
+      <div class="input-message-wrapper">
         <div class="input-wrapper password-wrapper">
           <input
             [type]="confirmPasswordVisible ? 'text' : 'password'"
@@ -96,13 +104,6 @@
           />
         </div>
         <div class="warning-message-wrapper">
-          <div
-            class="warning-message red password"
-            [style.opacity]="passwordInput.touched && !passwordIsValid ? 1 : 0"
-          >
-            Password must have at least 6 characters, including 1 letter and 1
-            number.
-          </div>
           <div
             class="warning-message red password"
             [style.opacity]="
@@ -135,12 +136,12 @@
         infoText: 'You signed up successfully.',
         actionType: 'handleInfoAndSuccessMessages',
         isVisible: true,
-        persistent: false
+        persistent: false,
       }"
       [buttonClass]="'dark-square-button'"
       [padding]="'0'"
-      [width]="'100px'"
-      [height]="'32px'"
+      [width]="'104px'"
+      [height]="'48px'"
       [disabled]="!signUpForm.valid || password !== confirmPassword"
     >
     </join-button>
