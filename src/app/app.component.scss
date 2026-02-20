@@ -2,16 +2,14 @@
 
 #page {
   height: 100vh;
-  // @include flex-container($justify: center);
 }
 
 .outer-login-wrapper {
   width: 100%;
-  max-width: 1440px;
+  max-width: $max-content-width;
+  margin: 0 auto;
   height: 100%;
   position: relative;
-  // @include flex-container($justify: center);
-  border: blue 3px solid;
 }
 
 join-info {

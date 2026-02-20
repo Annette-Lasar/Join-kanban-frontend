@@ -20,8 +20,6 @@
   @include flex-container($justify: center);
 }
 
-
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -35,13 +33,12 @@
 }
 
 .greeting {
-  font-size: 1.5rem;
+  font-size: clamp(1.5rem, 4vw, 3em);
 }
 
 .user-name {
-  font-size: 1.8rem;
+  font-size: clamp(1.8rem, 5vw, 3.5rem);
 }
-
 
 /* ===================================================================
 MEDIA QUERIES
@@ -50,15 +47,14 @@ MEDIA QUERIES
 @media (min-width: 64em) {
   .greetings-container {
     width: 100%;
-    margin: 0 1em 0 0;
     @include flex-container($direction: column);
   }
 
   .greeting {
-    font-size: 1.5rem;
+    font-size: clamp(1.5rem, 3.5vw, 3em);
   }
 
   .user-name {
-    font-size: 1.8rem;
+    font-size: clamp(1.8rem, 3.5vw, 3.5rem);
   }
 }

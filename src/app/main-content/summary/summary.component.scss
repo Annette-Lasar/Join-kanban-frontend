@@ -58,7 +58,7 @@ h1 {
 }
 
 .inner-summary-wrapper {
-  min-width: 300px;
+  width: 100%;
   max-width: 600px;
   margin: 24px auto 0;
   display: grid;
@@ -71,16 +71,16 @@ h1 {
     "overview overview overview overview overview overview"
     "board board progress progress feedback feedback"
     "board board progress progress feedback feedback";
-  gap: 8px;
+  gap: 12px;
+  border: green 2px solid;
 }
 
 .info-item {
   height: 90%;
-  width: 100%;
   align-self: center;
   background-color: $white;
   border-radius: 20px;
-  border: 1px solid $lightgray ;
+  border: 1px solid $lightgray;
   box-shadow: 0.25px 0.25px 0.25px 0.25px $mediumgray;
 }
 
@@ -100,7 +100,7 @@ h1 {
 .todo .info-icon,
 .done .info-icon {
   @include flex-container($justify: center);
-  border: 1px solid $white ;
+  border: 1px solid $white;
 }
 
 .todo .info-icon img {
@@ -131,10 +131,6 @@ h1 {
   background-color: $gray;
 }
 
-.date-box {
-  @include flex-container($justify: center, $gap: 8px);
-}
-
 .tasks-in-board {
   grid-area: board;
 }
@@ -158,8 +154,9 @@ h1 {
   font-weight: 600;
 }
 
-.task-caption {
-  font-size: 0.7rem;
+.task-caption,
+.date {
+  font-size: clamp(0.9rem, 1.3vw, 1.1rem);
 }
 
 .task-caption.flex-box {
@@ -192,10 +189,10 @@ h1 {
 }
 
 .date {
-  font-size: 0.9rem;
+  margin: 0 0 0.3em;
+  font-size: clamp(0.9rem, 2.5vw, 1.3rem);
   font-weight: 600;
 }
-
 
 join-navbar {
   grid-area: aside;
@@ -218,12 +215,17 @@ MEDIA QUERIES
     width: 100%;
     height: calc(100% - $header-height);
     max-width: unset;
-    @include flex-container($direction: row-reverse, $align: center, $justify: space-between);
+    @include flex-container(
+      $direction: row-reverse,
+      $align: center,
+      $justify: space-between
+    );
     .inner-summary-wrapper {
       width: 60%;
+      max-width: 800px;
       height: 80%;
       margin: 0;
-      grid-auto-rows: 44px;
+      grid-auto-rows: 55px;
       align-content: center;
     }
   }
@@ -249,6 +251,10 @@ MEDIA QUERIES
 
   .inner-content-wrapper {
     height: 100%;
+  }
+
+  join-user-greeting {
+    width: 45%;
   }
 
   .greeting-animation {

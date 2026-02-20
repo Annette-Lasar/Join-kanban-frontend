@@ -44,7 +44,7 @@ MEDIA QUERIES
     a {
       text-decoration: none;
       color: white;
-      font-size: 0.9rem;
+      font-size: clamp(0.75rem, 1.1vw, 1.1rem);
     }
   }
 }
