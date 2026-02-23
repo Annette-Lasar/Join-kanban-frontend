@@ -1,6 +1,7 @@
 @use "../../scss_files/index.scss" as *;
 
 .wrapper {
+  height: 100vh;
   width: 100%;
   max-width: $max-content-width;
   margin: auto;
@@ -11,6 +12,7 @@
     "header"
     "main"
     "aside";
+    border: orange 3px solid; 
 }
 
 join-header {

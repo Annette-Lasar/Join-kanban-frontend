@@ -2,6 +2,7 @@
 
 .board-wrapper {
   position: relative;
+  border: green 3px solid; 
 }
 
 .content {
@@ -34,7 +35,7 @@ h1 {
 .board-task-button-wrapper {
   width: fit-content;
   grid-area: add-task;
-  @include flex-container($justify: flex-start, $gap: 4px);
+  @include flex-container($justify: flex-start, $gap: 12px);
   justify-self: flex-end;
 }
 
@@ -103,7 +104,7 @@ join-info {
 .outer-board-wrapper {
   display: grid;
   grid-template-columns: 1fr;
-  grid-auto-rows: 280px;
+  grid-auto-rows: 320px;
   grid-template-areas:
     "toDo"
     "inProgress"
@@ -112,12 +113,13 @@ join-info {
   gap: 1em;
   .list {
     width: 100%;
-    overflow-y: auto;
+    overflow-x: auto;
+    border: orchid 2px solid;
   }
   .board-list-headline-wrapper {
     height: 26px;
     .inner-task-button-wrapper {
-      @include flex-container($gap: 4px);
+      @include flex-container($gap: 12px);
     }
   }
   .list-content {
@@ -164,7 +166,7 @@ join-info {
   width: 100%;
   padding: 12px;
   overflow-x: auto;
-  @include flex-container($align: flex-start, $justify: flex-start, $gap: 1em);
+  @include flex-container($align: center, $justify: flex-start, $gap: 1em);
   border: 2px solid transparent;
   transition:
     border 0.3s ease,
@@ -172,10 +174,14 @@ join-info {
     box-shadow 0.3s ease;
 }
 
+.task-card-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
 .task-card-wrapper.highlight {
   border: 2px dashed $progressblue;
-  background-color: #f0f8ff;
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+  background-color: $dragareablue;
+  box-shadow: 0 0 10px $boxshadowblue;
 }
 
 .add-task-content-wrapper {
@@ -247,7 +253,7 @@ MEDIA QUERIES
     min-width: 100px;
     min-height: 32px;
     @include flex-container($justify: center);
-    color: white;
+    color: $white;
     font-weight: 600;
   }
 

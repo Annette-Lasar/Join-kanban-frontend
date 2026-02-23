@@ -72,6 +72,7 @@
 }
 
 .light-square-button-blue-hover,
+.light-info-button,
 .light-square-button {
   background-color: $white;
   color: $darkblue;
@@ -79,6 +80,11 @@
   font-weight: 700;
   border: 2px solid $darkblue;
   border-radius: 8px;
+}
+
+.light-info-button {
+  background-color: transparent;
+  border: none;
 }
 
 .light-square-button-blue-hover-completely {
