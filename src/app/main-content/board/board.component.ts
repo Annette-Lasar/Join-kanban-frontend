@@ -4,7 +4,7 @@ import {
   ElementRef,
   OnInit,
   OnDestroy,
-  ChangeDetectorRef,
+  HostListener,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -94,13 +94,12 @@ export class BoardComponent implements OnInit, OnDestroy {
     private taskCreationService: TaskCreationService,
     private textFormatterService: TextFormatterService,
     private actionService: ActionService,
-    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this.loadAllData();
     this.getUpdatedMessage();
-    this.initializeResizeObserver();
+    this.checkScreenSize();
     this.fetchBoardListsFromServer();
     this.subscribeToTasks();
     this.getUpdatedIsTaskDetailVisibleStatus();
@@ -185,29 +184,13 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.boardListService.fetchBoardLists();
   }
 
-  initializeResizeObserver(): void {
-    this.isDesktop = window.innerWidth > BREAKPOINT1;
-
-    this.resizeObserver = new ResizeObserver(() => {
-      const current = window.innerWidth > BREAKPOINT1;
-      if (this.isDesktop !== current) {
-        this.isDesktop = current;
-      }
-    });
-
-    this.resizeObserver.observe(document.body);
+  @HostListener('window:resize')
+  onResize() {
+    this.checkScreenSize();
   }
 
-  private categorizeTasksByBoardList(): void {
-    this.tasksByBoardList = {};
-
-    this.filteredTasks.forEach((task) => {
-      const listName = task.board_list?.name || '';
-      if (!this.tasksByBoardList[listName]) {
-        this.tasksByBoardList[listName] = [];
-      }
-      this.tasksByBoardList[listName].push(task);
-    });
+  private checkScreenSize(): void {
+    this.isDesktop = window.innerWidth > BREAKPOINT1;
   }
 
   onDragEntered(listName: string): void {

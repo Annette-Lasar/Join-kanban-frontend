@@ -2,7 +2,6 @@
 
 .board-wrapper {
   position: relative;
-  border: green 3px solid;
 }
 
 .content {
@@ -227,21 +226,26 @@ MEDIA QUERIES
 
 @media (min-width: $breakpoint1) {
   .inner-content-header {
-    grid-template-columns: repeat(4, 1fr) 110px;
-    grid-template-rows: 40px 20px;
+    grid-template-columns: repeat(4, 1fr) 170px;
+    grid-template-rows: 48px 20px;
     grid-template-areas:
       "title title search search add-task"
       ". . match . .";
     column-gap: 12px;
+    row-gap: 2px;
   }
 
   .board-task-button-wrapper {
-    width: 100px;
-    height: 32px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .search-wrapper {
+    height: 38px;
   }
 
   .outer-board-wrapper {
-    height: calc(100vh - $header-height - 60px - 24px);
+    height: calc(100vh - $header-height - 60px - 36px);
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto;
     grid-template-areas: "toDo inProgress awaitFeedback done";
@@ -251,7 +255,7 @@ MEDIA QUERIES
     }
     .board-list-headline-wrapper {
       h2 {
-        font-size: clamp(1rem, 1vw, 1.4rem);
+        font-size: clamp(1rem, 1.5vw, 1.4rem);
       }
       .inner-task-button-wrapper {
         margin: 0 0.5em 0 0;
