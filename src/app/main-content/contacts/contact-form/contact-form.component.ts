@@ -21,6 +21,7 @@ import { ButtonPropertyService } from '../../../shared/services/button-propertys
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { ActionService } from '../../../shared/services/action.service';
 import { Subscription } from 'rxjs';
+import { BREAKPOINT1 } from '../../../shared/data/general.data.js';
 
 @Component({
   selector: 'join-contact-form',
@@ -98,23 +99,6 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
     this.checkViewport();
   }
 
-/*   prepareFormMode(): void {
-    if (this.mode === 'add') {
-      this.newContact = {
-        name: '',
-        email: '',
-        phone_number: '',
-        color: '',
-        color_brightness: false,
-      };
-      this.validatePhone('');
-    } else if (this.currentContact) {
-      this.newContact = {
-        ...this.currentContact,
-      };
-    }
-  } */
-
     prepareFormMode(): void {
       if (this.mode === 'add') {
         this.newContact = {
@@ -138,7 +122,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
     
 
   checkViewport(): void {
-    this.isMobile = window.innerWidth < 1024;
+    this.isMobile = window.innerWidth < BREAKPOINT1;
   }
 
   updateContactList(): void {

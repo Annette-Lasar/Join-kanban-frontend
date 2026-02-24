@@ -1,16 +1,10 @@
-import {
-  Component,
-  HostListener,
-  OnInit,
-  OnDestroy,
-  Input,
-} from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { Contact } from '../../../shared/interfaces/contact.interface';
 import { ContactService } from '../../../shared/services/contact.service';
 import { Subscription } from 'rxjs';
 import { ContactStatusService } from '../../../shared/services/contact-status.service';
-import { InfoBoxService } from '../../../shared/services/info-box.service';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { BREAKPOINT1 } from '../../../shared/data/general.data.js';
 
 @Component({
   selector: 'join-contact-details',
@@ -30,7 +24,6 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private contactService: ContactService,
     private contactStatusService: ContactStatusService,
-    private infoBoxService: InfoBoxService
   ) {}
 
   ngOnInit(): void {
@@ -51,14 +44,14 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
   }
 
   checkViewport() {
-    this.isMobile = window.innerWidth < 1024;
+    this.isMobile = window.innerWidth < BREAKPOINT1;
   }
 
   getUpdatedShowContactDetails() {
     this.subscription = this.contactStatusService.showDetailsStatus$.subscribe(
       (status) => {
         this.showContactDetails = status;
-      }
+      },
     );
   }
 
@@ -66,7 +59,7 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
     this.subscription = this.contactService.currentContact$.subscribe(
       (contact) => {
         this.contact = contact;
-      }
+      },
     );
   }
 
@@ -77,6 +70,4 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
       mode: 'add',
     });
   }
-
-
 }

@@ -160,7 +160,7 @@
 MEDIA QUERIES
 ======================================================================*/
 
-@media (min-width: 64em) {
+@media (min-width: $breakpoint1) {
   .outer-contact-form-wrapper {
     width: 90%;
     max-width: 700px;

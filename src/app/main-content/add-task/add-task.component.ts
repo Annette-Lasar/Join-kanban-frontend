@@ -11,6 +11,7 @@ import { Task } from '../../shared/interfaces/task.interface';
 import { Category } from '../../shared/interfaces/category.interface';
 import { Contact } from '../../shared/interfaces/contact.interface';
 import { forkJoin, Subscription } from 'rxjs';
+import { BREAKPOINT1 } from '../../shared/data/general.data.js';
 
 @Component({
   selector: 'join-add-task',
@@ -85,10 +86,10 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   }
 
   initializeResizeObserver(): void {
-    this.isDesktop = window.innerWidth > 1024;
+    this.isDesktop = window.innerWidth > BREAKPOINT1;
 
     this.resizeObserver = new ResizeObserver(() => {
-      const current = window.innerWidth > 1024;
+      const current = window.innerWidth > BREAKPOINT1;
       if (this.isDesktop !== current) {
         this.isDesktop = current;
         this.cdr.detectChanges();

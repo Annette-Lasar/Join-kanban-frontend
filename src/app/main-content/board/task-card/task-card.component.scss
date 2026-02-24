@@ -117,7 +117,7 @@ h3 {
 MEDIA QUERIES
 =============================================================*/
 
-@media (min-width: 64em) {
+@media (min-width: $breakpoint1) {
   .task-card {
     margin: 0.5em 0 1em;
     width: 100%;

@@ -123,7 +123,7 @@ join-info.visible {
 MEDIA QUERIES
 =========================================================================== */
 
-@media (min-width: 64em) {
+@media (min-width: $breakpoint1) {
   .login-page {
     background-color: $verylightgray;
   }

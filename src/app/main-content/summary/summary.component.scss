@@ -202,7 +202,7 @@ join-navbar {
 MEDIA QUERIES
 ======================================================================*/
 
-@media (min-width: 64em) {
+@media (min-width: $breakpoint1) {
   .content {
     max-width: unset;
     min-height: unset;

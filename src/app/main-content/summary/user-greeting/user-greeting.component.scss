@@ -44,7 +44,7 @@
 MEDIA QUERIES
 ======================================================================*/
 
-@media (min-width: 64em) {
+@media (min-width: $breakpoint1) {
   .greetings-container {
     width: 100%;
     @include flex-container($direction: column);

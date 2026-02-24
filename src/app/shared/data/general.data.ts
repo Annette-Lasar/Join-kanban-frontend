@@ -1,0 +1,1 @@
+export const BREAKPOINT1 = 1088;

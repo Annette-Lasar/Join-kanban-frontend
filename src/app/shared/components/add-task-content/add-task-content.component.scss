@@ -131,7 +131,7 @@ join-categories-dropdown {
 MEDIA QUERIES
 ======================================================================*/
 
-@media (min-width: 64em) {
+@media (min-width: $breakpoint1) {
   .add-task-grid {
     height: calc(100% - 72px);
     max-width: unset;

@@ -5,6 +5,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { LegalLinksComponent } from '../shared/components/legal-links/legal-links.component';
 import { ButtonPropertyService } from '../shared/services/button-propertys.service';
 import { Subscription } from 'rxjs';
+import { BREAKPOINT1 } from '../shared/data/general.data.js';
 
 @Component({
   selector: 'join-welcome',
@@ -56,10 +57,10 @@ export class WelcomeComponent implements OnInit, OnDestroy {
   }
 
   initializeResizeObserver(): void {
-    this.isDesktop = window.innerWidth > 1024;
+    this.isDesktop = window.innerWidth > BREAKPOINT1;
 
     this.resizeObserver = new ResizeObserver(() => {
-      const current = window.innerWidth > 1024;
+      const current = window.innerWidth > BREAKPOINT1;
       if (this.isDesktop !== current) {
         this.isDesktop = current;
         this.cdr.detectChanges();

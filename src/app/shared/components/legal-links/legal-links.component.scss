@@ -28,7 +28,7 @@
 MEDIA QUERIES
 ======================================================================*/
 
-@media (min-width: 64em) {
+@media (min-width: $breakpoint1) {
   .navbar-legal-links {
     width: 100%;
     @include flex-container($direction: column, $align: flex-start);

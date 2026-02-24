@@ -162,22 +162,3 @@ export const contacts: Contact[] = [
     color_brightness: true,
   },
 ];
-
-/* export const contacts: Contact[] = [
-  {
-    id: 1,
-    name: 'Elizabeth Bennet',
-    email: 'pemberley@derbyshire.com',
-    phone_number: '07453-1249743',
-    contact_color: '#ffa500',
-    color_brightness: true,
-  },
-  {
-    id: 2,
-    name: 'Effi Briest',
-    email: 'von_innstetten@kessin.com',
-    phone_number: '125084-1947304',
-    contact_color: '#1e90ff',
-    color_brightness: false,
-  },
-]; */

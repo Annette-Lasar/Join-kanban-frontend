@@ -37,7 +37,7 @@ join-navbar {
 MEDIA QUERIES
 ======================================================================*/
 
-@media (min-width: 64em) {
+@media (min-width: $breakpoint1) {
   .wrapper {
     height: 100%;
     grid-template-columns: repeat(5, 1fr);

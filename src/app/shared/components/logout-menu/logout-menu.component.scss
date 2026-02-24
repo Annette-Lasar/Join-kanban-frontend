@@ -59,7 +59,7 @@
 MEDIA QUERIES
 ======================================================================*/
 
-@media (min-width: 64em) {
+@media (min-width: $breakpoint1) {
   .menu-wrapper {
     button {
       &:first-of-type {

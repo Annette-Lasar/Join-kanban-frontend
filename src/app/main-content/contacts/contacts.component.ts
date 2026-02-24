@@ -12,6 +12,7 @@ import { ContactStatusService } from '../../shared/services/contact-status.servi
 import { ActionService } from '../../shared/services/action.service';
 import { InfoBoxService } from '../../shared/services/info-box.service';
 import { switchMap, Subscription } from 'rxjs';
+import { BREAKPOINT1 } from '../../shared/data/general.data.js';
 
 @Component({
   selector: 'join-contacts',
@@ -77,7 +78,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   checkViewport() {
-    this.isMobile = window.innerWidth < 1024;
+    this.isMobile = window.innerWidth < BREAKPOINT1;
   }
 
   loadContacts(): void {

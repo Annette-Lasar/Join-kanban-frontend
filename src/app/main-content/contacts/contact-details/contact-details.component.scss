@@ -69,7 +69,7 @@ h1 {
 MEDIA QUERIES
 ======================================================================*/
 
-@media (min-width: 64em) {
+@media (min-width: $breakpoint1) {
   .content-wrapper {
     height: calc(100% - 72px);
   }

@@ -2,7 +2,7 @@
 
 .board-wrapper {
   position: relative;
-  border: green 3px solid; 
+  border: green 3px solid;
 }
 
 .content {
@@ -114,10 +114,13 @@ join-info {
   .list {
     width: 100%;
     overflow-x: auto;
-    border: orchid 2px solid;
   }
   .board-list-headline-wrapper {
     height: 26px;
+    @include flex-container();
+    h2 {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+    }
     .inner-task-button-wrapper {
       @include flex-container($gap: 12px);
     }
@@ -149,10 +152,6 @@ join-info {
 
 .done {
   grid-area: done;
-}
-
-.board-list-headline-wrapper {
-  @include flex-container();
 }
 
 .add-task-overlay {
@@ -196,7 +195,7 @@ join-info {
   z-index: 10;
   transform: translate(-50%, -50%);
   background-color: $white;
-  border: 1px solid $darkblue ;
+  border: 1px solid $darkblue;
   border-radius: 20px;
   overflow-y: auto;
   .add-task-title-wrapper {
@@ -226,7 +225,7 @@ join-info {
 MEDIA QUERIES
 =================================================================================*/
 
-@media (min-width: 64em) {
+@media (min-width: $breakpoint1) {
   .inner-content-header {
     grid-template-columns: repeat(4, 1fr) 110px;
     grid-template-rows: 40px 20px;
@@ -247,6 +246,17 @@ MEDIA QUERIES
     grid-template-rows: auto;
     grid-template-areas: "toDo inProgress awaitFeedback done";
     overflow-y: auto;
+    .list {
+      box-shadow: 2px 2px 1px 1px $lightgray;
+    }
+    .board-list-headline-wrapper {
+      h2 {
+        font-size: clamp(1rem, 1vw, 1.4rem);
+      }
+      .inner-task-button-wrapper {
+        margin: 0 0.5em 0 0;
+      }
+    }
   }
 
   .desktop-add-task {
@@ -264,10 +274,6 @@ MEDIA QUERIES
   .button-content-wrapper {
     width: 100%;
     @include flex-container($justify: space-around);
-  }
-
-  h2 {
-    font-size: clamp(0.9rem, 1vw, 1.2rem);
   }
 
   .task-card-wrapper {

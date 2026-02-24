@@ -34,6 +34,7 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { forkJoin, Subscription } from 'rxjs';
+import { BREAKPOINT1 } from '../../shared/data/general.data.js';
 
 @Component({
   selector: 'join-board',
@@ -185,13 +186,12 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   initializeResizeObserver(): void {
-    this.isDesktop = window.innerWidth > 1024;
+    this.isDesktop = window.innerWidth > BREAKPOINT1;
 
     this.resizeObserver = new ResizeObserver(() => {
-      const current = window.innerWidth > 1024;
+      const current = window.innerWidth > BREAKPOINT1;
       if (this.isDesktop !== current) {
         this.isDesktop = current;
-        // this.cdr.detectChanges();
       }
     });
 

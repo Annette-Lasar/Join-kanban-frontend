@@ -85,7 +85,7 @@
 MEDIA QUERIES
 ======================================================================*/
 
-@media (min-width: 64em) {
+@media (min-width: $breakpoint1) {
   .outer-content-wrapper {
     height: 100%;
     max-height: calc(800px - $header-height);

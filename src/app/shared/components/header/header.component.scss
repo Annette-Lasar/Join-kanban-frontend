@@ -50,7 +50,7 @@ header {
 MEDIA QUERIES
 =================================================*/
 
-@media (min-width: 64em) {
+@media (min-width: $breakpoint1) {
   .header-wrapper {
     margin-inline: 0;
     max-width: unset;

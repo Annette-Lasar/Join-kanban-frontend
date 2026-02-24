@@ -66,7 +66,7 @@ join-legal-links {
   background-color: $gray;
 }
 
-@media (min-width: 64em) {
+@media (min-width: $breakpoint1) {
   nav {
     padding: 1em;
     height: 100%;
