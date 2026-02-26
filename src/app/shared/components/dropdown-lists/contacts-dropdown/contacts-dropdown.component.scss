@@ -14,21 +14,21 @@
 
 .contact-text-wrapper {
   width: 100%;
-  height: 24px;
+  height: 40px;
   padding-inline: 0.3em;
   @include flex-container();
   background-color: $white;
 }
 .search-contact-input {
   width: 100%;
-  height: 24px;
+  height: 40px;
   padding-inline: 0.3em;
   font-size: 0.75rem;
   border: none;
   outline: none;
   border-radius: 4px;
   &::placeholder {
-    font-size: 0.6rem;
+    font-size: 0.7rem;
   }
 }
 

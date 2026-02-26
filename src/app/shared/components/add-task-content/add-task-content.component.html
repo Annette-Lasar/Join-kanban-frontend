@@ -41,12 +41,12 @@
           [caption]="'Urgent'"
           [defaultSrc]="'assets/icons/prio_urgent.svg'"
           [activeSrc]="'assets/icons/prio_urgent_white.svg'"
-          [buttonClass]="'light-square-button'"
+          [buttonClass]="'light-square-prio-button'"
           [buttonColor]="'#FF3D00'"
           [prioClass]="'urgent'"
           [width]="'90px'"
           [height]="'32px'"
-          [padding]="'0'"
+          [padding]="'0 2px'"
         />
         <join-button
           (click)="setPrioStatus('medium')"
@@ -58,12 +58,12 @@
           [caption]="'Medium'"
           [defaultSrc]="'assets/icons/prio_medium.svg'"
           [activeSrc]="'assets/icons/prio_medium_white.svg'"
-          [buttonClass]="'light-square-button'"
+          [buttonClass]="'light-square-prio-button'"
           [buttonColor]="'#FFA800'"
           [prioClass]="'medium'"
           [width]="'90px'"
           [height]="'32px'"
-          [padding]="'0'"
+          [padding]="'0 4px'"
         />
         <join-button
           (click)="setPrioStatus('low')"
@@ -75,10 +75,10 @@
           [caption]="'Low'"
           [defaultSrc]="'assets/icons/prio_low.svg'"
           [activeSrc]="'assets/icons/prio_low_white.svg'"
-          [buttonClass]="'light-square-button'"
+          [buttonClass]="'light-square-prio-button'"
           [buttonColor]="'#7AE229'"
           [prioClass]="'low'"
-          [width]="'90px'"
+          [width]="'80px'"
           [height]="'32px'"
           [padding]="'0'"
         />

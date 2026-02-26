@@ -25,7 +25,7 @@
 .dark-square-button {
   background-color: $darkblue;
   color: $white;
-  border: 1px solid $darkblue ;
+  border: 1px solid $darkblue;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 700;
@@ -36,7 +36,7 @@
 
 .dark-square-button:disabled,
 .dark-square-button:disabled:hover {
-  border: 1px solid $darkbluepale ;
+  border: 1px solid $darkbluepale;
   background-color: $darkbluepale;
   color: rgba(255, 255, 255, 0.6);
   cursor: not-allowed;
@@ -73,7 +73,8 @@
 
 .light-square-button-blue-hover,
 .light-info-button,
-.light-square-button {
+.light-square-button,
+.light-square-prio-button {
   background-color: $white;
   color: $darkblue;
   font-size: 1rem;
@@ -87,8 +88,14 @@
   border: none;
 }
 
+.light-square-prio-button {
+  font-size: 0.9rem;
+  border: 1px solid $gray;
+  background-color: $white;
+}
+
 .light-square-button-blue-hover-completely {
-  border: 1.5px solid $anthracite ;
+  border: 1.5px solid $anthracite;
   border-radius: 8px;
   &:hover {
     color: $lightblue;
@@ -102,7 +109,7 @@
 
 .light-square-button-blue-hover:hover {
   color: $lightblue;
-  border: 2px solid $lightblue ;
+  border: 2px solid $lightblue;
   box-shadow: 2px 2px 2px 1px $gray;
 }
 
@@ -138,7 +145,7 @@
     padding: 0.7em;
   }
   &:hover {
-    border: 2px solid $lightblue ;
+    border: 2px solid $lightblue;
     background-color: $lightblue;
   }
 }

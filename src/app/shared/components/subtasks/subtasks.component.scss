@@ -1,7 +1,7 @@
 @use "../../../../scss_files/index.scss" as *;
 
 .add-subtask-wrapper {
-  height: 24px;
+  height: 40px;
   padding: 0 0.3em;
   @include flex-container();
   border: 1px solid $bordergray ;

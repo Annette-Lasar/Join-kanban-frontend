@@ -16,6 +16,7 @@
 
 .add-task-button-wrapper {
   height: 40px;
+  max-width: 300px;
   @include flex-container();
   .button-wrapper {
     @include flex-container($justify: flex-start);

@@ -306,6 +306,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.boardStatusService.boardTaskOverlayOpenStatus$.subscribe(
         (status) => {
           this.isAddTaskOverlayVisible = status;
+          console.log(this.isAddTaskOverlayVisible);
         },
       );
     this.subscriptions.add(subscription);

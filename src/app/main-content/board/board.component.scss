@@ -185,37 +185,59 @@ join-info {
 .add-task-content-wrapper {
   height: 90%;
   max-height: 520px;
-  width: 95%;
+  width: 90%;
   max-width: 700px;
-  padding: 1.5em 0.5em;
   position: fixed;
   top: 50%;
   left: 50%;
   z-index: 10;
-  transform: translate(-50%, -50%);
+  transform: translate(-51.5%, -50%);
+  @include flex-container($direction: column);
   background-color: $white;
-  border: 1px solid $darkblue;
+  border: 1px solid $gray;
   border-radius: 20px;
+  box-shadow: 2px 2px 2px 1px $mediumgray;
   overflow-y: auto;
   .add-task-title-wrapper {
-    margin: 0 0 12px;
+    width: 100%;
+    padding: 0.5em;
     @include flex-container();
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    join-button {
+      align-self: flex-start;
+    }
   }
   form {
-    height: calc(100% - 50px);
+    width: 100%;
+    flex: 1;
+    @include flex-container($direction: column);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    min-height: 0;
   }
   .add-task-content {
-    height: calc(100% - 48px);
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    padding: 0 0.25em;
     overflow-y: auto;
   }
   .info-and-add-task-button-wrapper {
-    margin: 12px 0 0;
+    width: 100%;
+    padding: 0.5em;
     @include flex-container();
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
     .required-info {
+      display: none;
       font-size: 0.6rem;
     }
     .add-task-button-wrapper {
-      @include flex-container($gap: 12px);
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+      @include flex-container();
     }
   }
 }
@@ -269,6 +291,23 @@ MEDIA QUERIES
     @include flex-container($justify: center);
     color: $white;
     font-weight: 600;
+  }
+
+  .add-task-content-wrapper {
+    padding: 0.5em;
+    transform: translate(-35%, -50%);
+    .info-and-add-task-button-wrapper {
+      width: 100%;
+      padding: 0 0.5em;
+      // border: red 2px solid;
+      .add-task-button-wrapper {
+        margin: unset;
+      }
+      .required-info {
+        display: block;
+        font-size: 0.8rem;
+      }
+    }
   }
 
   .info-button.global-info {
