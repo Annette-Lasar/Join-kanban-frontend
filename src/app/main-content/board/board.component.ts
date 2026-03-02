@@ -140,7 +140,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   subscribeToTasks(): void {
     const subscription = this.taskService.tasks$.subscribe((tasks) => {
       if (this.isDropping) {
-        this.tasks = tasks; // optional
+        this.tasks = tasks;
         return;
       }
 

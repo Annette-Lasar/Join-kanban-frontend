@@ -2,25 +2,37 @@
 
 .task-detail-wrapper {
   height: 100%;
+  min-height: 0;
   padding: 1em;
   @include flex-container($direction: column, $align: flex-start);
   border-radius: 20px;
 }
 
+form {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
 .task-detail-content-wrapper {
+  flex: 1; 
+  min-height: 0;
+  overflow-y: auto;
   width: 100%;
   height: 90%;
   font-size: 0.85rem;
+  .category-close-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 
 .task-detail-header-wrapper {
-  width: 100%;
-  height: 24px;
   @include flex-container();
-  .category-wrapper {
-    padding: 0.25em 0.75em;
-    font-size: 0.9rem;
-    border-radius: 8px;
+  join-categories-dropdown {
+    width: 100%;
   }
 }
 
@@ -28,7 +40,6 @@
   width: 100%;
   height: calc(100% - 24px - 24px);
   margin: 12px 0 0 0;
-  overflow-y: auto;
 }
 
 form {
@@ -56,7 +67,7 @@ form {
 
 .plain-input {
   width: 100%;
-  border: 1px solid $bordergray ;
+  border: 1px solid $bordergray;
   border-radius: 4px;
   outline: none;
   &:focus {
@@ -78,6 +89,11 @@ form {
 .prio-button-wrapper,
 .task-due-date-input-wrapper {
   margin: 0 0 1em;
+}
+
+.title-input,
+.date-input {
+  height: 40px;
 }
 
 .meta-label {
@@ -113,6 +129,7 @@ form {
   height: 28px;
   margin: 0.25em 0 0;
   @include flex-container($justify: flex-end, $gap: 4px);
+  background-color: white;
   .separator {
     width: 1px;
     background-color: $bordergray;

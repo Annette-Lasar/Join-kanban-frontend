@@ -14,6 +14,14 @@ import { InfoMessage } from '../../interfaces/info-message.interface';
   styleUrl: './button.component.scss',
 })
 export class ButtonComponent {
+  get iconSrc(): string {
+    if (!this.isPrioButton) return this.defaultSrc;
+
+    return this.prioStatus === this.prioClass
+      ? this.activeSrc
+      : this.defaultSrc;
+  }
+
   @Input() actionMessage: InfoMessage | null = null;
   @Input() actionType: string = '';
   @Input() activeSrc: string = '';
@@ -40,7 +48,7 @@ export class ButtonComponent {
 
   @Input() actionFunction: (event: Event, infoMessage: InfoMessage) => void = (
     event,
-    infoMessage
+    infoMessage,
   ) => {
     event.stopPropagation();
     this.actionService.executeAction(infoMessage, event);
@@ -59,7 +67,7 @@ export class ButtonComponent {
   constructor(
     private actionService: ActionService,
     private infoBoxService: InfoBoxService,
-    private boardStatusService: BoardStatusService
+    private boardStatusService: BoardStatusService,
   ) {}
 
   setPrioStatus(newStatus: string) {

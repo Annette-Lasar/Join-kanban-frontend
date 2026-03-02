@@ -1,29 +1,56 @@
 @use "../../../scss_files/index.scss" as *;
 
+.content {
+  height: 100%;
+  @include flex-container($direction: column, $align: center, $justify: flex-start);
+  min-height: 0;
+  background-color: $verylightgray;
+}
+
 .inner-content-header {
   height: 72px;
   padding: 0 0.5em;
   @include flex-container($justify: flex-start);
 }
 
-.content {
-  min-height: calc(
-    100vh - $header-height - $mobile-navbar-height - 80px - 48px
-  );
-  padding-inline: 0.5em;
-  background-color: $verylightgray;
+form {
+  flex: 1;
+  @include flex-container($direction: column, $align: center, $justify: flex-start);
+  min-height: 0;
+}
+
+join-add-task-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .add-task-button-wrapper {
-  height: 40px;
-  max-width: 300px;
+  height: 50px;
   @include flex-container();
   .button-wrapper {
-    @include flex-container($justify: flex-start);
-    gap: 8px;
+    width: 100%;
+    max-width: 300px;
+    @include flex-container($gap: 8px);
   }
 }
 
 .info-required {
+  display: none;
   font-size: clamp(0.75rem, 1vw, 1.1rem);
+}
+
+@media (min-width: $breakpoint1) {
+  .add-task-button-wrapper {
+    margin: 0 2em 4em;
+    .button-wrapper {
+      max-width: unset;
+      width: fit-content;
+      @include flex-container($justify: center, $gap: 24px); 
+      
+    }
+  }
+  .info-required {
+    display: block;
+  }
 }

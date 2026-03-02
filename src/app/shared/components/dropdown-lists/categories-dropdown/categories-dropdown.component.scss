@@ -30,7 +30,8 @@
 
 .categories-list {
   width: 100%;
-  height: 300px;
+  height: fit-content;
+  max-height: 250px;
   overflow-y: auto;
   padding: 0 0.5em;
   background-color: $white;
