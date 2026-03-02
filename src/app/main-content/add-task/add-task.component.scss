@@ -2,33 +2,42 @@
 
 .content {
   height: 100%;
+  padding: 0 0.5em;
   @include flex-container($direction: column, $align: center, $justify: flex-start);
   min-height: 0;
   background-color: $verylightgray;
+  border: blue 2px solid; 
 }
 
 .inner-content-header {
+  width: 100%;
   height: 72px;
   padding: 0 0.5em;
   @include flex-container($justify: flex-start);
+  border: red 2px solid;
 }
 
 form {
+  width: 100%;
   flex: 1;
   @include flex-container($direction: column, $align: center, $justify: flex-start);
   min-height: 0;
+  border: orange 2px solid; 
 }
 
 join-add-task-content {
+  width: 100%;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
 }
 
 .add-task-button-wrapper {
+  width: 100%;
   height: 50px;
   @include flex-container();
   .button-wrapper {
+    margin: 0 auto; 
     width: 100%;
     max-width: 300px;
     @include flex-container($gap: 8px);
@@ -42,8 +51,10 @@ join-add-task-content {
 
 @media (min-width: $breakpoint1) {
   .add-task-button-wrapper {
-    margin: 0 2em 4em;
+    margin: 0 0 4em;
+    padding: 0 2em; 
     .button-wrapper {
+      margin: unset;
       max-width: unset;
       width: fit-content;
       @include flex-container($justify: center, $gap: 24px); 

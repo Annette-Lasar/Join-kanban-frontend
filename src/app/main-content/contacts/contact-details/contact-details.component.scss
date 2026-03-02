@@ -92,6 +92,7 @@ MEDIA QUERIES
     align-self: center;
     justify-self: center;
     @include flex-container($justify: center);
+    border: 3px solid $white;
     border-radius: 50%;
   }
 

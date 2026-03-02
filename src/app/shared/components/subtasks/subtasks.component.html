@@ -10,7 +10,7 @@
   @if (!isCancelAddSubtaskVisible) {
   <join-button
     [buttonIcon]="true"
-    [buttonClass]="'white-button'"
+    [buttonClass]="'transparent-button'"
     [imgSrc]="'assets/icons/plus.svg'"
     [actionType]="'openAddSubtaskBox'"
     [actionMessage]="{
@@ -26,7 +26,7 @@
   <div class="cancel-and-add-subtask-wrapper">
     <join-button
       [buttonIcon]="true"
-      [buttonClass]="'white-button'"
+      [buttonClass]="'transparent-button'"
       [imgSrc]="'assets/icons/close.svg'"
       [actionMessage]="{
         actionType: 'cancelAddSubtask',
@@ -40,7 +40,7 @@
     <div class="separator"></div>
     <join-button
       [buttonIcon]="true"
-      [buttonClass]="'white-button'"
+      [buttonClass]="'transparent-button'"
       [imgSrc]="'assets/icons/check.svg'"
       [actionMessage]="{
         actionType: 'saveAddedSubtask',
@@ -65,7 +65,7 @@
     <div class="subtask-edit-delete-wrapper">
       <join-button
         [buttonIcon]="true"
-        [buttonClass]="'white-button'"
+        [buttonClass]="'transparent-button'"
         [imgSrc]="'assets/icons/edit_dark.svg'"
         [actionMessage]="{
           actionType: 'openEditSubtaskBox',
@@ -79,7 +79,7 @@
       <div class="separator"></div>
       <join-button
         [buttonIcon]="true"
-        [buttonClass]="'white-button'"
+        [buttonClass]="'transparent-button'"
         [imgSrc]="'assets/icons/delete.svg'"
         [actionMessage]="{
           actionType: 'deleteSubtask',
@@ -100,7 +100,7 @@
       />
       <join-button
         [buttonIcon]="true"
-        [buttonClass]="'white-button'"
+        [buttonClass]="'transparent-button'"
         [imgSrc]="'assets/icons/check.svg'"
         [actionMessage]="{
           actionType: 'saveEditedSubtask',

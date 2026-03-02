@@ -4,10 +4,9 @@
     <div class="info-title-wrapper">
       <img class="logo" [src]="infoMessage?.imageSrc" alt="" />
       <div class="bold_700">{{ infoMessage?.alertTitle }}</div>
-      <!-- muss über AppComponent gehen -->
       <join-button
         [buttonIcon]="true"
-        [buttonClass]="'white-button'"
+        [buttonClass]="'transparent-button'"
         [imgSrc]="'assets/icons/close_white.svg'"
         [actionMessage]="{
           actionType: 'handleInfoAndSuccessMessages',

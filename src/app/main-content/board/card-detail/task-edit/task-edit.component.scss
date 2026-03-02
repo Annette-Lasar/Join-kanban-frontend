@@ -10,8 +10,7 @@
 
 form {
   flex: 1; 
-  display: flex;
-  flex-direction: column;
+  @include flex-container($direction: column, $align: flex-start, $justify: flex-start); 
   min-height: 0;
 }
 
@@ -23,9 +22,8 @@ form {
   height: 90%;
   font-size: 0.85rem;
   .category-close-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @include flex-container(); 
+
   }
 }
 
