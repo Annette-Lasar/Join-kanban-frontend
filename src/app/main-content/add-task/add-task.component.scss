@@ -6,7 +6,6 @@
   @include flex-container($direction: column, $align: center, $justify: flex-start);
   min-height: 0;
   background-color: $verylightgray;
-  border: blue 2px solid; 
 }
 
 .inner-content-header {
@@ -14,7 +13,6 @@
   height: 72px;
   padding: 0 0.5em;
   @include flex-container($justify: flex-start);
-  border: red 2px solid;
 }
 
 form {
@@ -22,7 +20,6 @@ form {
   flex: 1;
   @include flex-container($direction: column, $align: center, $justify: flex-start);
   min-height: 0;
-  border: orange 2px solid; 
 }
 
 join-add-task-content {

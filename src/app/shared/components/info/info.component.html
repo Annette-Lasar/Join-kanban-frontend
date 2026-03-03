@@ -34,12 +34,12 @@
             persistent: true
           }"
           [buttonClass]="'dark-square-button'"
-          [width]="'110px'"
+          [width]="'120px'"
           [height]="'32px'"
           [padding]="'0.5em'"
           (clicked)="onConfirmDelete()"
         />
-<!-- Button muss möglicherweise auch über AppComponent laufen. -->
+
         <join-button
           [actionMessage]="{
             actionType: 'handleInfoAndSuccessMessages',
@@ -47,7 +47,7 @@
           }"
           [buttonClass]="'dark-square-button'"
           [caption]="infoMessage?.caption2 ?? ''"
-          [width]="'110px'"
+          [width]="'120px'"
           [height]="'32px'"
           [padding]="'0.5em'"
         />

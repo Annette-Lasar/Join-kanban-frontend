@@ -52,7 +52,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     private groupContactsService: GroupContactsService,
     private contactStatusService: ContactStatusService,
     private actionService: ActionService,
-    private infoBoxService: InfoBoxService
+    private infoBoxService: InfoBoxService,
   ) {}
 
   ngOnInit(): void {
@@ -100,7 +100,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       (state) => {
         this.contactFormStatus = state.visible;
         this.isAddContactMode = state.mode === 'add';
-      }
+      },
     );
     this.subscriptions?.add(subscription);
   }
@@ -109,7 +109,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     const subscription = this.contactService.currentContact$.subscribe(
       (contact) => {
         this.currentContact = contact;
-      }
+      },
     );
     this.subscriptions?.add(subscription);
   }
@@ -118,7 +118,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     const subscription = this.contactStatusService.showDetailsStatus$.subscribe(
       (status) => {
         this.showDetails = status;
-      }
+      },
     );
     this.subscriptions?.add(subscription);
   }
@@ -135,7 +135,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     const subscription = this.infoBoxService.infoBoxStatus$.subscribe(
       (status) => {
         this.infoBoxStatus = status;
-      }
+      },
     );
     this.subscriptions?.add(subscription);
   }
@@ -162,7 +162,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     const subscription = this.contactStatusService.showDetailsStatus$.subscribe(
       (value) => {
         this.showDetails = value;
-      }
+      },
     );
     this.subscriptions?.add(subscription);
   }
@@ -191,8 +191,9 @@ export class ContactsComponent implements OnInit, OnDestroy {
     const subscription = this.contactService.deleteData(contactId).subscribe({
       next: () => {
         this.groupContactsService.groupContactsAlphabetically(this.contacts);
-        this.contactService.setCurrentContact(null); // Detailansicht zurücksetzen
-        this.contactStatusService.setShowDetailsStatus(false); // Detailansicht schließen
+        this.contactService.setCurrentContact(null);
+        this.contactStatusService.setShowDetailsStatus(false);
+        this.actionService.closeContactForm();
         this.actionService.handleInfoContainers({
           infoText: 'Contact successfully deleted!',
           isVisible: true,

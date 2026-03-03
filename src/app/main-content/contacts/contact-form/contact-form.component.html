@@ -1,4 +1,7 @@
-<!-- <div class="outer-contact-form-wrapper rounded-lg" [ngClass]="{ show: showAnimation }">
+<div
+  class="outer-contact-form-wrapper rounded-lg"
+  [ngClass]="{ show: showAnimation }"
+>
   <div class="inner-contact-form-wrapper h-full rounded-lg">
     <div class="close-wrapper w-full">
       <join-button
@@ -12,7 +15,7 @@
         [height]="'24px'"
         [width]="'24px'"
         [actionMessage]="{
-          actionType: 'closeContactForm'
+          actionType: 'closeContactForm',
         }"
       />
     </div>
@@ -21,13 +24,11 @@
         <img src="assets/icons/join_logo_white.svg" alt="" />
         <h1 class="white bold_700">
           {{
-            (mode === 'add') || !newContact.name
-              ? "Add contact"
-              : "Edit contact"
+            mode === "add" || !newContact.name ? "Add contact" : "Edit contact"
           }}
         </h1>
-        @if (mode === 'add') {
-        <div class="slogan white text-sm">Tasks are better with a team</div>
+        @if (mode === "add") {
+          <div class="slogan white text-sm">Tasks are better with a team</div>
         }
         <div class="blue-separator-line"></div>
       </div>
@@ -58,39 +59,39 @@
             </div>
           </div>
 
-          @if (mode === 'edit' && currentContact?.email === currentUser?.username) {
-          <div>
-            <p class="mail-text">
-              {{ currentContact?.email }}
-            </p>
-            <div class="warning-message red text-xs">
-              You can't change your own username.
+          @if (
+            mode === "edit" && currentContact?.email === currentUser?.username
+          ) {
+            <div>
+              <p class="mail-text">
+                {{ currentContact?.email }}
+              </p>
+              <div class="warning-message red text-xs">
+                You can't change your own username.
+              </div>
             </div>
-          </div>
-
           } @else {
-
-          <div class="mail w-full">
-            <div class="mail-wrapper rounded-sm w-full">
-              <input
-                class="rounded-sm h-24"
-                type="email"
-                placeholder="Email*"
-                [(ngModel)]="newContact.email"
-                (ngModelChange)="validateEmail($event)"
-                name="email"
-                #email="ngModel"
-                required
-              />
-              <img src="assets/icons/mail.svg" alt="" />
+            <div class="mail w-full">
+              <div class="mail-wrapper rounded-sm w-full">
+                <input
+                  class="rounded-sm h-24"
+                  type="email"
+                  placeholder="Email*"
+                  [(ngModel)]="newContact.email"
+                  (ngModelChange)="validateEmail($event)"
+                  name="email"
+                  #email="ngModel"
+                  required
+                />
+                <img src="assets/icons/mail.svg" alt="" />
+              </div>
+              <div
+                class="warning-message red text-xs"
+                [ngStyle]="{ opacity: !emailIsValid && email.touched ? 1 : 0 }"
+              >
+                Please enter a correct email address.
+              </div>
             </div>
-            <div
-              class="warning-message red text-xs"
-              [ngStyle]="{ opacity: !emailIsValid && email.touched ? 1 : 0 }"
-            >
-              Please enter a correct email address.
-            </div>
-          </div>
           }
 
           <div class="phone w-full">
@@ -104,97 +105,129 @@
                 name="phone"
                 #phone="ngModel"
               />
-              <img src="assets/icons/phone.svg" alt="" class="h-24"/>
-              
+              <img src="assets/icons/phone.svg" alt="" class="h-24" />
             </div>
             <div
               class="warning-message red text-xs"
-              [ngStyle]="{ opacity: !phoneIsValid && phone.value && phone.touched ? 1 : 0 }"
+              [ngStyle]="{
+                opacity: !phoneIsValid && phone.value && phone.touched ? 1 : 0,
+              }"
             >
               Please enter a correct phone number.
             </div>
           </div>
         </div>
         <div class="button-wrapper">
-          @if (mode === 'add') {
-          <join-button
-            class="mobile-clear-contact-button"
-            [buttonIcon]="true"
-            [actionMessage]="{
-              actionType: 'clearInputFields'
-            }"
-            [imgSrc]="'assets/icons/close.svg'"
-            [buttonClass]="'light-square-button-blue-hover-completely '"
-            [width]="'30px'"
-            [height]="'30px'"
-            [padding]="'0'"
-            (clearInputButtonClicked)="clearInputFields(contactForm)"
-          />
-          <join-button
-            class="desktop-clear-contact-button"
-            [buttonCaptionFirst]="true"
-            [buttonIcon]="true"
-            [actionMessage]="{
-              actionType: 'clearInputFields'
-            }"
-            [imgSrc]="'assets/icons/close.svg'"
-            [caption]="'Clear'"
-            [buttonClass]="'light-square-button-blue-hover-completely '"
-            [width]="'80px'"
-            [height]="'32px'"
-            [padding]="'0'"
-            (clearInputButtonClicked)="clearInputFields(contactForm)"
-          />
-          <join-button
-            class="create-contact-button"
-            [buttonIcon]="true"
-            [buttonCaptionFirst]="true"
-            [actionMessage]="{
-              actionType: 'createNewContact'
-            }"
-            [caption]="'Create contact'"
-            [imgSrc]="'assets/icons/check_white.svg'"
-            [imgClass]="'check-icon'"
-            [buttonClass]="'dark-square-button'"
-            [width]="'150px'"
-            [height]="'32px'"
-            [padding]="'0'"
-            [disabled]="!isFormValid"
-          />
+          @if (mode === "add") {
+            <join-button
+              class="mobile-clear-contact-button"
+              [buttonIcon]="true"
+              [actionMessage]="{
+                actionType: 'clearInputFields',
+              }"
+              [imgSrc]="'assets/icons/close.svg'"
+              [buttonClass]="'light-square-button-blue-hover-completely '"
+              [width]="'30px'"
+              [height]="'30px'"
+              [padding]="'0'"
+              (clearInputButtonClicked)="clearInputFields(contactForm)"
+            />
+            <join-button
+              class="desktop-clear-contact-button"
+              [buttonCaptionFirst]="true"
+              [buttonIcon]="true"
+              [actionMessage]="{
+                actionType: 'clearInputFields',
+              }"
+              [imgSrc]="'assets/icons/close.svg'"
+              [caption]="'Clear'"
+              [buttonClass]="'light-square-button-blue-hover-completely '"
+              [width]="'80px'"
+              [height]="'32px'"
+              [padding]="'0'"
+              (clearInputButtonClicked)="clearInputFields(contactForm)"
+            />
+            <join-button
+              class="create-contact-button"
+              [buttonIcon]="true"
+              [buttonCaptionFirst]="true"
+              [actionMessage]="{
+                actionType: 'createNewContact',
+              }"
+              [caption]="'Create contact'"
+              [imgSrc]="'assets/icons/check_white.svg'"
+              [imgClass]="'check-icon'"
+              [buttonClass]="'dark-square-button'"
+              [width]="'150px'"
+              [height]="'32px'"
+              [padding]="'0'"
+              [disabled]="!isFormValid"
+            />
           } @else {
-          <join-button
-            [caption]="'Delete'"
-            [buttonClass]="'light-square-button-blue-hover-completely '"
-            [actionMessage]="{
-              actionType: 'handleInfoAndSuccessMessages'
-            }"
-            [width]="'80px'"
-            [height]="'32px'"
-            [padding]="'0'"
-          />
-          <join-button
-            class="create-contact-button"
-            [buttonIcon]="true"
-            [buttonCaptionFirst]="true"
-            [type]="'submit'"
-            [caption]="'Save'"
-            [imgSrc]="'assets/icons/check_white.svg'"
-            [imgClass]="'check-icon'"
-            [buttonClass]="'dark-square-button'"
-            [width]="'100px'"
-            [height]="'32px'"
-            [padding]="'0'"
-            [disabled]="!isFormValid"
-          />
+            <join-button
+              [buttonCaptionSecond]="true"
+              [buttonIcon]="false"
+              [actionMessage]="{
+                securityQuestion: true,
+                alertTitle: 'Alert',
+                infoQuestion:
+                  'Are you sure you want to delete this contact permanently?',
+                infoText: 'This process is irreversible',
+                imageSrc: 'assets/icons/join_logo_white.svg',
+                actionType: 'handleInfoAndSuccessMessages',
+                nextActionType: 'deleteContact',
+                caption1: 'Yes, proceed',
+                caption2: 'No, preserve',
+                id: currentContact?.id,
+                isVisible: true,
+                persistent: true,
+              }"
+              [caption]="'Delete'"
+              [buttonClass]="'light-square-button-blue-hover-completely '"
+              [width]="'80px'"
+              [height]="'32px'"
+              [padding]="'0'"
+            />
+            <join-button
+              class="create-contact-button"
+              [buttonIcon]="true"
+              [buttonCaptionFirst]="true"
+              [type]="'submit'"
+              [caption]="'Save'"
+              [imgSrc]="'assets/icons/check_white.svg'"
+              [imgClass]="'check-icon'"
+              [buttonClass]="'dark-square-button'"
+              [width]="'100px'"
+              [height]="'32px'"
+              [padding]="'0'"
+              [disabled]="!isFormValid"
+            />
           }
         </div>
       </form>
       <div class="icon-wrapper desktop h-72">
-        @if (mode === 'add') {
+        @if (mode === "add") {
+          <div class="inner-icon-wrapper h-full w-full">
+            <img src="assets/icons/person_white.svg" alt="" />
+          </div>
+        } @else {
+          <div
+            class="inner-icon-wrapper h-full w-full"
+            [style.backgroundColor]="newContact.color"
+            [style.color]="newContact.color_brightness ? '#000000' : '#ffffff'"
+          >
+            {{ newContact.name ? newContact.name.charAt(0) : ""
+            }}{{ newContact.name.split(" ").pop()?.charAt(0) }}
+          </div>
+        }
+      </div>
+    </div>
+    <div class="icon-wrapper mobile h-72">
+      @if (mode === "add") {
         <div class="inner-icon-wrapper h-full w-full">
           <img src="assets/icons/person_white.svg" alt="" />
         </div>
-        } @else {
+      } @else {
         <div
           class="inner-icon-wrapper h-full w-full"
           [style.backgroundColor]="newContact.color"
@@ -203,250 +236,6 @@
           {{ newContact.name ? newContact.name.charAt(0) : ""
           }}{{ newContact.name.split(" ").pop()?.charAt(0) }}
         </div>
-        }
-      </div>
-    </div>
-    <div class="icon-wrapper mobile h-72">
-      @if (mode === 'add') {
-      <div class="inner-icon-wrapper h-full w-full">
-        <img src="assets/icons/person_white.svg" alt="" />
-      </div>
-      } @else {
-      <div
-        class="inner-icon-wrapper h-full w-full"
-        [style.backgroundColor]="newContact.color"
-        [style.color]="newContact.color_brightness ? '#000000' : '#ffffff'"
-      >
-        {{ newContact.name ? newContact.name.charAt(0) : ""
-        }}{{ newContact.name.split(" ").pop()?.charAt(0) }}
-      </div>
-      }
-    </div>
-  </div>
-</div> -->
-
-<div class="outer-contact-form-wrapper rounded-lg" [ngClass]="{ show: showAnimation }">
-  <div class="inner-contact-form-wrapper h-full rounded-lg">
-    <div class="close-wrapper w-full">
-      <join-button
-        [buttonIcon]="true"
-        [imgSrc]="
-          isMobile ? 'assets/icons/close_white.svg' : 'assets/icons/close.svg'
-        "
-        [buttonClass]="isMobile ? 'transparent-button' : 'white-button'"
-        [alt]="'Close edit contact'"
-        [padding]="'0'"
-        [height]="'24px'"
-        [width]="'24px'"
-        [actionMessage]="{
-          actionType: 'closeContactForm'
-        }"
-      />
-    </div>
-    <div class="form-header">
-      <div class="headline-wrapper">
-        <img src="assets/icons/join_logo_white.svg" alt="" />
-        <h1 class="white bold_700">
-          {{
-            (mode === 'add') || !newContact.name
-              ? "Add contact"
-              : "Edit contact"
-          }}
-        </h1>
-        @if (mode === 'add') {
-        <div class="slogan white text-sm">Tasks are better with a team</div>
-        }
-        <div class="blue-separator-line"></div>
-      </div>
-    </div>
-    <div class="form-body">
-      <form (ngSubmit)="onSubmit()" #contactForm="ngForm" novalidate>
-        <div class="input-wrapper h-full w-full">
-          <div class="name w-full">
-            <div class="name-wrapper rounded-sm w-full">
-              <input
-                class="h-24 rounded-sm"
-                type="text"
-                placeholder="Name*"
-                [(ngModel)]="newContact.name"
-                (ngModelChange)="validateName($event)"
-                name="name"
-                #name="ngModel"
-                required
-              />
-              <img src="assets/icons/person.svg" alt="" />
-            </div>
-
-            <div
-              class="warning-message red text-xs"
-              [ngStyle]="{ opacity: !nameIsValid && name.touched ? 1 : 0 }"
-            >
-              Please enter one first and one last name.
-            </div>
-          </div>
-
-          @if (mode === 'edit' && currentContact?.email === currentUser?.username) {
-          <div>
-            <p class="mail-text">
-              {{ currentContact?.email }}
-            </p>
-            <div class="warning-message red text-xs">
-              You can't change your own username.
-            </div>
-          </div>
-
-          } @else {
-
-          <div class="mail w-full">
-            <div class="mail-wrapper rounded-sm w-full">
-              <input
-                class="rounded-sm h-24"
-                type="email"
-                placeholder="Email*"
-                [(ngModel)]="newContact.email"
-                (ngModelChange)="validateEmail($event)"
-                name="email"
-                #email="ngModel"
-                required
-              />
-              <img src="assets/icons/mail.svg" alt="" />
-            </div>
-            <div
-              class="warning-message red text-xs"
-              [ngStyle]="{ opacity: !emailIsValid && email.touched ? 1 : 0 }"
-            >
-              Please enter a correct email address.
-            </div>
-          </div>
-          }
-
-          <div class="phone w-full">
-            <div class="phone-wrapper rounded-sm w-full">
-              <input
-                class="rounded-sm h-24"
-                type="tel"
-                placeholder="Phone"
-                [(ngModel)]="newContact.phone_number"
-                (ngModelChange)="validatePhone($event)"
-                name="phone"
-                #phone="ngModel"
-              />
-              <img src="assets/icons/phone.svg" alt="" class="h-24"/>
-              
-            </div>
-            <div
-              class="warning-message red text-xs"
-              [ngStyle]="{ opacity: !phoneIsValid && phone.value && phone.touched ? 1 : 0 }"
-            >
-              Please enter a correct phone number.
-            </div>
-          </div>
-        </div>
-        <div class="button-wrapper">
-          @if (mode === 'add') {
-          <join-button
-            class="mobile-clear-contact-button"
-            [buttonIcon]="true"
-            [actionMessage]="{
-              actionType: 'clearInputFields'
-            }"
-            [imgSrc]="'assets/icons/close.svg'"
-            [buttonClass]="'light-square-button-blue-hover-completely '"
-            [width]="'30px'"
-            [height]="'30px'"
-            [padding]="'0'"
-            (clearInputButtonClicked)="clearInputFields(contactForm)"
-          />
-          <join-button
-            class="desktop-clear-contact-button"
-            [buttonCaptionFirst]="true"
-            [buttonIcon]="true"
-            [actionMessage]="{
-              actionType: 'clearInputFields'
-            }"
-            [imgSrc]="'assets/icons/close.svg'"
-            [caption]="'Clear'"
-            [buttonClass]="'light-square-button-blue-hover-completely '"
-            [width]="'80px'"
-            [height]="'32px'"
-            [padding]="'0'"
-            (clearInputButtonClicked)="clearInputFields(contactForm)"
-          />
-          <join-button
-            class="create-contact-button"
-            [buttonIcon]="true"
-            [buttonCaptionFirst]="true"
-            [actionMessage]="{
-              actionType: 'createNewContact'
-            }"
-            [caption]="'Create contact'"
-            [imgSrc]="'assets/icons/check_white.svg'"
-            [imgClass]="'check-icon'"
-            [buttonClass]="'dark-square-button'"
-            [width]="'150px'"
-            [height]="'32px'"
-            [padding]="'0'"
-            [disabled]="!isFormValid"
-          />
-          } @else {
-          <join-button
-            [caption]="'Delete me'"
-            [buttonClass]="'light-square-button-blue-hover-completely '"
-            [actionMessage]="{
-              actionType: 'handleInfoAndSuccessMessages'
-            }"
-            [width]="'80px'"
-            [height]="'32px'"
-            [padding]="'0'"
-          />
-          <join-button
-            class="create-contact-button"
-            [buttonIcon]="true"
-            [buttonCaptionFirst]="true"
-            [type]="'submit'"
-            [caption]="'Save'"
-            [imgSrc]="'assets/icons/check_white.svg'"
-            [imgClass]="'check-icon'"
-            [buttonClass]="'dark-square-button'"
-            [width]="'100px'"
-            [height]="'32px'"
-            [padding]="'0'"
-            [disabled]="!isFormValid"
-          />
-          }
-        </div>
-      </form>
-      <div class="icon-wrapper desktop h-72">
-        @if (mode === 'add') {
-        <div class="inner-icon-wrapper h-full w-full">
-          <img src="assets/icons/person_white.svg" alt="" />
-        </div>
-        } @else {
-        <div
-          class="inner-icon-wrapper h-full w-full"
-          [style.backgroundColor]="newContact.color"
-          [style.color]="newContact.color_brightness ? '#000000' : '#ffffff'"
-        >
-          {{ newContact.name ? newContact.name.charAt(0) : ""
-          }}{{ newContact.name.split(" ").pop()?.charAt(0) }}
-        </div>
-        }
-      </div>
-    </div>
-    <div class="icon-wrapper mobile h-72">
-      @if (mode === 'add') {
-      <div class="inner-icon-wrapper h-full w-full">
-        <img src="assets/icons/person_white.svg" alt="" />
-      </div>
-      } @else {
-      <div
-        class="inner-icon-wrapper h-full w-full"
-        [style.backgroundColor]="newContact.color"
-        [style.color]="newContact.color_brightness ? '#000000' : '#ffffff'"
-      >
-        {{ newContact.name ? newContact.name.charAt(0) : ""
-        }}{{ newContact.name.split(" ").pop()?.charAt(0) }}
-      </div>
       }
     </div>
   </div>

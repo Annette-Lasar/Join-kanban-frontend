@@ -54,10 +54,6 @@ export class ButtonPropertyService {
     this.toggleContainerSubject.next(message);
   }
 
-/*   setIsAddContactButtonStatus(status: boolean): void {
-    this.isAddContactButtonClickedSubject.next(status);
-  } */
-
   setCreateNewContactStatus(status: boolean): void {
     this.createNewContactClicked.next(status);
   }
