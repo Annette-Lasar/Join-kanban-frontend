@@ -9,21 +9,24 @@
 }
 
 form {
-  flex: 1; 
-  @include flex-container($direction: column, $align: flex-start, $justify: flex-start); 
+  flex: 1;
+  @include flex-container(
+    $direction: column,
+    $align: flex-start,
+    $justify: flex-start
+  );
   min-height: 0;
 }
 
 .task-detail-content-wrapper {
-  flex: 1; 
+  flex: 1;
   min-height: 0;
   overflow-y: auto;
   width: 100%;
   height: 90%;
   font-size: 0.85rem;
   .category-close-wrapper {
-    @include flex-container(); 
-
+    @include flex-container();
   }
 }
 
@@ -87,11 +90,6 @@ form {
 .prio-button-wrapper,
 .task-due-date-input-wrapper {
   margin: 0 0 1em;
-}
-
-.title-input,
-.date-input {
-  height: 40px;
 }
 
 .meta-label {

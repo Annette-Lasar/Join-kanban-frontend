@@ -9,7 +9,7 @@
     }"
   >
     @if(!isContactsListVisible) {
-    <div class="contact-text-wrapper" (click)="toggleContactsList($event)">
+    <div class="contact-text-wrapper h-40" (click)="toggleContactsList($event)">
       <div class="contacts-text">Select contacts to assign</div>
       <div class="contacts-dropdown-image">
         <img
@@ -25,7 +25,7 @@
     } @else {
     <input
       type="text"
-      class="search-contact-input"
+      class="search-contact-input h-40"
       placeholder="Search contacts ..."
       [(ngModel)]="searchTerm"
       (input)="filterContacts()"

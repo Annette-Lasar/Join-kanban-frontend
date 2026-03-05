@@ -1,33 +1,35 @@
 @use "../../../scss_files/index.scss" as *;
 
 .outer-content-wrapper {
-  height: calc(100vh - $header-height - $mobile-navbar-height);
+  min-height: 100%;
+  @include flex-container($direction: column, $justify: center);
   background-color: $white;
 }
 
-.inner-content-wrapper {
-  max-width: 600px;
-  margin: 0 auto;
-  height: 100%;
-}
 .desktop-add-contact-button {
   display: none;
 }
 
 .list-wrapper {
-  height: 100%;
+  width: 100%;
+  min-height: 100%;
+  flex: 1;
+  overflow-y: auto;
+  @include flex-container($direction: column, $justify: center);
 }
 
 .inner-list-wrapper {
-  height: 100%;
+  width: 100%;
+  max-width: 700px;
+  flex: 1;
+  margin: 0 auto;
+  min-height: 100%;
 }
 
 .contact-list {
-  max-width: 600px;
-  height: 100%;
+  width: 100%;
   margin: 0 auto;
   padding: 0;
-  overflow-y: auto;
   .alphabet-header {
     margin: 1.5em 1em 1em;
     padding-inline: 1em;
@@ -38,6 +40,7 @@
     margin: 0 auto 1em;
     height: 1px;
     background-color: $bordergray;
+    list-style: none;
   }
   .list-item {
     margin: 0.5em;
@@ -51,7 +54,7 @@
       width: 32px;
       @include flex-container($justify: center);
       font-size: 0.8rem;
-      background-color: #ffa500;
+      background-color: $orange;
       border-radius: 50%;
     }
     .list-text-wrapper {
@@ -87,49 +90,73 @@ MEDIA QUERIES
 
 @media (min-width: $breakpoint1) {
   .outer-content-wrapper {
-    height: 100%;
-    // max-height: calc(800px - $header-height);
-  }
-  .inner-content-wrapper {
     width: 100%;
-    @include flex-container($gap: 16px);
+    height: calc(100vh - 80px);
+    display: grid;
+    grid-template-columns: minmax(0, 400px) 1fr;
+    grid-template-rows: 60px minmax(0, 1fr);
+    grid-template-areas:
+      "btn details"
+      "list details";
+    column-gap: 1em;
     max-width: unset;
     margin: unset;
     background-color: $verylightgray;
-  }
-
-  .inner-list-wrapper {
-    height: calc(100% - 48px);
-    padding-inline: 0.5em;
-    background-color: $white;
-    box-shadow: 4px 2px 4px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
   }
 
   .desktop-add-contact-button {
+    width: 100%;
+    max-width: 352px;
+    grid-area: btn;
     display: block;
-    margin: 0 0 1em;
+    align-self: center;
+    justify-self: center;
+  }
+
+  .list-wrapper {
+    height: 100%;
+    grid-area: list;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .inner-list-wrapper {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: $white;
+    box-shadow: 4px 2px 4px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
   }
 
   .contact-list {
-    height: 100%;
     max-width: unset;
-    min-width: 250px;
+    flex: 1;
+    min-height: 0;
     margin: 0;
-    
+    padding: 0;
+    overflow-y: auto;
     .list-item:hover {
       background-image: linear-gradient($hovergraylight, $hovergraydark);
+    }
+    .list-item.current {
+      background-image: linear-gradient($darkblue, $darkblue);
+      color: $white;
     }
   }
 
   .inner-details-wrapper {
+    padding: 1em 2em;
+    grid-area: details;
     display: block;
     width: 100%;
     height: 100%;
     background-color: $verylightgray;
     .contacts-title-wrapper {
-      width: 100%;
-      height: 40px;
-      margin: 2em 0 0 2em;
       @include flex-container($justify: flex-start, $gap: 8px);
       .title-separator {
         width: 3px;
@@ -146,11 +173,4 @@ MEDIA QUERIES
 
 .white {
   color: $white;
-}
-
-.contact-list {
-  .list-item.current {
-    background-image: linear-gradient($darkblue, $darkblue);
-    color: $white;
-  }
 }

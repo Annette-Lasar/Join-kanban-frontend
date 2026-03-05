@@ -10,7 +10,7 @@
   >
     @if(!isCategoriesListVisible) {
     <div
-      class="category-text-wrapper rounded-sm cursor-pointer"
+      class="category-text-wrapper rounded-sm cursor-pointer h-40"
       (click)="toggleCategoriesList($event)"
     >
       @if (selectedCategory) {
@@ -50,7 +50,7 @@
     } @else {
     <input
       type="text"
-      class="search-category-input rounded-sm"
+      class="search-category-input rounded-sm h-40"
       placeholder="Search categories ..."
       [(ngModel)]="searchTerm"
       (input)="filterCategories()"
@@ -62,7 +62,7 @@
   <ul class="categories-list">
     @if(!newCategoryMode) {
     <li
-      class="category-list-item create-new-category-wrapper rounded-sm cursor-pointer"
+      class="category-list-item create-new-category-wrapper h-40 rounded-sm cursor-pointer"
       (click)="toggleNewCategoryButtons('show', $event)"
     >
       <span> New category</span>
@@ -70,7 +70,7 @@
     </li>
     } @else {
     <li
-      class="category-list-item create-new-category-wrapper rounded-sm cursor-pointer"
+      class="category-list-item h-40 create-new-category-wrapper rounded-sm cursor-pointer"
     >
       <div class="new-category-input-wrapper">
         <input
@@ -106,7 +106,7 @@
     </li>
     } @for(category of filteredCategories; track category.id) {
     <li
-      class="category-list-item rounded-sm cursor-pointer"
+      class="category-list-item h-40 rounded-sm cursor-pointer"
       (click)="setSelectedCategory(category)"
     >
       @if (isEditingCategoryId === category.id && selectedCategoryEdit) {
