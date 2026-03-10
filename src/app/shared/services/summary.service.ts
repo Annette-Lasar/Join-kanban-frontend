@@ -8,7 +8,7 @@ import { SummaryData } from '../interfaces/summary.interface';
   providedIn: 'root',
 })
 export class SummaryService {
-  private summarySubject = new BehaviorSubject<SummaryData[]>([]); // ✅ Jetzt ist es ein Array!
+  private summarySubject = new BehaviorSubject<SummaryData[]>([]);
   summary$ = this.summarySubject.asObservable();
 
   constructor(private dataService: DataService) {}

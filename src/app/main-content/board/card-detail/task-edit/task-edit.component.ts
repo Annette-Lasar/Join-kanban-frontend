@@ -2,7 +2,7 @@ import { Component, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Task } from '../../../../shared/interfaces/task.interface';
 import { SubtasksComponent } from '../../../../shared/components/subtasks/subtasks.component';
 import { CommonModule } from '@angular/common';
-import { FormsModule, NgForm, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { CategoriesDropdownComponent } from '../../../../shared/components/dropdown-lists/categories-dropdown/categories-dropdown.component';
 import { ContactsDropdownComponent } from '../../../../shared/components/dropdown-lists/contacts-dropdown/contacts-dropdown.component';
@@ -11,7 +11,7 @@ import { Category } from '../../../../shared/interfaces/category.interface';
 import { ActionService } from '../../../../shared/services/action.service';
 import { TaskService } from '../../../../shared/services/task.service';
 import { ButtonPropertyService } from '../../../../shared/services/button-propertys.service';
-import { Subscription, Observable, tap } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 @Component({
   selector: 'join-task-edit',

@@ -4,7 +4,7 @@ import { ContactService } from '../../../shared/services/contact.service';
 import { Subscription } from 'rxjs';
 import { ContactStatusService } from '../../../shared/services/contact-status.service';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
-import { BREAKPOINT1 } from '../../../shared/data/general.data.js';
+import { BREAKPOINT1 } from '../../../shared/constants/global-constants.data.js';
 
 @Component({
   selector: 'join-contact-details',

@@ -36,9 +36,9 @@
 
 @keyframes slideOutToRight {
   0% {
-    transform: translateX(0); /* Start innerhalb des Bildschirms */
+    transform: translateX(0);
   }
   100% {
-    transform: translateX(150%); /* Ziel außerhalb des Bildschirms */
+    transform: translateX(150%);
   }
 }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UserGreetingComponent } from './user-greeting/user-greeting.component';
 import { SummaryService } from '../../shared/services/summary.service';
 import { SummaryData } from '../../shared/interfaces/summary.interface';
-import { BREAKPOINT1 } from '../../shared/data/general.data.js';
+import { BREAKPOINT1 } from '../../shared/constants/global-constants.data.js';
 
 @Component({
   selector: 'join-summary',

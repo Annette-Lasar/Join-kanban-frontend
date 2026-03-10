@@ -11,7 +11,7 @@ import { Task } from '../../shared/interfaces/task.interface';
 import { Category } from '../../shared/interfaces/category.interface';
 import { Contact } from '../../shared/interfaces/contact.interface';
 import { forkJoin, Subscription } from 'rxjs';
-import { BREAKPOINT1 } from '../../shared/data/general.data.js';
+import { BREAKPOINT1 } from '../../shared/constants/global-constants.data.js';
 
 @Component({
   selector: 'join-add-task',

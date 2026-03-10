@@ -4,7 +4,7 @@ export interface InfoMessage {
     alertTitle?: string;
     infoQuestion?: string;
     infoText?: string;
-    infoMessageClass?: string; // notwendig?
+    infoMessageClass?: string;
     imageSrc?: string;
     imageSrc2?: string;
     actionType?: string;

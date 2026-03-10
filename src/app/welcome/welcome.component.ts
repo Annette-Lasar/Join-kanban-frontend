@@ -5,7 +5,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { LegalLinksComponent } from '../shared/components/legal-links/legal-links.component';
 import { ButtonPropertyService } from '../shared/services/button-propertys.service';
 import { Subscription } from 'rxjs';
-import { BREAKPOINT1 } from '../shared/data/general.data.js';
+import { BREAKPOINT1 } from '../shared/constants/global-constants.data.js';
 
 @Component({
   selector: 'join-welcome',
@@ -25,7 +25,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private buttonPropertyService: ButtonPropertyService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -45,7 +45,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     const subscription = this.buttonPropertyService.loginStatus$.subscribe(
       (status) => {
         this.loginStatus = status;
-      }
+      },
     );
     this.subscriptions.add(subscription);
   }
@@ -76,6 +76,4 @@ export class WelcomeComponent implements OnInit, OnDestroy {
       this.showSuccessMessage = false;
     }, 1000);
   }
-
-
 }

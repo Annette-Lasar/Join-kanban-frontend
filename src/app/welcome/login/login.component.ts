@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
   passwordVisible: boolean = false;
   passwordIcon: string = 'assets/icons/lock.svg';
-  
+
   private subscriptions: Subscription = new Subscription();
 
   constructor(
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private actionService: ActionService,
     private contactService: ContactService,
-    private taskService: TaskService
+    private taskService: TaskService,
   ) {}
 
   ngOnInit(): void {
@@ -64,23 +64,21 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.verifyUserInformation(loginForm);
   }
 
+  verifyUserInformation(loginForm: NgForm) {
+    this.authService.login(this.username, this.password).subscribe({
+      next: () => {
+        this.router.navigate(['/main-content/summary']);
+      },
+      error: (err) => {
+        console.error('Login failed:', err);
+        this.errorMessage = err.error.error;
 
-    verifyUserInformation(loginForm: NgForm) {
-      this.authService.login(this.username, this.password).subscribe({
-        next: () => {
-          this.router.navigate(['/main-content/summary']);
-        },
-        error: (err) => {
-          console.error('Login failed:', err);
-          this.errorMessage = err.error.error;
-    
-          setTimeout(() => {
-            loginForm.resetForm();
-          }, 1000);
-        },
-      });
-    }
-    
+        setTimeout(() => {
+          loginForm.resetForm();
+        }, 1000);
+      },
+    });
+  }
 
   setOffGuestLogin(): void {
     const subscription = this.actionService.guestLoginEvent.subscribe(() => {
@@ -105,6 +103,4 @@ export class LoginComponent implements OnInit, OnDestroy {
   clearErrorMessage(): void {
     this.errorMessage = '';
   }
-
-
 }

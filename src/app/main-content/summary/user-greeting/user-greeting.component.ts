@@ -1,9 +1,8 @@
-import { CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../../shared/services/auth.service';
 import { User } from '../../../shared/interfaces/user.interface';
 import { Subscription } from 'rxjs';
-
 
 @Component({
   selector: 'join-user-greeting',
@@ -15,7 +14,7 @@ import { Subscription } from 'rxjs';
 export class UserGreetingComponent implements OnInit, OnDestroy {
   salutation: string = '';
   user: User | null = null;
-  
+
   private subscriptions: Subscription = new Subscription();
 
   constructor(private authService: AuthService) {}
@@ -30,15 +29,14 @@ export class UserGreetingComponent implements OnInit, OnDestroy {
   }
 
   defineUser(): void {
-    const subscription = 
-    this.authService.userSubject$.subscribe(user => {
+    const subscription = this.authService.userSubject$.subscribe((user) => {
       this.user = user;
     });
     this.subscriptions.add(subscription);
   }
 
   getSalutation() {
-    const currentTime: number = new Date().getHours(); 
+    const currentTime: number = new Date().getHours();
 
     if (currentTime >= 0 && currentTime < 12) {
       this.salutation = 'Good morning';
@@ -50,6 +48,4 @@ export class UserGreetingComponent implements OnInit, OnDestroy {
       this.salutation = 'Good night';
     }
   }
-
-
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { BoardService } from './board.service';
 import { TaskService } from './task.service';
 import { CategoryService } from './category.service';

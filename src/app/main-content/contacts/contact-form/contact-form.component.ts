@@ -21,7 +21,7 @@ import { ButtonPropertyService } from '../../../shared/services/button-propertys
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { ActionService } from '../../../shared/services/action.service';
 import { Subscription } from 'rxjs';
-import { BREAKPOINT1 } from '../../../shared/data/general.data.js';
+import { BREAKPOINT1 } from '../../../shared/constants/global-constants.data.js';
 
 @Component({
   selector: 'join-contact-form',
@@ -43,7 +43,6 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
   isClearInputFieldClicked: boolean = false;
   mode: 'add' | 'edit' = 'add';
   contactFormStatus: boolean = false;
-  // detailStatus: boolean = false;
   isInitialLoad: boolean = true;
   nameIsValid: boolean = false;
   emailIsValid: boolean = false;
@@ -77,7 +76,6 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
     this.checkViewport();
     this.updateContactList();
     this.getContactFormStatus();
-    // this.getUpdatedDetailStatus();
     this.getUpdatedIsCreateContactClicked();
     this.getUpdatedIsClearInputFieldClicked();
     this.subscribeToCloseContactFormEvent();
@@ -146,14 +144,6 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
     this.subscriptions.add(subscription);
   }
 
-  // getUpdatedDetailStatus(): void {
-  //   const subscription = this.contactStatusService.showDetailsStatus$.subscribe(
-  //     (status) => {
-  //       this.detailStatus = status;
-  //     }
-  //   );
-  //   this.subscriptions.add(subscription);
-  // }
 
   getUpdatedIsCreateContactClicked(): void {
     const subscription =

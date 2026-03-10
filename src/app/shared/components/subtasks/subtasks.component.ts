@@ -4,7 +4,6 @@ import {
   OnInit,
   OnDestroy,
   OnChanges,
-  SimpleChanges,
 } from '@angular/core';
 import { Subtask, Task, SubtaskUI } from '../../interfaces/task.interface';
 import { CommonModule } from '@angular/common';
@@ -72,7 +71,7 @@ export class SubtasksComponent implements OnInit, OnDestroy, OnChanges {
       this.newSubtasks = this.task.subtasks;
       this.taskService.setAssignedSubtasks(this.newSubtasks);
     } else {
-      console.error('Fehler: Weder bestehende noch neue Aufgabe erkannt');
+      console.error('Error: Neither existing nor new task detected');
       this.newSubtasks = [];
     }
   }

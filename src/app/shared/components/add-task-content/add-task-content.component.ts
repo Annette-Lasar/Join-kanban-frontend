@@ -1,9 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  OnDestroy,
-} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from '../button/button.component';
@@ -36,7 +31,7 @@ export class AddTaskContentComponent implements OnInit, OnDestroy {
   @Input() categories: Category[] = [];
   @Input() contacts: Contact[] = [];
   @Input() isNewTask: boolean = false;
-  
+
   prioStatus: string = 'medium';
   isCategoryListVisible = false;
   isContactsListVisible = false;
@@ -44,13 +39,13 @@ export class AddTaskContentComponent implements OnInit, OnDestroy {
   title = '';
   description = '';
   due_date = '';
-  
-  private subscriptions: Subscription = new Subscription();
 
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private taskService: TaskService,
-    private taskCreationService: TaskCreationService) {}
+    private taskCreationService: TaskCreationService,
+  ) {}
 
   ngOnInit(): void {
     this.subscribeToNewTask();
@@ -67,7 +62,7 @@ export class AddTaskContentComponent implements OnInit, OnDestroy {
         this.description = newTask.description ?? '';
         this.due_date = newTask.due_date ?? '';
         this.prioStatus = newTask.priority ?? 'medium';
-      }
+      },
     );
     this.subscriptions.add(subscription);
   }
@@ -76,22 +71,21 @@ export class AddTaskContentComponent implements OnInit, OnDestroy {
     this.prioStatus = newStatus;
   }
 
+  updateTaskData(): void {
+    const trimmedTitle = this.title.trim();
+    const isValidTitle = trimmedTitle.length > 2;
+    const isValidDueDate = !!this.due_date;
 
-    updateTaskData(): void {
-      const trimmedTitle = this.title.trim();
-      const isValidTitle = trimmedTitle.length > 2;
-      const isValidDueDate = !!this.due_date;
-      
-      this.taskService.setTitleIsValid(isValidTitle); 
-      this.taskService.setDueDateIsValid(isValidDueDate);
-    
-      this.taskCreationService.updateNewTask({
-        title: trimmedTitle,
-        description: this.description,
-        due_date: this.due_date,
-        priority: this.prioStatus,
-      });
-    }
+    this.taskService.setTitleIsValid(isValidTitle);
+    this.taskService.setDueDateIsValid(isValidDueDate);
+
+    this.taskCreationService.updateNewTask({
+      title: trimmedTitle,
+      description: this.description,
+      due_date: this.due_date,
+      priority: this.prioStatus,
+    });
+  }
 
   toggleCategoryList(event: Event): void {
     event.stopPropagation();
@@ -106,6 +100,4 @@ export class AddTaskContentComponent implements OnInit, OnDestroy {
   closeCategoryList(): void {
     this.isCategoryListVisible = false;
   }
-
-
 }

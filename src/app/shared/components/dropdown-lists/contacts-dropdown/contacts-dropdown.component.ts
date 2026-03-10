@@ -24,12 +24,12 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
   @Input() task: Task | null = null;
   @Input() contacts: Contact[] = [];
   @Input() isNewTask: boolean = false;
-  
+
   filteredContacts: Contact[] | undefined = this.task?.contacts;
   assignedContacts: Contact[] = [];
   searchTerm: string = '';
   isContactsListVisible: boolean = false;
-  
+
   private subscriptions: Subscription = new Subscription();
 
   constructor(private taskService: TaskService) {}
@@ -48,7 +48,7 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
       this.assignedContacts = [...this.task.contacts];
     } else {
       console.error(
-        'Fehler: Weder bestehende Aufgabe noch neue Aufgabe erkannt.'
+        'Fehler: Weder bestehende Aufgabe noch neue Aufgabe erkannt.',
       );
       this.filteredContacts = [];
       this.assignedContacts = [];
@@ -59,7 +59,7 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
     const subscription = this.taskService.assignedContactsSubject$.subscribe(
       (assignedContacts) => {
         this.assignedContacts = assignedContacts;
-      }
+      },
     );
     this.subscriptions.add(subscription);
   }
@@ -102,7 +102,7 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
     const term = this.searchTerm.toLowerCase().trim();
 
     this.filteredContacts = this.contacts.filter((contact) =>
-      contact.name.toLowerCase().includes(term)
+      contact.name.toLowerCase().includes(term),
     );
   }
 
@@ -111,7 +111,6 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
       this.task?.contacts.some((contact) => contact.id === contactId) ?? false
     );
   }
-
 
   toggleContactAssignment(contact: Contact): void {
     let currentContacts = this.taskService.getAssignedContacts();
@@ -130,6 +129,4 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
       this.task.contacts = currentContacts;
     }
   }
-
-
 }

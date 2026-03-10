@@ -34,7 +34,7 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { forkJoin, Subscription } from 'rxjs';
-import { BREAKPOINT1 } from '../../shared/data/general.data.js';
+import { BREAKPOINT1 } from '../../shared/constants/global-constants.data.js';
 
 @Component({
   selector: 'join-board',

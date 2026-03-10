@@ -12,7 +12,7 @@ import { ContactStatusService } from '../../shared/services/contact-status.servi
 import { ActionService } from '../../shared/services/action.service';
 import { InfoBoxService } from '../../shared/services/info-box.service';
 import { switchMap, Subscription } from 'rxjs';
-import { BREAKPOINT1 } from '../../shared/data/general.data.js';
+import { BREAKPOINT1 } from '../../shared/constants/global-constants.data.js';
 
 @Component({
   selector: 'join-contacts',

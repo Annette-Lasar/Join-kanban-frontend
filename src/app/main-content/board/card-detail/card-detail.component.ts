@@ -40,7 +40,6 @@ export class CardDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getUpdatedEditMode();
-    // this.listenToOriginalTaskState();
     this.cancelEdit();
     this.cdr.detectChanges();
   }
