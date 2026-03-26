@@ -37,7 +37,7 @@
     <div class="contacts-and-priority-wrapper">
       @if (task.contacts.length > 0) {
         <div class="contacts-wrapper">
-          @for (oneContact of task.contacts; track oneContact.id) {
+          @for (oneContact of visibleContacts; track oneContact.id) {
             <div
               class="contact-initial-icon"
               [ngStyle]="{
@@ -47,6 +47,11 @@
               }"
             >
               {{ showInitials(oneContact) }}
+            </div>
+          }
+          @if (overflowCount > 0) {
+            <div class="contact-initial-icon overflow">
+              +{{ overflowCount }}
             </div>
           }
         </div>

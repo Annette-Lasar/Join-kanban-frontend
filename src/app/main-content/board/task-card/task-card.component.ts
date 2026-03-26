@@ -41,4 +41,12 @@ export class TaskCardComponent implements OnInit {
   showInitials(contact: Contact): string {
     return this.contactHelperService.getInitials(contact);
   }
+
+  get visibleContacts(): Contact[] {
+    return this.task?.contacts.slice(0, 4) ?? [];
+  }
+
+  get overflowCount(): number {
+    return Math.max(0, (this.task?.contacts.length ?? 0) - 4);
+  }
 }

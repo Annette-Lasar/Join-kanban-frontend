@@ -103,7 +103,6 @@ h3 {
     width: 130px;
     height: 28px;
     @include flex-container($justify: flex-start, $gap: 2px);
-    border: red 2px solid;
   }
   .contact-initial-icon {
     font-size: 0.7rem;
@@ -112,6 +111,10 @@ h3 {
     @include flex-container($justify: center);
     border-radius: 50%;
   }
+   .contact-initial-icon.overflow {
+    background-color: $anthracite;
+    color: $white;
+   }
 }
 
 /* ===========================================================

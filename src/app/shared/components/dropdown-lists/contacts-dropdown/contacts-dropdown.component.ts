@@ -78,7 +78,6 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
 
   toggleContactsList(event: Event): void {
     this.isContactsListVisible = !this.isContactsListVisible;
-    console.log(`Liste offen: `, this.isContactsListVisible);
     event.stopPropagation();
     this.filterContacts();
   }
@@ -111,7 +110,6 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
-
   isContactAssigned(contactId?: number): boolean {
     return this.assignedContacts.some((contact) => contact.id === contactId);
   }
@@ -124,7 +122,7 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
     if (index === -1) {
       currentContacts = [...currentContacts, contact];
     } else {
-      currentContacts = currentContacts.filter((c) => c.id !== contact.id); // Kontakt entfernen
+      currentContacts = currentContacts.filter((c) => c.id !== contact.id);
     }
 
     this.taskService.setAssignedContacts(currentContacts);

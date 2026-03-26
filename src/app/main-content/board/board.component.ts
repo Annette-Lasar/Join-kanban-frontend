@@ -266,7 +266,7 @@ export class BoardComponent implements OnInit, OnDestroy {
 
     movedTask.board_list_id = targetList.id;
     if (movedTask.board_list) {
-      movedTask.board_list.name = container.id; // z.B. 'toDo'
+      movedTask.board_list.name = container.id;
       movedTask.board_list.id = targetList.id;
     }
 
