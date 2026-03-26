@@ -42,6 +42,9 @@
   &:hover {
     background-color: $verylightgray;
   }
+  .subtask-title {
+    word-break: break-word;
+  }
   .subtask-edit-delete-wrapper {
     width: 60px;
     height: 100%;

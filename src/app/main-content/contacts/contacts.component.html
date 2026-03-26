@@ -38,8 +38,7 @@
                     contact.color_brightness ? '#000000' : '#ffffff'
                   "
                 >
-                  {{ contact.name ? contact.name.charAt(0) : ""
-                  }}{{ contact.name.split(" ").pop()?.charAt(0) }}
+              {{ showInitials(contact)}}
                 </div>
                 <div class="list-text-wrapper">
                   <div class="list-item-name">{{ contact.name }}</div>

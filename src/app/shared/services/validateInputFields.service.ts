@@ -26,7 +26,7 @@ export class ValidateInputFieldsService {
 
   private nameRegex = /^[A-Za-zÄÖÜäöüß]{2,}(\s[A-Za-zÄÖÜäöüß]{2,})?$/;
 
-  private emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  private emailRegex = /^[^\s@-][^\s@]*[^\s@-]@[^\s@]+\.[^\s@]+$/;
 
   private phoneRegex = /^[0-9+\-\/\s()]*$/;
 

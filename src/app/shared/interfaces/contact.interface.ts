@@ -9,8 +9,3 @@ export interface Contact {
     color_brightness?: boolean; 
     created_by?: number | null;
 }
-
-
-
-
-

@@ -1,64 +1,62 @@
-@if(task) {
-<div class="task-card">
-  <div class="task-card-header-wrapper">
-    <div
-      class="task-card-category-wrapper"
-      [ngStyle]="{
-        'background-color': task.category.color,
-        color: task.category.color_brightness ? '#000000' : '#ffffff'
-      }"
-    >
-      {{ task.category.name }}
-    </div>
-  </div>
-
-  <h3>{{ task.title }}</h3>
-  <div class="description-wrapper">
-    {{ getTruncatedText(task.description) }}
-  </div>
-  @if(task.subtasks.length > 0) {
-
-  <div class="subtasks-progress-wrapper">
-    <progress
-      id="file"
-      [value]="task.completed_subtasks"
-      [max]="task.subtasks.length"
-    ></progress>
-    <label for="file"
-      >{{ task.completed_subtasks }}/{{ task.subtasks.length }} Subtasks</label
-    >
-  </div>
-  } @else {
-  <div class="empty-box-info">This taks has no subtasks.</div>
-
-  }
-
-  <div class="contacts-and-priority-wrapper">
-    @if(task.contacts.length > 0) {
-
-    <div class="contacts-wrapper">
-      @for (oneContact of task.contacts; track oneContact.id) {
+@if (task) {
+  <div class="task-card">
+    <div class="task-card-header-wrapper">
       <div
-        class="contact-initial-icon"
+        class="task-card-category-wrapper"
         [ngStyle]="{
-          backgroundColor: oneContact.color,
-          color: oneContact.color_brightness ? '#000000' : '#ffffff',
-          border: '1px solid ' + oneContact.color
+          'background-color': task.category.color,
+          color: task.category.color_brightness ? '#000000' : '#ffffff',
         }"
       >
-        {{ oneContact.first_name?.charAt(0)
-        }}{{ oneContact.last_name?.charAt(0) }}
+        {{ task.category.name }}
       </div>
-      }
     </div>
 
+    <h3>{{ task.title }}</h3>
+    <div class="description-wrapper">
+      {{ getTruncatedText(task.description) }}
+    </div>
+    @if (task.subtasks.length > 0) {
+      <div class="subtasks-progress-wrapper">
+        <progress
+          id="file"
+          [value]="task.completed_subtasks"
+          [max]="task.subtasks.length"
+        ></progress>
+        <label for="file"
+          >{{ task.completed_subtasks }}/{{
+            task.subtasks.length
+          }}
+          Subtasks</label
+        >
+      </div>
     } @else {
-    <div class="empty-box-info">No contacts assigned.</div>
+      <div class="empty-box-info">This taks has no subtasks.</div>
     }
 
-    <div class="priority-wrapper">
-      <img [src]="priorityIconPath + task.priority + '.svg'" alt="" />
+    <div class="contacts-and-priority-wrapper">
+      @if (task.contacts.length > 0) {
+        <div class="contacts-wrapper">
+          @for (oneContact of task.contacts; track oneContact.id) {
+            <div
+              class="contact-initial-icon"
+              [ngStyle]="{
+                backgroundColor: oneContact.color,
+                color: oneContact.color_brightness ? '#000000' : '#ffffff',
+                border: '1px solid ' + oneContact.color,
+              }"
+            >
+              {{ showInitials(oneContact) }}
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="empty-box-info">No contacts assigned.</div>
+      }
+
+      <div class="priority-wrapper">
+        <img [src]="priorityIconPath + task.priority + '.svg'" alt="" />
+      </div>
     </div>
   </div>
-</div>
 }

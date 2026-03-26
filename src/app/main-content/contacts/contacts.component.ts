@@ -11,6 +11,7 @@ import { GroupContactsService } from '../../shared/services/group-contacts.servi
 import { ContactStatusService } from '../../shared/services/contact-status.service';
 import { ActionService } from '../../shared/services/action.service';
 import { InfoBoxService } from '../../shared/services/info-box.service';
+import { ContactHelperService } from '../../shared/services/contact-helper.service.js';
 import { switchMap, Subscription } from 'rxjs';
 import { BREAKPOINT1 } from '../../shared/constants/global-constants.data.js';
 
@@ -53,6 +54,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     private contactStatusService: ContactStatusService,
     private actionService: ActionService,
     private infoBoxService: InfoBoxService,
+    private contactHelperService: ContactHelperService,
   ) {}
 
   ngOnInit(): void {
@@ -221,5 +223,9 @@ export class ContactsComponent implements OnInit, OnDestroy {
 
   setSecurityInfoStatus(newStatus: boolean) {
     this.infoBoxStatus = newStatus;
+  }
+
+  showInitials(contact: Contact): string {
+    return this.contactHelperService.getInitials(contact);
   }
 }

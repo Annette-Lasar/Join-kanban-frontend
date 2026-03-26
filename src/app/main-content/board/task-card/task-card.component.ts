@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Task } from '../../../shared/interfaces/task.interface';
 import { Category } from '../../../shared/interfaces/category.interface';
+import { Contact } from '../../../shared/interfaces/contact.interface.js';
 import { CommonModule } from '@angular/common';
 import { TextFormatterService } from '../../../shared/services/text-formatter.service';
+import { ContactHelperService } from '../../../shared/services/contact-helper.service.js';
 
 @Component({
   selector: 'join-task-card',
@@ -16,17 +18,15 @@ export class TaskCardComponent implements OnInit {
 
   category!: Category;
   priorityIconPath: string = 'assets/icons/prio_';
-  
 
   constructor(
     private textFormatterService: TextFormatterService,
+    private contactHelperService: ContactHelperService,
   ) {}
 
   ngOnInit(): void {
     this.initializeTaskCategory();
   }
-
-
 
   initializeTaskCategory(): void {
     if (this.task?.category) {
@@ -38,5 +38,7 @@ export class TaskCardComponent implements OnInit {
     return this.textFormatterService.truncateSentence(text);
   }
 
-
+  showInitials(contact: Contact): string {
+    return this.contactHelperService.getInitials(contact);
+  }
 }

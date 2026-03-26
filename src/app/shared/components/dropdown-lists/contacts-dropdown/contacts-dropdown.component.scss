@@ -59,11 +59,12 @@
 .contact-icons-wrapper {
   padding: 0.5em 0.25em;
   @include flex-container($justify: flex-start, $gap: 4px);
+  flex-wrap: wrap;
   .contact-icon {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     @include flex-container($justify: center);
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     border-radius: 50%;
   }
 }

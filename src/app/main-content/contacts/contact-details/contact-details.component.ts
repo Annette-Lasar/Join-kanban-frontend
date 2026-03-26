@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { Contact } from '../../../shared/interfaces/contact.interface';
 import { ContactService } from '../../../shared/services/contact.service';
+import { ContactHelperService } from '../../../shared/services/contact-helper.service.js';
 import { Subscription } from 'rxjs';
 import { ContactStatusService } from '../../../shared/services/contact-status.service';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
@@ -24,6 +25,7 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private contactService: ContactService,
     private contactStatusService: ContactStatusService,
+    private contactHelperService: ContactHelperService,
   ) {}
 
   ngOnInit(): void {
@@ -69,5 +71,9 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
       visible: false,
       mode: 'add',
     });
+  }
+
+  showInitials(contact: Contact): string {
+    return this.contactHelperService.getInitials(contact);
   }
 }

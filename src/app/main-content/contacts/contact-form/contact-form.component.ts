@@ -20,6 +20,7 @@ import { ContactStatusService } from '../../../shared/services/contact-status.se
 import { ButtonPropertyService } from '../../../shared/services/button-propertys.service';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { ActionService } from '../../../shared/services/action.service';
+import { ContactHelperService } from '../../../shared/services/contact-helper.service.js';
 import { Subscription } from 'rxjs';
 import { BREAKPOINT1 } from '../../../shared/constants/global-constants.data.js';
 
@@ -69,7 +70,8 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
     private buttonPropertyService: ButtonPropertyService,
     private localStorageService: LocalStorageService,
     private actionService: ActionService,
-    private validateInputFieldsService: ValidateInputFieldsService
+    private validateInputFieldsService: ValidateInputFieldsService,
+    private contactHelperService: ContactHelperService,
   ) {}
 
   ngOnInit(): void {
@@ -97,27 +99,26 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
     this.checkViewport();
   }
 
-    prepareFormMode(): void {
-      if (this.mode === 'add') {
-        this.newContact = {
-          name: '',
-          email: '',
-          phone_number: '',
-          color: '',
-          color_brightness: false
-        };
-        this.validatePhone('');
-      } else if (this.currentContact) {
-        this.newContact = { ...this.currentContact };
-    
-        this.validateName(this.newContact.name);
-        this.validateEmail(this.newContact.email ?? '');
-        this.validatePhone(this.newContact.phone_number ?? '');
-      }
-    
-      this.validateForm();
+  prepareFormMode(): void {
+    if (this.mode === 'add') {
+      this.newContact = {
+        name: '',
+        email: '',
+        phone_number: '',
+        color: '',
+        color_brightness: false,
+      };
+      this.validatePhone('');
+    } else if (this.currentContact) {
+      this.newContact = { ...this.currentContact };
+
+      this.validateName(this.newContact.name);
+      this.validateEmail(this.newContact.email ?? '');
+      this.validatePhone(this.newContact.phone_number ?? '');
     }
-    
+
+    this.validateForm();
+  }
 
   checkViewport(): void {
     this.isMobile = window.innerWidth < BREAKPOINT1;
@@ -129,7 +130,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
         if (contact && this.mode === 'edit') {
           this.newContact = { ...contact };
         }
-      }
+      },
     );
     this.subscriptions.add(subscription);
   }
@@ -139,11 +140,10 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
       (state) => {
         this.mode = state.mode;
         this.prepareFormMode();
-      }
+      },
     );
     this.subscriptions.add(subscription);
   }
-
 
   getUpdatedIsCreateContactClicked(): void {
     const subscription =
@@ -153,7 +153,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
             this.onSubmit();
           }
           this.isInitialLoad = false;
-        }
+        },
       );
     this.subscriptions.add(subscription);
   }
@@ -164,7 +164,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
         (status) => {
           this.isClearInputFieldClicked = status;
           this.clearInputFields();
-        }
+        },
       );
     this.subscriptions.add(subscription);
   }
@@ -178,7 +178,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
       (isValid) => {
         this.nameIsValid = isValid;
         this.validateForm();
-      }
+      },
     );
     this.subscriptions.add(subscription);
   }
@@ -253,7 +253,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
             mode: 'add',
           });
         }, 500);
-      }
+      },
     );
 
     this.subscriptions.add(subscription);
@@ -327,7 +327,7 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
     return {
       next: (updatedContactFromBackend: Contact) => {
         this.contactService.updateContactListAfterEdit(
-          updatedContactFromBackend
+          updatedContactFromBackend,
         );
         this.contactService.setCurrentContact(updatedContactFromBackend);
         this.actionService.closeContactForm();
@@ -347,5 +347,9 @@ export class ContactFormComponent implements OnInit, OnChanges, OnDestroy {
         });
       },
     };
+  }
+
+  showInitials(contact: Contact): string {
+    return this.contactHelperService.getInitials(contact);
   }
 }

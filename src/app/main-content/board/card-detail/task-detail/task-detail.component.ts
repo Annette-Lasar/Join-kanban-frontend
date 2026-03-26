@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { Task } from '../../../../shared/interfaces/task.interface';
 import { Subtask } from '../../../../shared/interfaces/task.interface';
+import { Contact } from '../../../../shared/interfaces/contact.interface.js';
 import { TextFormatterService } from '../../../../shared/services/text-formatter.service';
 import { FormsModule } from '@angular/forms';
 import { TaskService } from '../../../../shared/services/task.service';
@@ -10,6 +11,7 @@ import { TaskStatusService } from '../../../../shared/services/task-status.servi
 import { ActionService } from '../../../../shared/services/action.service';
 import { InfoBoxService } from '../../../../shared/services/info-box.service';
 import { ButtonPropertyService } from '../../../../shared/services/button-propertys.service';
+import { ContactHelperService } from '../../../../shared/services/contact-helper.service.js';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -31,7 +33,8 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     private actionService: ActionService,
     private taskStatusService: TaskStatusService,
     private infoBoxService: InfoBoxService,
-    private buttonPropertyService: ButtonPropertyService
+    private buttonPropertyService: ButtonPropertyService,
+    private contactHelperService: ContactHelperService,
   ) {}
 
   ngOnInit(): void {
@@ -54,7 +57,6 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.add(subscription);
   }
 
-
   subscribeToDeleteTaskEvent(): void {
     const subscription = this.actionService.deleteTaskEvent.subscribe((id) => {
       this.deleteTask(id);
@@ -62,7 +64,6 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.add(subscription);
   }
 
- 
   listenForOriginalTaskStatusEvent(): void {
     const subscription =
       this.actionService.keepOriginalTaskStatusEvent.subscribe(() => {
@@ -85,11 +86,10 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     const subscription = this.infoBoxService.infoBoxStatus$.subscribe(
       (status) => {
         this.isWarningMessageVisible = status;
-      }
+      },
     );
     this.subscriptions.add(subscription);
   }
-
 
   deleteTask(id: number): void {
     this.taskService.removeTaskFromUI(id);
@@ -108,5 +108,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     this.buttonPropertyService.setIsTaskDetailVisibleStatusSubject(false);
   }
 
-
+  showInitials(contact: Contact): string {
+    return this.contactHelperService.getInitials(contact);
+  }
 }

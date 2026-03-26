@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { Task } from '../../../interfaces/task.interface';
 import { Contact } from '../../../interfaces/contact.interface';
 import { TaskService } from '../../../services/task.service';
+import { ContactHelperService } from '../../../services/contact-helper.service.js';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -32,7 +33,10 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
 
   private subscriptions: Subscription = new Subscription();
 
-  constructor(private taskService: TaskService) {}
+  constructor(
+    private taskService: TaskService,
+    private contactHelperService: ContactHelperService,
+  ) {}
 
   ngOnInit(): void {
     this.initializeContacts();
@@ -74,6 +78,7 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
 
   toggleContactsList(event: Event): void {
     this.isContactsListVisible = !this.isContactsListVisible;
+    console.log(`Liste offen: `, this.isContactsListVisible);
     event.stopPropagation();
     this.filterContacts();
   }
@@ -106,10 +111,9 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
+
   isContactAssigned(contactId?: number): boolean {
-    return (
-      this.task?.contacts.some((contact) => contact.id === contactId) ?? false
-    );
+    return this.assignedContacts.some((contact) => contact.id === contactId);
   }
 
   toggleContactAssignment(contact: Contact): void {
@@ -128,5 +132,9 @@ export class ContactsDropdownComponent implements OnInit, OnChanges, OnDestroy {
     if (this.task) {
       this.task.contacts = currentContacts;
     }
+  }
+
+  showInitials(contact: Contact): string {
+    return this.contactHelperService.getInitials(contact);
   }
 }

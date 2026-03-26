@@ -1,87 +1,92 @@
-@if(task || isNewTask) {
-<div class="contacts-dropdown-wrapper">
-  <div
-    class="contacts-wrapper"
-    [ngStyle]="{
-      border: isContactsListVisible
-        ? '#29abe2 1px solid'
-        : '#d1d1d1d1 1px solid'
-    }"
-  >
-    @if(!isContactsListVisible) {
-    <div class="contact-text-wrapper h-40" (click)="toggleContactsList($event)">
-      <div class="contacts-text">Select contacts to assign</div>
-      <div class="contacts-dropdown-image">
-        <img
-          src="assets/icons/arrow_drop_down.svg"
-          class="dropdown-arrow"
-          [ngStyle]="{
-            transform: isContactsListVisible ? 'rotate(180deg)' : 'rotate(0deg)'
-          }"
-        />
-      </div>
-    </div>
-
-    } @else {
-    <input
-      type="text"
-      class="search-contact-input h-40"
-      placeholder="Search contacts ..."
-      [(ngModel)]="searchTerm"
-      (input)="filterContacts()"
-    />
-    }
-  </div>
-
-  @if (isContactsListVisible) {
-  <ul class="contacts-list">
-    @for(contact of filteredContacts; track contact.id) {
-    <li class="contact-list-item">
-      <label [for]="'contact_checkbox_' + contact.id" class="contact-label">
-        <div class="contact-initials-and-text-wrapper">
-          <div
-            class="initials-icon"
-            [ngStyle]="{
-              backgroundColor: contact.color,
-              color: contact.color_brightness ? '#000000' : '#ffffff'
-            }"
-          >
-            {{ contact.first_name?.charAt(0)
-            }}{{ contact.last_name?.charAt(0) }}
-          </div>
-          <div>
-            {{ contact.name }}
-          </div>
-        </div>
-        <div>
-          <input
-            [id]="'contact_checkbox_' + contact.id"
-            [checked]="isContactAssigned(contact.id)"
-            (change)="toggleContactAssignment(contact)"
-            type="checkbox"
-          />
-        </div>
-      </label>
-    </li>
-
-    }
-  </ul>
-  }
-  <div class="contact-icons-wrapper">
-    @if (assignedContacts.length > 0) { @for (assignedContact of
-    assignedContacts; track assignedContact) {
+@if (task || isNewTask) {
+  <div class="contacts-dropdown-wrapper">
     <div
-      class="contact-icon"
+      class="contacts-wrapper"
       [ngStyle]="{
-        backgroundColor: assignedContact.color,
-        color: assignedContact.color_brightness ? '#000000' : '#ffffff',
-        border: '1px solid' + assignedContact.color
+        border: isContactsListVisible
+          ? '#29abe2 1px solid'
+          : '#d1d1d1d1 1px solid',
       }"
     >
-      {{ assignedContact.first_name?.charAt(0)
-      }}{{ assignedContact.last_name?.charAt(0) }}
+      @if (!isContactsListVisible) {
+        <div
+          class="contact-text-wrapper h-40"
+          (click)="toggleContactsList($event)"
+        >
+          <div class="contacts-text">Select contacts to assign</div>
+          <div class="contacts-dropdown-image">
+            <img
+              src="assets/icons/arrow_drop_down.svg"
+              class="dropdown-arrow"
+              [ngStyle]="{
+                transform: isContactsListVisible
+                  ? 'rotate(180deg)'
+                  : 'rotate(0deg)',
+              }"
+            />
+          </div>
+        </div>
+      } @else {
+        <input
+          type="text"
+          class="search-contact-input h-40"
+          placeholder="Search contacts ..."
+          [(ngModel)]="searchTerm"
+          (input)="filterContacts()"
+        />
+      }
     </div>
-    } }
+
+    @if (isContactsListVisible) {
+      <ul class="contacts-list">
+        @for (contact of filteredContacts; track contact.id) {
+          <li class="contact-list-item">
+            <label
+              [for]="'contact_checkbox_' + contact.id"
+              class="contact-label"
+            >
+              <div class="contact-initials-and-text-wrapper">
+                <div
+                  class="initials-icon"
+                  [ngStyle]="{
+                    backgroundColor: contact.color,
+                    color: contact.color_brightness ? '#000000' : '#ffffff',
+                  }"
+                >
+                  {{ showInitials(contact) }}
+                </div>
+                <div>
+                  {{ contact.name }}
+                </div>
+              </div>
+              <div>
+                <input
+                  [id]="'contact_checkbox_' + contact.id"
+                  [checked]="isContactAssigned(contact.id)"
+                  (change)="toggleContactAssignment(contact)"
+                  type="checkbox"
+                />
+              </div>
+            </label>
+          </li>
+        }
+      </ul>
+    }
+    <div class="contact-icons-wrapper">
+      @if (assignedContacts.length > 0) {
+        @for (assignedContact of assignedContacts; track assignedContact) {
+          <div
+            class="contact-icon"
+            [ngStyle]="{
+              backgroundColor: assignedContact.color,
+              color: assignedContact.color_brightness ? '#000000' : '#ffffff',
+              border: '1px solid' + assignedContact.color,
+            }"
+          >
+            {{ showInitials(assignedContact) }}
+          </div>
+        }
+      }
+    </div>
   </div>
-</div>
 }

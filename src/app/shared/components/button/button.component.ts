@@ -15,9 +15,6 @@ import { InfoMessage } from '../../interfaces/info-message.interface';
 })
 export class ButtonComponent {
   get iconSrc(): string {
-    console.log('defaultSrc:', this.defaultSrc);
-    console.log('activeSrc:', this.activeSrc);
-
     if (!this.isPrioButton) return this.defaultSrc;
 
     return this.prioStatus === this.prioClass
